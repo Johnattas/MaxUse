@@ -1,6 +1,6 @@
 {
     "name": "max-use",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "Biblioteca de Funções e Composables Vue",
     "main": "./dist/index.js",
     "module": "./dist/index.es.js",
@@ -24,7 +24,6 @@
         "type-check": "vue-tsc --noEmit",
         "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
         "postbuild": "git add dist && npm version patch -f -m 'Upgrade to %s' && git push origin main --follow-tags"
-
     },
     "dependencies": {
         "axios": "^1.15.2",
