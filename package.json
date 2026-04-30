@@ -1,6 +1,6 @@
 {
     "name": "max-use",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "Biblioteca de Funções e Composables Vue",
     "main": "./dist/index.js",
     "module": "./dist/index.es.js",
@@ -17,7 +17,6 @@
         "dist"
     ],
     "scripts": {
-        "prebuild": "npm version patch --no-git-tag-version",
         "dev": "vite",
         "dev:playground": "vite --config playground/vite.config.ts",
         "build": "vue-tsc && vite build",
