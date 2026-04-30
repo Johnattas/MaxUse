@@ -84,6 +84,8 @@ export function toSearchableString(value: RefString): string {
     return removeSpaces(data).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]/g, '').replace(/\s+/g, '').toLowerCase();
 }
 
+export const normalizeToSearch = toSearchableString;
+
 export function snakeCase(value: RefString): string {
     const data = toValue(value);
     if (!data || isBlank(data)) return '';
@@ -140,6 +142,7 @@ export const Format ={
     searchable: toSearchableString,
     removeSpaces,
     noSpaces: removeSpaces,
+    normalizeToSearch,
     onlySymbols,
     symbols: onlySymbols,
     snakeCase,
