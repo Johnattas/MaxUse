@@ -2,13 +2,14 @@ import * as iterables from './Helpers/iterables';
 import * as validations from './Helpers/validations';
 import * as format from './Helpers/format';
 import * as str from './Helpers/str';
+import * as routes from './Routes';
 import * as electrical from './Helpers/electrical';
 import * as composables from './Composables';
 import * as vueUseCore from './Helpers/vueUse';
 
 // Exporta as funções sep   aradas para quem quiser importar isoladamente
 export * from './Composables';
-
+export * from './Routes';
 export * from './Helpers/iterables';
 export * from './Helpers/validations';
 export * from './Helpers/format';
@@ -25,6 +26,7 @@ export const maxUse = {
     ...format,
     ...str,
     ...electrical,
+    ...routes,
     ...composables,
     vueuse: vueUseCore
 };
