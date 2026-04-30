@@ -33,7 +33,7 @@ app.use(PrimeVue)
 app.use(MaxComponentsUi)
 ```
 
-### Importação Individual
+### Faça Importação Individual
 
 ```vue
 <template>
