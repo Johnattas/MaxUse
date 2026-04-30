@@ -24,6 +24,7 @@
         "type-check": "vue-tsc --noEmit",
         "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
         "postbuild": "git add dist && npm version patch -f -m 'Upgrade to %s' && git push origin main --follow-tags"
+
     },
     "dependencies": {
         "axios": "^1.15.2",
