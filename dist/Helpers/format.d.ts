@@ -11,6 +11,7 @@ export declare function onlySymbols(value: RefString): string;
 export declare function onlyLettersAndNumbers(value: RefString, space?: boolean): string;
 export declare function removeSpaces(value: RefString): string;
 export declare function toSearchableString(value: RefString): string;
+export declare const normalizeToSearch: typeof toSearchableString;
 export declare function snakeCase(value: RefString): string;
 export declare function kebabCase(value: RefString): string;
 export declare function toNumber(value: RefString, decimals?: number | null): number;
@@ -36,6 +37,7 @@ export declare const Format: {
     searchable: typeof toSearchableString;
     removeSpaces: typeof removeSpaces;
     noSpaces: typeof removeSpaces;
+    normalizeToSearch: typeof toSearchableString;
     onlySymbols: typeof onlySymbols;
     symbols: typeof onlySymbols;
     snakeCase: typeof snakeCase;

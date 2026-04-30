@@ -83,6 +83,7 @@ export declare const maxUse: {
     snakeCase(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
     kebabCase(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
     toNumber(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null), decimals?: number | null): number;
+    normalizeToSearch: typeof format.toSearchableString;
     Convert: {
         toNumber: typeof format.toNumber;
         number: typeof format.toNumber;
@@ -105,6 +106,7 @@ export declare const maxUse: {
         searchable: typeof format.toSearchableString;
         removeSpaces: typeof format.removeSpaces;
         noSpaces: typeof format.removeSpaces;
+        normalizeToSearch: typeof format.toSearchableString;
         onlySymbols: typeof format.onlySymbols;
         symbols: typeof format.onlySymbols;
         snakeCase: typeof format.snakeCase;

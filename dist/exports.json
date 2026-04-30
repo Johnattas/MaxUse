@@ -80,6 +80,7 @@
   "maxUseItems",
   "noop",
   "normalizeDate",
+  "normalizeToSearch",
   "notNullish",
   "now",
   "numeric",
