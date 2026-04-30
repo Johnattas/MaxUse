@@ -5,6 +5,7 @@ import * as str from './Helpers/str';
 import * as composables from './Composables';
 import * as vueUseCore from './Helpers/vueUse';
 export * from './Composables';
+export * from './Routes';
 export * from './Helpers/iterables';
 export * from './Helpers/validations';
 export * from './Helpers/format';
@@ -19,6 +20,9 @@ export declare const maxUse: {
     useRefCached: typeof composables.useRefCached;
     useRefStorage: typeof composables.useRefStorage;
     useTimeAgo: (initialDate: import('vue').MaybeRefOrGetter<Date | number | string>, format?: string) => import('@vueuse/core').UseTimeAgoReturn;
+    apiGetRoute(RouteName: string | null, data?: any, options?: any): Promise<any>;
+    apiDeleteRoute(RouteName: string | null, data?: any | null, options?: any): Promise<any>;
+    apiUploadRoute(RouteName: string, files?: any, data?: any, options?: null): Promise<any>;
     electrical: {
         wireSize: (current: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null), options: {
             material?: "copper" | "aluminum" | "cobre" | "aluminio" | "alumínio" | "cu" | "al";
