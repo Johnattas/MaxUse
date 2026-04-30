@@ -8,6 +8,7 @@ export default defineConfig({
         vue(),
         dts({ rollupTypes: false }),
         generateExportsManifest()
+        
     ],
     build: {
         lib: {
