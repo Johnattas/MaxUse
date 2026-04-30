@@ -21,10 +21,12 @@ export function isBlank(value: RefString, if_zero: boolean = false): boolean {
 }
 
 export function isNumber(value: RefString): boolean {
+
     const data = toValue(value);
     if (isBlank(data, true)) return false;
     if (String(data).trim() === '') return false;
     return !Number.isNaN(Number(data));
+
 }
 
 export const isNumeric = isNumber;
