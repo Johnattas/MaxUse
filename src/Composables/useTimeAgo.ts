@@ -4,7 +4,7 @@ import { MaybeRefOrGetter } from 'vue';
 type n = number;
 type past = boolean;
 
-const timeAgoBr = {
+const ptBr = {
     justNow: 'agora',
     past: (n: n) => (n.toString().match(/\d/) ? `${n}` : n),
     future: (n: n) => (n.toString().match(/\d/) ? `Em ${n}` : n),
@@ -33,12 +33,7 @@ const timeAgoAbbrev = {
 const timeAgoAction = {
     justNow: 'Realizar Hoje',
     past: (n: n) => (n.toString().match(/\d/) ? `Atrasado: ${n}` : n),
-    future: (n: n) =>
-        n.toString().match(/\d/)
-            ? `Realizarpast4 chars
-    language	typescript
-    standard token type	Other em ${n}`
-            : n,
+    future: (n: n) => (n.toString().match(/\d/) ? `Realizar em ${n}` : n),
     month: (n: n, past: past) => (n === 1 ? (past ? 'Atrasado (1 Mês)' : 'Próximo mês') : `${n} M${n > 1 ? 'eses' : 'ês'}`),
     year: (n: n, past: past) => (n === 1 ? (past ? 'Ano passado' : 'Próximo ano') : `${n} year${n > 1 ? 's' : ''}`),
     day: (n: n, past: past) => (n === 1 ? (past ? 'Atrasado (Ontem)' : 'Realizar até amanhã') : `${n} dia${n > 1 ? 's' : ''}`),
@@ -75,7 +70,7 @@ const timeAgoLimit = {
 };
 
 const FORMAT_MAP: Record<string, any> = {
-    br: timeAgoBr,
+    br: ptBr,
     abbrev: timeAgoAbbrev,
     action: timeAgoAction,
     limit: timeAgoLimit,
@@ -84,6 +79,6 @@ const FORMAT_MAP: Record<string, any> = {
     future: timeAgoLimitAbrev
 };
 
-export const timeAgo = (initialDate: MaybeRefOrGetter<Date | number | string>, format: string = 'br'): UseTimeAgoReturn => vueUseTimeAgo(initialDate, { messages: FORMAT_MAP[format] ?? timeAgoBr });
+export const timeAgo = (initialDate: MaybeRefOrGetter<Date | number | string>, format: string = 'br'): UseTimeAgoReturn => vueUseTimeAgo(initialDate, { messages: FORMAT_MAP[format] ?? ptBr });
 
 export const useTimeAgo = (initialDate: MaybeRefOrGetter<Date | number | string>, format: string = 'br'): UseTimeAgoReturn => timeAgo(initialDate, format);
