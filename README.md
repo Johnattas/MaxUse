@@ -12,6 +12,7 @@ npm install max-components-ui
 
 Esta biblioteca requer as seguintes dependências peer:
 
+
 ```bash
 npm install vue@^3.6.0 primevue@^4.2.4
 ```
