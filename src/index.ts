@@ -1,44 +1,32 @@
-import 'virtual:uno.css';
-// import '@unocss/reset/normalize.css';
+import * as iterables from './Helpers/iterables';
+import * as validations from './Helpers/validations';
+import * as format from './Helpers/format';
+import * as str from './Helpers/str';
+import * as electrical from './Helpers/electrical';
+import * as composables from './Composables';
+import * as vueUseCore from './Helpers/vueUse';
 
-import PrimeVue from 'primevue/config';
+// Exporta as funções sep   aradas para quem quiser importar isoladamente
+export * from './Composables';
 
-import { MaxStyle } from './styles/style';
-import ptBR from './locales/pt-br';
-import { MaxComponentsUiResolver } from './helpers/resolver';
+export * from './Helpers/iterables';
+export * from './Helpers/validations';
+export * from './Helpers/format';
+export * from './Helpers/str';
+export * from './Helpers/electrical';
+export * from './Helpers/vueUse';
 
-export { MaxComponentsUiResolver };
+export { maxUseItems } from './Helpers/maxUseItems';
 
-export { default as MaxIcon } from './components/MaxIcon.vue';
-export { default as Grid } from './components/Grid.vue';
+// Exporta um objeto unificado
+export const maxUse = {
+    ...iterables,
+    ...validations,
+    ...format,
+    ...str,
+    ...electrical,
+    ...composables,
+    vueuse: vueUseCore
+};
 
-// Button
-export { default as MaxButton } from './components/MaxButton.vue';
-export { default as Button } from './components/MaxButton.vue';
-export { default as Botao } from './components/MaxButton.vue';
-
-// Input Text
-export { default as MaxInputText } from './components/MaxInputText.vue';
-export { default as InputText } from './components/MaxInputText.vue';
-export { default as InputField } from './components/MaxInputText.vue';
-
-// Phone Field
-export { default as MaxPhoneField } from './components/MaxPhoneField.vue';
-export { default as PhoneField } from './components/MaxPhoneField.vue';
-export { default as InputPhone } from './components/MaxPhoneField.vue';
-
-export default function install(app: any): any {
-    app.use(PrimeVue, {
-        locale: ptBR,
-        theme: {
-            preset: MaxStyle,
-            options: {
-                darkModeSelector: '.dark',
-                prefix: 'max'
-            }
-        },
-        ripple: true
-    });
-}
-
-export * from './types';
+export const vueUse = vueUseCore;

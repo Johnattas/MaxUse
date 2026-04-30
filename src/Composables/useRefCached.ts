@@ -1,4 +1,5 @@
 import { ref, type Ref } from 'vue';
+import { apiGetRoute } from '@/Routes/apiGetRoute';
 
 export function useRefCached(route_name: string, options: { data_get?: any; key?: string | null; defaultValue?: any } = {}): Ref {
     const state = ref(options.defaultValue ?? null);
@@ -6,9 +7,7 @@ export function useRefCached(route_name: string, options: { data_get?: any; key?
 
     const data = localStorage.getItem(key);
 
-    if (data) {
-        state.value = JSON.parse(data);
-    }
+    if (data) state.value = JSON.parse(data);
 
     const data_get = options.data_get ?? {};
     apiGetRoute(route_name, data_get).then((value) => {

@@ -1,4 +1,5 @@
 import { UseTimeAgoReturn, useTimeAgo as vueUseTimeAgo } from '@vueuse/core';
+import { MaybeRefOrGetter } from 'vue';
 
 type n = number;
 type past = boolean;

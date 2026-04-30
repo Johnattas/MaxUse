@@ -30,7 +30,4 @@
         ".windsurf": true
     },
     "hide-files.files": ["node_modules", "vendor", "tests", "public", ".github", ".idea", "database", "_ide_helper.php", "_ide_helper_models.php", ".gitattributes", ".phpstorm.meta.php", "engeapp.test.key", "engeapp.test.crt", "frankenphp", ".editorconfig", ".env.example", ".htaccess", "phpunit.xml", ".windsurf/rules", ".agents", ".windsurf"],
-    "iconifySearch.codeType": "unplugin-icons",
-    "iconifySearch.favorTabs": [],
-    "iconifySearch.favorGroup": ""
 }
