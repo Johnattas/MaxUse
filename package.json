@@ -21,7 +21,7 @@
         "dev:playground": "vite --config playground/vite.config.ts",
         "build": "vue-tsc && vite build",
         "preview": "vite preview",
-        "type-check": "vue-tsc --noEmit",
+        "type-check": "vue-tsc --noEmit", 
         "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
         "postbuild": "npm version patch -m 'Upgrade to %s' && git push origin main --follow-tags"
     },
