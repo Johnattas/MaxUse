@@ -1,138 +1,109 @@
-# MaxComponentsUi
+# MaxUse
 
-Biblioteca de componentes Vue 3 baseada em PrimeVue, construída com TypeScript e Vite 8.
+Uma poderosa biblioteca de utilitários para Vue 3, combinando as melhores ferramentas do **VueUse**, a praticidade e conveniência do **Lodash** e uma vasta coleção de helpers customizados para facilitar o dia a dia do desenvolvimento.
 
-## Instalação
+Totalmente projetada em torno do sistema de reatividade do Vue, todas as funções processam de maneira fluida tanto valores reativos (Refs, Computeds, Getters) quanto primitivos, utilizando nativamente `toValue` e `MaybeRefOrGetter`.
 
-```bash
-npm install max-components-ui
-```
+## 📦 Instalação
 
-## Dependências
-
-Esta biblioteca requer as seguintes dependências peer:
-
+Instale a biblioteca e suas `peerDependencies` através do npm (ou yarn, pnpm):
 
 ```bash
-npm install vue@^3.6.0 primevue@^4.2.4
+npm install max-use @vueuse/core @vueuse/integrations vue ziggy-js
 ```
 
-## Uso
+## 🚀 Como Usar
 
-### Instalação Global
+A **MaxUse** possui uma arquitetura modularizada, oferecendo flexibilidade total na forma de importação, adaptando-se às necessidades do seu projeto e suportando *tree-shaking*.
 
-```typescript
-import { createApp } from 'vue'
-import MaxComponentsUi from 'max-components-ui'
-import PrimeVue from 'primevue/config'
-import 'primevue/resources/themes/aura-light-green/theme.css'
+### Importação Individual (Recomendado)
 
-const app = createApp(App)
+A melhor forma de importar apenas o que você precisa:
 
-app.use(PrimeVue)
-app.use(MaxComponentsUi)
-```
+```ts
+import { isString, isWeekend, capitalize, deepMerge } from 'max-use'
 
-### Faça Importação Individual
-
-```vue
-<template>
-  <MaxButton label="Clique aqui" severity="success" @click="handleClick" />
-</template>
-
-<script setup lang="ts">
-import { MaxButton } from 'max-components-ui'
-
-const handleClick = () => {
-  console.log('Botão clicado!')
+const text = "hello"
+if (isString(text)) {
+  console.log(capitalize(text)) // Saída: Hello
 }
-</script>
 ```
 
-## Componentes Disponíveis
+### Importando como Lodash (`_`)
 
-### MaxButton
+Para manter a consistência e facilidade do padrão Lodash, a MaxUse exporta o objeto `_`. Ele agrupa **todos os helpers próprios da MaxUse** e também inclui as funções e composables do **VueUse**, priorizando as funções da MaxUse para prevenir conflitos de nomes de forma inteligente.
 
-Botão estilizado baseado no PrimeVue Button com customizações adicionais.
+```ts
+import { _ } from 'max-use'
 
-#### Props
+// Helpers nativos da MaxUse
+const id = _.random(1, 10)
+const merged = _.deepMerge({ a: 1 }, { b: 2 })
 
-| Prop | Tipo | Padrão | Descrição |
-|------|------|--------|-----------|
-| label | string | - | Texto do botão |
-| icon | string | - | Ícone do botão |
-| severity | 'secondary' \| 'success' \| 'info' \| 'warning' \| 'help' \| 'danger' \| 'contrast' | 'primary' | Severidade do botão |
-| size | 'small' \| 'large' | - | Tamanho do botão |
-| disabled | boolean | false | Desabilitar botão |
-| loading | boolean | false | Estado de carregamento |
-| variant | 'outlined' \| 'text' \| 'link' | - | Variante do botão |
-
-#### Eventos
-
-| Evento | Parâmetros | Descrição |
-|--------|------------|-----------|
-| click | MouseEvent | Disparado ao clicar no botão |
-
-## Desenvolvimento
-
-### Instalar Dependências
-
-```bash
-npm install
+// Composables do VueUse injetados no mesmo objeto
+const { x, y } = _.useMouse()
 ```
 
-### Modo Desenvolvimento
+### Importando por Categoria
 
-```bash
-npm run dev
+Módulos individuais podem ser importados utilizando os *subpaths*, mantendo o pacote e as referências sempre leves:
+
+```ts
+import { isTouchDevice } from 'max-use/browser'
+import { isPast, isFuture, isWeekend } from 'max-use/dates'
+import { first, last, uniqueBy } from 'max-use/iterables'
+import { average, median } from 'max-use/math'
+import { deepMerge, renameKeys, mapValues } from 'max-use/objects'
+import { truncate, noHtml, initials, readingTime, maskSensitive } from 'max-use/strings'
+import { isEmail } from 'max-use/validations'
+import { formatBytes } from 'max-use/format'
 ```
 
-### Build para Produção
+### VueUse Original Completo
 
-```bash
-npm run build
+Se em algum momento você precisar de acesso à instância integral e intocada do `VueUse`, a MaxUse exporta o objeto `vueUse` com todos os itens sem nenhuma exceção.
+
+```ts
+import { vueUse } from 'max-use'
+
+const { x, y } = vueUse.useMouse()
 ```
 
-### Type Checking
+## 🛠️ Funcionalidades e Categorias
 
-```bash
-npm run type-check
+- **Browser**: Verificações relativas a ambiente e dispositivos (ex: `isTouchDevice`).
+- **Dates**: Utilitários focados em manipulação, como verificações rápidas (`isPast`, `isFuture`, `isWeekend`, `addTime`).
+- **Iterables**: Helpers de arrays modernos e encadeados (`first`, `last`, `uniqueBy`, `chunk`).
+- **Math**: Funções numéricas e estatísticas compatíveis com reatividade (`average`, `median`, `roundUp`, `roundDown`).
+- **Objects**: Manipulação inteligente e recursiva de objetos (`deepMerge`, `renameKeys`, `set`, `mapValues`).
+- **Strings**: Limpeza, máscara e análise de texto (`truncate`, `stripHtml`/`noHtml`, `readingTime`, `maskSensitive`, `initials`).
+- **Types**: Validação rigorosa de tipagens e estado da variável (`isString`, `isArray`, `isBlank`).
+- **Validations**: Conjunto de verificações comuns (`isEmail`, e mais).
+- **Format**: Formatadores úteis (`formatBytes` etc).
+- **Electrical**: Cálculos úteis focados no domínio elétrico/físico.
+- **Composables**: Hooks reativos complementares ao VueUse.
+- **Routes**: Helpers de integração, focado primordialmente no contexto do `ziggy-js` no Vue.
+
+## ⚡ Suporte à Reatividade do Vue 3
+
+Esta não é uma simples biblioteca JavaScript. Todos os helpers foram refatorados para aceitar um tipo primitivo, um `Ref` ou até um `Getter function`. Através da função `toValue()`, as funções resolvem a reatividade e devolvem os resultados correspondentes.
+
+```ts
+import { ref } from 'vue'
+import { _ } from 'max-use'
+
+const myText = ref("texto confidencial")
+// O helper entende que é um Ref automaticamente!
+const masked = _.maskSensitive(myText) 
 ```
 
-### Lint
+## 🤝 Contribuindo
 
-```bash
-npm run lint
-```
+Ao contribuir com novas funcionalidades para a MaxUse, lembre-se:
+1. Sempre receba `MaybeRefOrGetter<T>` para argumentos principais quando for lidar com valores reativos.
+2. Utilize `toValue(arg)` internamente em vez de `unref(arg)`.
+3. Garanta que a função não conflite negativamente com as ferramentas essenciais do VueUse, a menos que seja intencional.
 
-## Estrutura do Projeto
+## 📄 Licença
 
-```
-src/
-  components/     # Componentes Vue
-    MaxButton.vue
-  types/         # Definições de tipo TypeScript
-    index.ts
-  utils/         # Utilitários
-  index.ts       # Ponto de entrada da biblioteca
-```
-
-## Publicação no NPM
-
-1. Build do projeto:
-```bash
-npm run build
-```
-
-2. Publicar:
-```bash
-npm publish
-```
-
-## Licença
-
-MIT
-
-## Contribuição
-
-Contribuições são bem-vindas! Por favor, abra uma issue para discutir mudanças que você gostaria de fazer.
+**MIT License** © Desenvolvido por [Johnattas Santana](https://github.com/johnattas)
