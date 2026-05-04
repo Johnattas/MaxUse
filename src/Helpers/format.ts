@@ -106,6 +106,19 @@ export function kebabCase(value: RefString): string {
     return words ? words.map((word: string) => word.toLowerCase()).join('-') : '';
 }
 
+export function camelCase(value: RefString): string {
+    const data = toValue(value);
+    if (!data || isBlank(data)) return '';
+
+    const stringData = String(data);
+    const words = stringData.match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g);
+
+    return words? words.map((word: string, index: number) => {
+        if (index === 0) return word.toLowerCase();
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }).join(''): '';
+}
+
 export function toNumber(value: RefString, decimals: number | null = null): number {
     const data = toValue(value);
     if (!data || isBlank(data) || isNaN(Number(data))) return 0;
@@ -140,15 +153,18 @@ export const Format ={
     toSearch: toSearchableString,
     search: toSearchableString,
     searchable: toSearchableString,
-    removeSpaces,
     noSpaces: removeSpaces,
+    removeSpaces,
     normalizeToSearch,
-    onlySymbols,
     symbols: onlySymbols,
+    onlySymbols,
     snakeCase,
     snake: snakeCase,
     snake_case: snakeCase,
     kebabCase,
+    camelCase,
+    camel: camelCase,
+    camel_case: camelCase,
     kebab: kebabCase,
     kebab_case: kebabCase,
     toNumber: toNumber
