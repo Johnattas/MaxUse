@@ -36,7 +36,6 @@ export declare const injectLocal: typeof import('vue').inject;
 export declare const invoke: typeof vueUseCore.invoke;
 export declare const isDef: <T = any>(val?: T) => val is T;
 export declare const isDefined: typeof vueUseCore.isDefined;
-export declare const isObject: (val: any) => val is object;
 export declare const makeDestructurable: typeof vueUseCore.makeDestructurable;
 export declare const mapGamepadToXbox360Controller: typeof vueUseCore.mapGamepadToXbox360Controller;
 export declare const noop: () => void;

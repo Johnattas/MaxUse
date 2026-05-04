@@ -19,12 +19,12 @@ export declare const maxUse: {
     useInCache: (route_name: string, data_get: any, key: string) => Promise<any>;
     useRefCached: typeof composables.useRefCached;
     useRefStorage: typeof composables.useRefStorage;
-    useTimeAgo: (initialDate: import("vue").MaybeRefOrGetter<Date | number | string>, format?: string) => import("@vueuse/core").UseTimeAgoReturn;
+    useTimeAgo: (initialDate: import('vue').MaybeRefOrGetter<Date | number | string>, format?: string) => import('@vueuse/core').UseTimeAgoReturn;
     apiGetRoute(RouteName: string | null, data?: any, options?: any): Promise<any>;
     apiDeleteRoute(RouteName: string | null, data?: any | null, options?: any): Promise<any>;
     apiUploadRoute(RouteName: string, files?: any, data?: any, options?: null): Promise<any>;
     electrical: {
-        wireSize: (current: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null), options: {
+        wireSize: (current: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null), options: {
             material?: "copper" | "aluminum" | "cobre" | "aluminio" | "alumínio" | "cu" | "al";
             isolation?: ("90" | "70" | 90 | 70) | ("pvc" | "epr" | "xlpe");
             method?: "b1" | "b2" | "c1" | "c2" | "d";
@@ -41,7 +41,7 @@ export declare const maxUse: {
         }>;
     };
     electric: {
-        wireSize: (current: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null), options: {
+        wireSize: (current: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null), options: {
             material?: "copper" | "aluminum" | "cobre" | "aluminio" | "alumínio" | "cu" | "al";
             isolation?: ("90" | "70" | 90 | 70) | ("pvc" | "epr" | "xlpe");
             method?: "b1" | "b2" | "c1" | "c2" | "d";
@@ -69,21 +69,21 @@ export declare const maxUse: {
         numberInterval: typeof str.intervalRandom;
         numberRandom: typeof str.intervalRandom;
     };
-    formatCep(value: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null)): string;
-    formatCpf(value: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null)): string;
-    formatCnpj(value: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null)): string;
-    formatCpfCnpj(value: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null)): string;
-    formatPhone(phone_number: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null)): string;
-    onlyLetters(value: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null), space?: boolean): string;
-    onlyNumbers(value: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null), space?: boolean): string;
-    onlySymbols(value: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null)): string;
-    onlyLettersAndNumbers(value: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null), space?: boolean): string;
-    removeSpaces(value: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null)): string;
-    toSearchableString(value: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null)): string;
-    snakeCase(value: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null)): string;
-    kebabCase(value: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null)): string;
-    camelCase(value: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null)): string;
-    toNumber(value: import("vue").MaybeRef<string | number | null> | import("vue").ComputedRef<string | number | null> | (() => string | number | null), decimals?: number | null): number;
+    formatCep(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
+    formatCpf(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
+    formatCnpj(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
+    formatCpfCnpj(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
+    formatPhone(phone_number: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
+    onlyLetters(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null), space?: boolean): string;
+    onlyNumbers(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null), space?: boolean): string;
+    onlySymbols(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
+    onlyLettersAndNumbers(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null), space?: boolean): string;
+    removeSpaces(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
+    toSearchableString(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
+    snakeCase(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
+    kebabCase(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
+    camelCase(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
+    toNumber(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null), decimals?: number | null): number;
     normalizeToSearch: typeof format.toSearchableString;
     Convert: {
         toNumber: typeof format.toNumber;
@@ -130,25 +130,25 @@ export declare const maxUse: {
         onlySymbols: typeof format.onlySymbols;
         symbols: typeof format.onlySymbols;
     };
-    hasContent(value: import("vue").MaybeRef<string | number | null | undefined> | import("vue").ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined), if_zero?: boolean): boolean;
-    isBlank(value: import("vue").MaybeRef<string | number | null | undefined> | import("vue").ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined), if_zero?: boolean): boolean;
-    isNumber(value: import("vue").MaybeRef<string | number | null | undefined> | import("vue").ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): boolean;
-    isCpf(value: import("vue").MaybeRef<string | number | null | undefined> | import("vue").ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
-    isCnpj(value: import("vue").MaybeRef<string | number | null | undefined> | import("vue").ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
-    isCpfCnpj(value: import("vue").MaybeRef<string | number | null | undefined> | import("vue").ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
-    isDate(valor: import("vue").MaybeRef<string | number | null | undefined> | import("vue").ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): boolean;
-    inDateInterval(value: import("vue").MaybeRefOrGetter<string | Date | null | undefined>, interval: import("vue").MaybeRefOrGetter<{
+    hasContent(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined), if_zero?: boolean): boolean;
+    isBlank(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined), if_zero?: boolean): boolean;
+    isNumber(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): boolean;
+    isCpf(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
+    isCnpj(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
+    isCpfCnpj(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
+    isDate(valor: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): boolean;
+    inDateInterval(value: import('vue').MaybeRefOrGetter<string | Date | null | undefined>, interval: import('vue').MaybeRefOrGetter<{
         start: Date | string;
         end?: Date | string | null;
     }>): boolean;
-    isInDateInterval(value: import("vue").MaybeRefOrGetter<string | Date | null | undefined>, interval: import("vue").MaybeRefOrGetter<{
+    isInDateInterval(value: import('vue').MaybeRefOrGetter<string | Date | null | undefined>, interval: import('vue').MaybeRefOrGetter<{
         start: Date | string;
         end?: Date | string | null;
     }>): boolean;
-    isSameDay(dates: import("vue").MaybeRefOrGetter<string[] | Date[]>, operator?: "and" | "or"): boolean;
-    hasPassedHours(dateValue: import("vue").MaybeRefOrGetter<string | Date | null | undefined>, hours?: number): boolean;
-    hasPassedMinutes(dateValue: import("vue").MaybeRefOrGetter<string | Date | null | undefined>, minutes?: number): boolean;
-    hasPassedDays(dateValue: import("vue").MaybeRefOrGetter<string | Date | null | undefined>, days?: number): boolean;
+    isSameDay(dates: import('vue').MaybeRefOrGetter<string[] | Date[]>, operator?: "and" | "or"): boolean;
+    hasPassedHours(dateValue: import('vue').MaybeRefOrGetter<string | Date | null | undefined>, hours?: number): boolean;
+    hasPassedMinutes(dateValue: import('vue').MaybeRefOrGetter<string | Date | null | undefined>, minutes?: number): boolean;
+    hasPassedDays(dateValue: import('vue').MaybeRefOrGetter<string | Date | null | undefined>, days?: number): boolean;
     canIterate<T>(obj: any): obj is Iterable<T>;
     isNumeric: typeof validations.isNumber;
     numeric: typeof validations.isNumber;

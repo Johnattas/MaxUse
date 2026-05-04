@@ -35,14 +35,14 @@ var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require
 	throw Error("Calling `require` for \"" + x + "\" in an environment that doesn't expose the `require` function. See https://rolldown.rs/in-depth/bundling-cjs#require-external-modules for more details.");
 });
 //#endregion
-//#region src/Helpers/Iterates/countBy.ts
+//#region src/Helpers/Iterables/countBy.ts
 function countBy(collection, key, value = true) {
 	const data = unref(collection);
 	if (!data || typeof data !== "object") return 0;
 	return (Array.isArray(data) ? data : Object.values(data)).reduce((acc, item) => acc + (item[key] === value ? 1 : 0), 0);
 }
 //#endregion
-//#region src/Helpers/Iterates/filter.ts
+//#region src/Helpers/Iterables/filter.ts
 function filter(collection, callback) {
 	const data = unref(collection);
 	if (!data || typeof data !== "object") return Array.isArray(data) ? [] : {};
@@ -50,7 +50,7 @@ function filter(collection, callback) {
 	return Object.fromEntries(Object.entries(data).filter(([, item]) => callback(item)));
 }
 //#endregion
-//#region src/Helpers/Iterates/filterBy.ts
+//#region src/Helpers/Iterables/filterBy.ts
 function filterBy(collection, key, value = true) {
 	const data = unref(collection);
 	if (!data || typeof data !== "object") return [];
@@ -58,7 +58,7 @@ function filterBy(collection, key, value = true) {
 	return Object.fromEntries(Object.entries(data).filter(([, item]) => item[key] === value));
 }
 //#endregion
-//#region src/Helpers/Iterates/filterByNot.ts
+//#region src/Helpers/Iterables/filterByNot.ts
 function filterByNot(collection, key, value = true) {
 	const data = unref(collection);
 	if (!data || typeof data !== "object") return Array.isArray(data) ? [] : {};
@@ -71,7 +71,54 @@ function filterByNot(collection, key, value = true) {
 	return Object.fromEntries(Object.entries(data).filter(([, item]) => !isExcluded(item)));
 }
 //#endregion
-//#region src/Helpers/Iterates/keyBy.ts
+//#region src/Helpers/Iterables/get.ts
+/**
+* Obtém o valor no caminho específico de um objeto.
+* Semelhante ao _.get do Lodash.
+*
+* @param object O objeto para consultar.
+* @param path O caminho da propriedade a ser obtida (string ou array).
+* @param defaultValue O valor retornado se o caminho resolvido for undefined.
+* @returns Retorna o valor resolvido.
+*/
+function get(object, path, defaultValue) {
+	const data = unref(object);
+	if (data === null || data === void 0) return defaultValue;
+	const pathArray = Array.isArray(path) ? path : path.replace(/\[(\w+)\]/g, ".$1").replace(/^\./, "").split(".");
+	let result = data;
+	for (const key of pathArray) {
+		if (result === null || result === void 0) break;
+		result = result[key];
+	}
+	return result === void 0 ? defaultValue : result;
+}
+//#endregion
+//#region src/Helpers/Iterables/groupBy.ts
+/**
+* Agrupa os elementos de uma coleção de acordo com o resultado de um iteratee.
+* Semelhante ao _.groupBy do Lodash.
+*
+* @param collection A coleção para iterar.
+* @param iteratee O iteratee para transformar as chaves.
+* @returns Retorna o objeto agrupado.
+*/
+function groupBy(collection, iteratee) {
+	const data = unref(collection);
+	if (!data) return {};
+	const items = Array.isArray(data) ? data : Object.values(data);
+	const result = {};
+	for (const item of items) {
+		let key;
+		if (typeof iteratee === "function") key = iteratee(item);
+		else key = item[iteratee];
+		const groupKey = String(key);
+		if (!result[groupKey]) result[groupKey] = [];
+		result[groupKey].push(item);
+	}
+	return result;
+}
+//#endregion
+//#region src/Helpers/Iterables/keyBy.ts
 function keyBy(collection, key) {
 	const data = unref(collection);
 	if (!data || typeof data !== "object") return {};
@@ -82,7 +129,7 @@ function keyBy(collection, key) {
 	}));
 }
 //#endregion
-//#region src/Helpers/Iterates/orderBy.ts
+//#region src/Helpers/Iterables/orderBy.ts
 function orderBy(collection, criteria, defaultOrder = "desc") {
 	const data = unref(collection);
 	if (!data || typeof data !== "object") return [];
@@ -111,19 +158,76 @@ function orderBy(collection, criteria, defaultOrder = "desc") {
 	});
 }
 //#endregion
-//#region src/Helpers/Iterates/orderByWithKey.ts
+//#region src/Helpers/Iterables/orderByWithKey.ts
 function orderByWithKey(collection, criteria, object_keyBy, order = "asc", defaultOrder = "asc") {
 	return keyBy(orderBy(collection, criteria, defaultOrder), object_keyBy);
 }
 //#endregion
-//#region src/Helpers/Iterates/sumBy.ts
+//#region src/Helpers/Iterables/sortBy.ts
+/**
+* Cria um array de elementos, ordenados em ordem crescente pelos resultados da execução de cada iteratee.
+* Semelhante ao _.sortBy do Lodash.
+*
+* @param collection A coleção para iterar.
+* @param iteratees Os iteratees para ordenar.
+* @returns Retorna o novo array ordenado.
+*/
+function sortBy(collection, iteratees = [(x) => x]) {
+	const data = unref(collection);
+	if (!data) return [];
+	const items = Array.isArray(data) ? [...data] : Object.values(data);
+	const iters = Array.isArray(iteratees) ? iteratees : [iteratees];
+	return items.sort((a, b) => {
+		for (const iteratee of iters) {
+			let valA;
+			let valB;
+			if (typeof iteratee === "function") {
+				valA = iteratee(a);
+				valB = iteratee(b);
+			} else if (typeof iteratee === "string") {
+				valA = a[iteratee];
+				valB = b[iteratee];
+			} else {
+				valA = a;
+				valB = b;
+			}
+			if (valA !== valB) {
+				if (valA === void 0) return 1;
+				if (valB === void 0) return -1;
+				if (valA === null) return 1;
+				if (valB === null) return -1;
+				return valA < valB ? -1 : 1;
+			}
+		}
+		return 0;
+	});
+}
+//#endregion
+//#region src/Helpers/Iterables/sum.ts
+/**
+* Calcula a soma dos valores em uma coleção.
+* Semelhante ao _.sum do Lodash.
+*
+* @param collection A coleção para iterar.
+* @returns Retorna a soma.
+*/
+function sum(collection) {
+	const data = unref(collection);
+	if (!data) return 0;
+	return (Array.isArray(data) ? data : Object.values(data)).reduce((acc, val) => {
+		const num = parseFloat(val);
+		return acc + (isNaN(num) ? 0 : num);
+	}, 0);
+}
+//#endregion
+//#region src/Helpers/Iterables/sumBy.ts
 function sumBy(collection, key) {
 	const data = unref(collection);
 	if (!data || typeof data !== "object") return 0;
 	return (Array.isArray(data) ? data : Object.values(data)).reduce((acc, item) => acc + (Number(item[key]) || 0), 0);
 }
 //#endregion
-//#region src/Helpers/Iterates/valuesInKey.ts
+//#region src/Helpers/Iterables/valuesInKey.ts
 function valuesInKey(collection, key, default_value = false) {
 	const data = unref(collection);
 	if (!data || typeof data !== "object") return [];
@@ -135,7 +239,7 @@ function valuesInKey(collection, key, default_value = false) {
 	});
 }
 //#endregion
-//#region src/Helpers/Iterates/size.ts
+//#region src/Helpers/Iterables/size.ts
 function size(value, allow_number = true) {
 	const data = unref(value);
 	if (!data || data === "" || data === " ") return 0;
@@ -146,17 +250,175 @@ function size(value, allow_number = true) {
 	return data.length;
 }
 //#endregion
+//#region src/Helpers/Iterables/deepClone.ts
+/**
+* Cria uma cópia profunda de um valor, lidando com referências circulares e diversos tipos de dados.
+* Semelhante ao _.cloneDeep do Lodash.
+*
+* @param value O valor a ser clonado.
+* @param map Um WeakMap para rastrear referências circulares (uso interno).
+* @returns Uma cópia profunda do valor.
+*/
+function deepClone(value, map = /* @__PURE__ */ new WeakMap()) {
+	const data = unref(value);
+	if (data === null || typeof data !== "object") return data;
+	if (map.has(data)) return map.get(data);
+	let clone;
+	if (data instanceof Date) return new Date(data.getTime());
+	if (data instanceof RegExp) return new RegExp(data.source, data.flags);
+	if (data instanceof Map) {
+		clone = /* @__PURE__ */ new Map();
+		map.set(data, clone);
+		data.forEach((val, key) => {
+			clone.set(deepClone(key, map), deepClone(val, map));
+		});
+		return clone;
+	}
+	if (data instanceof Set) {
+		clone = /* @__PURE__ */ new Set();
+		map.set(data, clone);
+		data.forEach((val) => {
+			clone.add(deepClone(val, map));
+		});
+		return clone;
+	}
+	clone = Array.isArray(data) ? [] : {};
+	map.set(data, clone);
+	const keys = [...Object.keys(data), ...Object.getOwnPropertySymbols(data)];
+	for (const key of keys) clone[key] = deepClone(data[key], map);
+	return clone;
+}
+//#endregion
+//#region src/Helpers/Iterables/unset.ts
+/**
+* Remove a propriedade em um caminho específico de um objeto.
+* Semelhante ao _.unset do Lodash.
+*
+* @param object O objeto a ser modificado.
+* @param path O caminho da propriedade a ser removida (string ou array).
+* @returns Retorna true se a propriedade for removida com sucesso, caso contrário false.
+*/
+function unset(object, path) {
+	const data = unref(object);
+	if (data === null || typeof data !== "object") return false;
+	const pathArray = Array.isArray(path) ? path : path.replace(/\[(\w+)\]/g, ".$1").replace(/^\./, "").split(".");
+	let current = data;
+	for (let i = 0; i < pathArray.length - 1; i++) {
+		const key = pathArray[i];
+		if (!(key in current)) return true;
+		current = current[key];
+		if (current === null || typeof current !== "object") return true;
+	}
+	const lastKey = pathArray[pathArray.length - 1];
+	return delete current[lastKey];
+}
+//#endregion
+//#region src/Helpers/Iterables/isEqual.ts
+/**
+* Realiza uma comparação profunda entre dois valores para determinar se eles são equivalentes.
+* Semelhante ao _.isEqual do Lodash.
+*
+* @param value O valor a ser comparado.
+* @param other O outro valor a ser comparado.
+* @returns Retorna true se os valores forem equivalentes, caso contrário false.
+*/
+function isEqual(value, other) {
+	const a = unref(value);
+	const b = unref(other);
+	if (a === b) return true;
+	if (Number.isNaN(a) && Number.isNaN(b)) return true;
+	if (a === null || b === null || typeof a !== "object" || typeof b !== "object") return false;
+	if (a instanceof Date && b instanceof Date) return a.getTime() === b.getTime();
+	if (a instanceof RegExp && b instanceof RegExp) return a.toString() === b.toString();
+	if (a instanceof Map && b instanceof Map) {
+		if (a.size !== b.size) return false;
+		for (const [key, val] of a) if (!b.has(key) || !isEqual(val, b.get(key))) return false;
+		return true;
+	}
+	if (a instanceof Set && b instanceof Set) {
+		if (a.size !== b.size) return false;
+		const arrayB = Array.from(b);
+		for (const valA of a) if (!arrayB.some((valB) => isEqual(valA, valB))) return false;
+		return true;
+	}
+	const isArrayA = Array.isArray(a);
+	const isArrayB = Array.isArray(b);
+	if (isArrayA !== isArrayB) return false;
+	if (isArrayA && isArrayB) {
+		if (a.length !== b.length) return false;
+		for (let i = 0; i < a.length; i++) if (!isEqual(a[i], b[i])) return false;
+		return true;
+	}
+	const keysA = Object.keys(a);
+	const keysB = Object.keys(b);
+	if (keysA.length !== keysB.length) return false;
+	for (const key of keysA) if (!Object.prototype.hasOwnProperty.call(b, key) || !isEqual(a[key], b[key])) return false;
+	return true;
+}
+//#endregion
+//#region src/Helpers/Iterables/isObject.ts
+/**
+* Verifica se o valor é classificado como um objeto (objetos, arrays, funções, regexes, etc).
+* Semelhante ao _.isObject do Lodash.
+*
+* @param value O valor a ser verificado.
+* @returns Retorna true se o valor for um objeto, caso contrário false.
+*/
+function isObject(value) {
+	const data = unref(value);
+	const type = typeof data;
+	return data !== null && (type === "object" || type === "function");
+}
+//#endregion
+//#region src/Helpers/Iterables/isArray.ts
+/**
+* Verifica se o valor é classificado como um Array.
+* Semelhante ao _.isArray do Lodash.
+*
+* @param value O valor a ser verificado.
+* @returns Retorna true se o valor for um array, caso contrário false.
+*/
+function isArray(value) {
+	return Array.isArray(unref(value));
+}
+//#endregion
+//#region src/Helpers/Iterables/sample.ts
+/**
+* Obtém um elemento aleatório de uma coleção.
+* Semelhante ao _.sample do Lodash.
+*
+* @param collection A coleção de onde extrair o elemento.
+* @returns Retorna o elemento aleatório.
+*/
+function sample(collection) {
+	const data = unref(collection);
+	if (!data) return void 0;
+	const items = Array.isArray(data) ? data : Object.values(data);
+	if (items.length === 0) return void 0;
+	return items[Math.floor(Math.random() * items.length)];
+}
+//#endregion
 //#region src/Helpers/iterables.ts
 var iterables_exports = /* @__PURE__ */ __exportAll({
 	countBy: () => countBy,
+	deepClone: () => deepClone,
 	filter: () => filter,
 	filterBy: () => filterBy,
 	filterByNot: () => filterByNot,
+	get: () => get,
+	groupBy: () => groupBy,
+	isArray: () => isArray,
+	isEqual: () => isEqual,
+	isObject: () => isObject,
 	keyBy: () => keyBy,
 	orderBy: () => orderBy,
 	orderByWithKey: () => orderByWithKey,
+	sample: () => sample,
 	size: () => size,
+	sortBy: () => sortBy,
+	sum: () => sum,
 	sumBy: () => sumBy,
+	unset: () => unset,
 	valuesInKey: () => valuesInKey
 });
 //#endregion
@@ -5202,7 +5464,7 @@ var typeOfTest = (type) => (thing) => typeof thing === type;
 *
 * @returns {boolean} True if value is an Array, otherwise false
 */
-var { isArray: isArray$3 } = Array;
+var { isArray: isArray$4 } = Array;
 /**
 * Determine if a value is undefined
 *
@@ -5440,7 +5702,7 @@ function forEach(obj, fn, { allOwnKeys = false } = {}) {
 	let i;
 	let l;
 	if (typeof obj !== "object") obj = [obj];
-	if (isArray$3(obj)) for (i = 0, l = obj.length; i < l; i++) fn.call(null, obj[i], i, obj);
+	if (isArray$4(obj)) for (i = 0, l = obj.length; i < l; i++) fn.call(null, obj[i], i, obj);
 	else {
 		if (isBuffer$1(obj)) return;
 		const keys = allOwnKeys ? Object.getOwnPropertyNames(obj) : Object.keys(obj);
@@ -5503,7 +5765,7 @@ function merge$1() {
 		const targetKey = caseless && findKey(result, key) || key;
 		if (isPlainObject(result[targetKey]) && isPlainObject(val)) result[targetKey] = merge$1(result[targetKey], val);
 		else if (isPlainObject(val)) result[targetKey] = merge$1({}, val);
-		else if (isArray$3(val)) result[targetKey] = val.slice();
+		else if (isArray$4(val)) result[targetKey] = val.slice();
 		else if (!skipUndefined || !isUndefined(val)) result[targetKey] = val;
 	};
 	for (let i = 0, l = arguments.length; i < l; i++) arguments[i] && forEach(arguments[i], assignValue);
@@ -5623,7 +5885,7 @@ var endsWith = (str, searchString, position) => {
 */
 var toArray$2 = (thing) => {
 	if (!thing) return null;
-	if (isArray$3(thing)) return thing;
+	if (isArray$4(thing)) return thing;
 	let i = thing.length;
 	if (!isNumber$1(i)) return null;
 	const arr = new Array(i);
@@ -5735,7 +5997,7 @@ var toObjectSet = (arrayOrString, delimiter) => {
 			obj[value] = true;
 		});
 	};
-	isArray$3(arrayOrString) ? define(arrayOrString) : define(String(arrayOrString).split(delimiter));
+	isArray$4(arrayOrString) ? define(arrayOrString) : define(String(arrayOrString).split(delimiter));
 	return obj;
 };
 var noop$2 = () => {};
@@ -5766,7 +6028,7 @@ var toJSONObject = (obj) => {
 			if (isBuffer$1(source)) return source;
 			if (!("toJSON" in source)) {
 				stack[i] = source;
-				const target = isArray$3(source) ? [] : {};
+				const target = isArray$4(source) ? [] : {};
 				forEach(source, (value, key) => {
 					const reducedValue = visit(value, i + 1);
 					!isUndefined(reducedValue) && (target[key] = reducedValue);
@@ -5822,7 +6084,7 @@ var _setImmediate = ((setImmediateSupported, postMessageSupported) => {
 var asap = typeof queueMicrotask !== "undefined" ? queueMicrotask.bind(_global$1) : typeof process !== "undefined" && process.nextTick || _setImmediate;
 var isIterable = (thing) => thing != null && isFunction$1(thing[iterator]);
 var utils_default = {
-	isArray: isArray$3,
+	isArray: isArray$4,
 	isArrayBuffer,
 	isBuffer: isBuffer$1,
 	isFormData,
@@ -8143,7 +8405,7 @@ var formats_default = Format$1.RFC3986;
 //#endregion
 //#region node_modules/qs-esm/lib/utils.js
 var has$2 = Object.prototype.hasOwnProperty;
-var isArray$2 = Array.isArray;
+var isArray$3 = Array.isArray;
 var overflowChannel = /* @__PURE__ */ new WeakMap();
 var markOverflow = function markOverflow(obj, maxIndex) {
 	overflowChannel.set(obj, maxIndex);
@@ -8167,7 +8429,7 @@ var compactQueue = function compactQueue(queue) {
 	while (queue.length > 1) {
 		const item = queue.pop();
 		const obj = item.obj[item.prop];
-		if (isArray$2(obj)) {
+		if (isArray$3(obj)) {
 			const compacted = [];
 			for (let j = 0; j < obj.length; ++j) if (typeof obj[j] !== "undefined") compacted.push(obj[j]);
 			item.obj[item.prop] = compacted;
@@ -8182,7 +8444,7 @@ var arrayToObject = function arrayToObject(source, options) {
 var merge = function merge(target, source, options) {
 	if (!source) return target;
 	if (typeof source !== "object") {
-		if (isArray$2(target)) target.push(source);
+		if (isArray$3(target)) target.push(source);
 		else if (target && typeof target === "object") {
 			if (isOverflow(target)) {
 				var newIndex = getMaxIndex(target) + 1;
@@ -8208,8 +8470,8 @@ var merge = function merge(target, source, options) {
 		return [target].concat(source);
 	}
 	let mergeTarget = target;
-	if (isArray$2(target) && !isArray$2(source)) mergeTarget = arrayToObject(target, options);
-	if (isArray$2(target) && isArray$2(source)) {
+	if (isArray$3(target) && !isArray$3(source)) mergeTarget = arrayToObject(target, options);
+	if (isArray$3(target) && isArray$3(source)) {
 		source.forEach(function(item, i) {
 			if (has$2.call(target, i)) {
 				const targetItem = target[i];
@@ -8318,7 +8580,7 @@ var combine = function combine(a, b, arrayLimit, plainObjects) {
 	return result;
 };
 var maybeMap = function maybeMap(val, fn) {
-	if (isArray$2(val)) {
+	if (isArray$3(val)) {
 		const mapped = [];
 		for (let i = 0; i < val.length; i += 1) mapped.push(fn(val[i]));
 		return mapped;
@@ -8340,10 +8602,10 @@ var arrayPrefixGenerators = {
 		return prefix;
 	}
 };
-var isArray$1 = Array.isArray;
+var isArray$2 = Array.isArray;
 var push = Array.prototype.push;
 var pushToArray = function(arr, valueOrArray) {
-	push.apply(arr, isArray$1(valueOrArray) ? valueOrArray : [valueOrArray]);
+	push.apply(arr, isArray$2(valueOrArray) ? valueOrArray : [valueOrArray]);
 };
 var toISO = Date.prototype.toISOString;
 var defaultFormat = formats_default;
@@ -8386,7 +8648,7 @@ var _stringify = function stringify(object, prefix, generateArrayPrefix, commaRo
 	}
 	if (typeof filter === "function") obj = filter(prefix, obj);
 	else if (obj instanceof Date) obj = serializeDate(obj);
-	else if (generateArrayPrefix === "comma" && isArray$1(obj)) obj = maybeMap(obj, function(value) {
+	else if (generateArrayPrefix === "comma" && isArray$2(obj)) obj = maybeMap(obj, function(value) {
 		if (value instanceof Date) return serializeDate(value);
 		return value;
 	});
@@ -8401,27 +8663,27 @@ var _stringify = function stringify(object, prefix, generateArrayPrefix, commaRo
 	const values = [];
 	if (typeof obj === "undefined") return values;
 	let objKeys;
-	if (generateArrayPrefix === "comma" && isArray$1(obj)) {
+	if (generateArrayPrefix === "comma" && isArray$2(obj)) {
 		if (encodeValuesOnly && encoder) obj = maybeMap(obj, encoder);
 		objKeys = [{ value: obj.length > 0 ? obj.join(",") || null : void 0 }];
-	} else if (isArray$1(filter)) objKeys = filter;
+	} else if (isArray$2(filter)) objKeys = filter;
 	else {
 		const keys = Object.keys(obj);
 		objKeys = sort ? keys.sort(sort) : keys;
 	}
 	const encodedPrefix = encodeDotInKeys ? prefix.replace(/\./g, "%2E") : prefix;
-	const adjustedPrefix = commaRoundTrip && isArray$1(obj) && obj.length === 1 ? encodedPrefix + "[]" : encodedPrefix;
-	if (allowEmptyArrays && isArray$1(obj) && obj.length === 0) return adjustedPrefix + "[]";
+	const adjustedPrefix = commaRoundTrip && isArray$2(obj) && obj.length === 1 ? encodedPrefix + "[]" : encodedPrefix;
+	if (allowEmptyArrays && isArray$2(obj) && obj.length === 0) return adjustedPrefix + "[]";
 	for (let j = 0; j < objKeys.length; ++j) {
 		const key = objKeys[j];
 		const value = typeof key === "object" && typeof key.value !== "undefined" ? key.value : obj[key];
 		if (skipNulls && value === null) continue;
 		const encodedKey = allowDots && encodeDotInKeys ? key.replace(/\./g, "%2E") : key;
-		const keyPrefix = isArray$1(obj) ? typeof generateArrayPrefix === "function" ? generateArrayPrefix(adjustedPrefix, encodedKey) : adjustedPrefix : adjustedPrefix + (allowDots ? "." + encodedKey : "[" + encodedKey + "]");
+		const keyPrefix = isArray$2(obj) ? typeof generateArrayPrefix === "function" ? generateArrayPrefix(adjustedPrefix, encodedKey) : adjustedPrefix : adjustedPrefix + (allowDots ? "." + encodedKey : "[" + encodedKey + "]");
 		sideChannel.set(object, step);
 		const valueSideChannel = /* @__PURE__ */ new WeakMap();
 		valueSideChannel.set(sentinel, sideChannel);
-		pushToArray(values, _stringify(value, keyPrefix, generateArrayPrefix, commaRoundTrip, allowEmptyArrays, strictNullHandling, skipNulls, encodeDotInKeys, generateArrayPrefix === "comma" && encodeValuesOnly && isArray$1(obj) ? null : encoder, filter, sort, allowDots, serializeDate, format, formatter, encodeValuesOnly, charset, valueSideChannel));
+		pushToArray(values, _stringify(value, keyPrefix, generateArrayPrefix, commaRoundTrip, allowEmptyArrays, strictNullHandling, skipNulls, encodeDotInKeys, generateArrayPrefix === "comma" && encodeValuesOnly && isArray$2(obj) ? null : encoder, filter, sort, allowDots, serializeDate, format, formatter, encodeValuesOnly, charset, valueSideChannel));
 	}
 	return values;
 };
@@ -8439,7 +8701,7 @@ var normalizeStringifyOptions = function normalizeStringifyOptions(opts) {
 	}
 	const formatter = formatters[format];
 	let filter = defaults$2.filter;
-	if (typeof opts.filter === "function" || isArray$1(opts.filter)) filter = opts.filter;
+	if (typeof opts.filter === "function" || isArray$2(opts.filter)) filter = opts.filter;
 	let arrayFormat;
 	if (opts.arrayFormat in arrayPrefixGenerators) arrayFormat = opts.arrayFormat;
 	else if ("indices" in opts) arrayFormat = opts.indices ? "indices" : "repeat";
@@ -8476,7 +8738,7 @@ function stringify(object, opts) {
 	if (typeof options.filter === "function") {
 		filter = options.filter;
 		obj = filter("", obj);
-	} else if (isArray$1(options.filter)) {
+	} else if (isArray$2(options.filter)) {
 		filter = options.filter;
 		objKeys = filter;
 	}
@@ -8501,7 +8763,7 @@ function stringify(object, opts) {
 //#endregion
 //#region node_modules/qs-esm/lib/parse.js
 var has = Object.prototype.hasOwnProperty;
-var isArray = Array.isArray;
+var isArray$1 = Array.isArray;
 var defaults$1 = {
 	allowDots: false,
 	allowEmptyArrays: false,
@@ -8566,7 +8828,7 @@ var parseValues = function parseQueryStringValues(str, options) {
 			});
 		}
 		if (val && options.interpretNumericEntities && charset === "iso-8859-1") val = interpretNumericEntities(val);
-		if (part.indexOf("[]=") > -1) val = isArray(val) ? [val] : val;
+		if (part.indexOf("[]=") > -1) val = isArray$1(val) ? [val] : val;
 		const existing = has.call(obj, key);
 		if (existing && options.duplicates === "combine") obj[key] = combine(obj[key], val, options.arrayLimit, options.plainObjects);
 		else if (!existing || options.duplicates === "last") obj[key] = val;
@@ -11366,7 +11628,7 @@ function extendRef$1(ref$1, extend, { enumerable = false, unwrap = true } = {}) 
 	}
 	return ref$1;
 }
-function get(obj, key) {
+function get$2(obj, key) {
 	if (key == null) return unref(obj);
 	return unref(obj)[key];
 }
@@ -12735,7 +12997,7 @@ var dist_exports = /* @__PURE__ */ __exportAll({
 	formatTimeAgo: () => formatTimeAgo$1,
 	formatTimeAgoIntl: () => formatTimeAgoIntl$1,
 	formatTimeAgoIntlParts: () => formatTimeAgoIntlParts$1,
-	get: () => get,
+	get: () => get$2,
 	getLifeCycleTarget: () => getLifeCycleTarget$1,
 	getSSRHandler: () => getSSRHandler$1,
 	hasOwn: () => hasOwn$1,
@@ -21229,7 +21491,6 @@ var vueUse_exports = /* @__PURE__ */ __exportAll({
 	invoke: () => invoke,
 	isDef: () => isDef,
 	isDefined: () => isDefined,
-	isObject: () => isObject,
 	makeDestructurable: () => makeDestructurable,
 	mapGamepadToXbox360Controller: () => mapGamepadToXbox360Controller,
 	noop: () => noop,
@@ -21486,7 +21747,6 @@ var injectLocal = injectLocal$1;
 var invoke = invoke$2;
 var isDef = isDef$1;
 var isDefined = isDefined$1;
-var isObject = isObject$1;
 var makeDestructurable = makeDestructurable$1;
 var mapGamepadToXbox360Controller = mapGamepadToXbox360Controller$1;
 var noop = noop$1;
@@ -21726,6 +21986,6 @@ var maxUse = {
 };
 var vueUse = vueUse_exports;
 //#endregion
-export { Convert, Format, Random, Str, StrFilter, apiDeleteRoute, apiGetRoute, apiUploadRoute, assert, bypassFilter, camelCase, camelize, canIterate, clamp, cloneFnJSON, computedAsync, computedInject, computedWithControl, containsProp, countBy, createEventHook, createFetch, createFilterWrapper, createGlobalState, createInjectionState, createRef, createReusableTemplate, createSharedComposable, createSingletonPromise, createTemplatePromise, createUnrefFn, debounceFilter, electric, electrical, extendRef, filter, filterBy, filterByNot, formatCep, formatCnpj, formatCpf, formatCpfCnpj, formatDate, formatPhone, formatTimeAgo, formatTimeAgoIntl, formatTimeAgoIntlParts, getLifeCycleTarget, getSSRHandler, hasContent, hasOwn, hasPassedDays, hasPassedHours, hasPassedMinutes, hyphenate, identity, inDateInterval, increaseWithUnit, injectLocal, intervalRandom, invoke, isBlank, isCnpj, isCpf, isCpfCnpj, isDate, isDef, isDefined, isInDateInterval, isNumber, isNumeric, isObject, isSameDay, isValid, kebabCase, keyBy, makeDestructurable, mapGamepadToXbox360Controller, maxUse, maxUseItems, noop, normalizeDate, normalizeToSearch, notNullish, now, numeric, objectEntries, objectOmit, objectPick, onClickOutside, onElementRemoval, onKeyDown, onKeyPressed, onKeyStroke, onKeyUp, onLongPress, onStartTyping, onlyLetters, onlyLettersAndNumbers, onlyNumbers, onlySymbols, orderBy, orderByWithKey, pausableFilter, promiseTimeout, provideLocal, provideSSRWidth, pxValue, rand, reactify, reactifyObject, reactiveComputed, reactiveOmit, reactivePick, refAutoReset, refDebounced, refDefault, refManualReset, refThrottled, refWithControl, removeSpaces, set, setSSRHandler, size, snakeCase, sumBy, syncRef, syncRefs, throttleFilter, timestamp, toArray, toNumber, toReactive, toSearchableString, transition, tryOnBeforeMount, tryOnBeforeUnmount, tryOnMounted, tryOnScopeDispose, tryOnUnmounted, ulid, unrefElement, until, useActiveElement, useAnimate, useArrayDifference, useArrayEvery, useArrayFilter, useArrayFind, useArrayFindIndex, useArrayFindLast, useArrayIncludes, useArrayJoin, useArrayMap, useArrayReduce, useArraySome, useArrayUnique, useAsyncQueue, useAsyncState, useBase64, useBattery, useBluetooth, useBreakpoints, useBroadcastChannel, useBrowserLocation, useCached, useClipboard, useClipboardItems, useCloned, useColorMode, useConfirmDialog, useCountdown, useCounter, useCssSupports, useCssVar, useCurrentElement, useCycleList, useDark, useDateFormat, useDebounceFn, useDebouncedRefHistory, useDefaultReset, useDeviceMotion, useDeviceOrientation, useDevicePixelRatio, useDevicesList, useDisplayMedia, useDocumentVisibility, useDraggable, useDropZone, useElementBounding, useElementByPoint, useElementHover, useElementSize, useElementVisibility, useEventBus, useEventListener, useEventSource, useEyeDropper, useFavicon, useFetch, useFileDialog, useFileSystemAccess, useFocus, useFocusWithin, useFps, useFullscreen, useGamepad, useGeolocation, useIdle, useImage, useInCache, useInfiniteScroll, useIntersectionObserver, useInterval, useIntervalFn, useKeyModifier, useLastChanged, useLocalStorage, useMagicKeys, useManualRefHistory, useMediaControls, useMediaQuery, useMemoize, useMemory, useMounted, useMouse, useMouseInElement, useMousePressed, useMutationObserver, useNavigatorLanguage, useNetwork, useNow, useObjectUrl, useOffsetPagination, useOnline, usePageLeave, useParallax, useParentElement, usePerformanceObserver, usePermission, usePointer, usePointerLock, usePointerSwipe, usePreferredColorScheme, usePreferredContrast, usePreferredDark, usePreferredLanguages, usePreferredReducedMotion, usePreferredReducedTransparency, usePrevious, useRafFn, useRefCached, useRefHistory, useRefStorage, useResizeObserver, useSSRWidth, useScreenOrientation, useScreenSafeArea, useScriptTag, useScroll, useScrollLock, useSessionStorage, useShare, useSorted, useSpeechRecognition, useSpeechSynthesis, useStepper, useStorage, useStorageAsync, useStyleTag, useSupported, useSwipe, useTemplateRefsList, useTextDirection, useTextSelection, useTextareaAutosize, useThrottleFn, useThrottledRefHistory, useTimeAgo, useTimeAgoIntl, useTimeout, useTimeoutFn, useTimeoutPoll, useTimestamp, useTitle, useToNumber, useToString, useToggle, useTransition, useUrlSearchParams, useUserMedia, useVModel, useVModels, useVibrate, useVirtualList, useWakeLock, useWebNotification, useWebSocket, useWebWorker, useWebWorkerFn, useWindowFocus, useWindowScroll, useWindowSize, validate, valuesInKey, vueUse, watchArray, watchAtMost, watchDebounced, watchDeep, watchIgnorable, watchImmediate, watchOnce, watchThrottled, watchTriggerable, watchWithFilter, whenever };
+export { Convert, Format, Random, Str, StrFilter, apiDeleteRoute, apiGetRoute, apiUploadRoute, assert, bypassFilter, camelCase, camelize, canIterate, clamp, cloneFnJSON, computedAsync, computedInject, computedWithControl, containsProp, countBy, createEventHook, createFetch, createFilterWrapper, createGlobalState, createInjectionState, createRef, createReusableTemplate, createSharedComposable, createSingletonPromise, createTemplatePromise, createUnrefFn, debounceFilter, deepClone, electric, electrical, extendRef, filter, filterBy, filterByNot, formatCep, formatCnpj, formatCpf, formatCpfCnpj, formatDate, formatPhone, formatTimeAgo, formatTimeAgoIntl, formatTimeAgoIntlParts, get, getLifeCycleTarget, getSSRHandler, groupBy, hasContent, hasOwn, hasPassedDays, hasPassedHours, hasPassedMinutes, hyphenate, identity, inDateInterval, increaseWithUnit, injectLocal, intervalRandom, invoke, isArray, isBlank, isCnpj, isCpf, isCpfCnpj, isDate, isDef, isDefined, isEqual, isInDateInterval, isNumber, isNumeric, isObject, isSameDay, isValid, kebabCase, keyBy, makeDestructurable, mapGamepadToXbox360Controller, maxUse, maxUseItems, noop, normalizeDate, normalizeToSearch, notNullish, now, numeric, objectEntries, objectOmit, objectPick, onClickOutside, onElementRemoval, onKeyDown, onKeyPressed, onKeyStroke, onKeyUp, onLongPress, onStartTyping, onlyLetters, onlyLettersAndNumbers, onlyNumbers, onlySymbols, orderBy, orderByWithKey, pausableFilter, promiseTimeout, provideLocal, provideSSRWidth, pxValue, rand, reactify, reactifyObject, reactiveComputed, reactiveOmit, reactivePick, refAutoReset, refDebounced, refDefault, refManualReset, refThrottled, refWithControl, removeSpaces, sample, set, setSSRHandler, size, snakeCase, sortBy, sum, sumBy, syncRef, syncRefs, throttleFilter, timestamp, toArray, toNumber, toReactive, toSearchableString, transition, tryOnBeforeMount, tryOnBeforeUnmount, tryOnMounted, tryOnScopeDispose, tryOnUnmounted, ulid, unrefElement, unset, until, useActiveElement, useAnimate, useArrayDifference, useArrayEvery, useArrayFilter, useArrayFind, useArrayFindIndex, useArrayFindLast, useArrayIncludes, useArrayJoin, useArrayMap, useArrayReduce, useArraySome, useArrayUnique, useAsyncQueue, useAsyncState, useBase64, useBattery, useBluetooth, useBreakpoints, useBroadcastChannel, useBrowserLocation, useCached, useClipboard, useClipboardItems, useCloned, useColorMode, useConfirmDialog, useCountdown, useCounter, useCssSupports, useCssVar, useCurrentElement, useCycleList, useDark, useDateFormat, useDebounceFn, useDebouncedRefHistory, useDefaultReset, useDeviceMotion, useDeviceOrientation, useDevicePixelRatio, useDevicesList, useDisplayMedia, useDocumentVisibility, useDraggable, useDropZone, useElementBounding, useElementByPoint, useElementHover, useElementSize, useElementVisibility, useEventBus, useEventListener, useEventSource, useEyeDropper, useFavicon, useFetch, useFileDialog, useFileSystemAccess, useFocus, useFocusWithin, useFps, useFullscreen, useGamepad, useGeolocation, useIdle, useImage, useInCache, useInfiniteScroll, useIntersectionObserver, useInterval, useIntervalFn, useKeyModifier, useLastChanged, useLocalStorage, useMagicKeys, useManualRefHistory, useMediaControls, useMediaQuery, useMemoize, useMemory, useMounted, useMouse, useMouseInElement, useMousePressed, useMutationObserver, useNavigatorLanguage, useNetwork, useNow, useObjectUrl, useOffsetPagination, useOnline, usePageLeave, useParallax, useParentElement, usePerformanceObserver, usePermission, usePointer, usePointerLock, usePointerSwipe, usePreferredColorScheme, usePreferredContrast, usePreferredDark, usePreferredLanguages, usePreferredReducedMotion, usePreferredReducedTransparency, usePrevious, useRafFn, useRefCached, useRefHistory, useRefStorage, useResizeObserver, useSSRWidth, useScreenOrientation, useScreenSafeArea, useScriptTag, useScroll, useScrollLock, useSessionStorage, useShare, useSorted, useSpeechRecognition, useSpeechSynthesis, useStepper, useStorage, useStorageAsync, useStyleTag, useSupported, useSwipe, useTemplateRefsList, useTextDirection, useTextSelection, useTextareaAutosize, useThrottleFn, useThrottledRefHistory, useTimeAgo, useTimeAgoIntl, useTimeout, useTimeoutFn, useTimeoutPoll, useTimestamp, useTitle, useToNumber, useToString, useToggle, useTransition, useUrlSearchParams, useUserMedia, useVModel, useVModels, useVibrate, useVirtualList, useWakeLock, useWebNotification, useWebSocket, useWebWorker, useWebWorkerFn, useWindowFocus, useWindowScroll, useWindowSize, validate, valuesInKey, vueUse, watchArray, watchAtMost, watchDebounced, watchDeep, watchIgnorable, watchImmediate, watchOnce, watchThrottled, watchTriggerable, watchWithFilter, whenever };
 
 //# sourceMappingURL=index.es.js.map
