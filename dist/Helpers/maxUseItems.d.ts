@@ -1,2 +1,2 @@
-export declare const maxUseItems: () => unknown[];
+export declare const maxUseItems: () => any;
 //# sourceMappingURL=maxUseItems.d.ts.map

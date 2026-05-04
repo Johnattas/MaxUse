@@ -1,4 +1,3 @@
-import { Str } from './Strings';
 export * from './Strings/random';
-export { Str };
+export { Str } from './Strings';
 //# sourceMappingURL=str.d.ts.map

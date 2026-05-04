@@ -413,16 +413,9 @@ function isObject(value) {
 }
 //#endregion
 //#region src/Helpers/Types/hasContent.ts
-/**
-* Verifica se um valor possui conteúdo (não é nulo, indefinido, string vazia, array vazio, etc).
-* 
-* @param value O valor a ser verificado.
-* @param if_zero Se true, considera o número 0 como tendo conteúdo.
-* @returns Retorna true se houver conteúdo.
-*/
 function hasContent(value, if_zero = false) {
 	const data = toValue(value);
-	if (!data || String(data) === "null" || String(data) === "NULL" || String(data) === "undefined" || String(data) === "UNDEFINED") return false;
+	if (!data && data !== 0 || String(data) === "null" || String(data) === "NULL" || String(data) === "undefined" || String(data) === "UNDEFINED") return false;
 	if (typeof data === "number") return data === 0 ? if_zero : true;
 	if (typeof data === "string") return data.trim().length > 0;
 	if (Array.isArray(data)) return data.length > 0;
@@ -576,7 +569,7 @@ function hasPassedMinutes(dateValue, minutes = 1) {
 //#region src/Helpers/Dates/hasPassedDays.ts
 /**
 * Verifica se um determinado número de dias se passou desde a data fornecida.
-* 
+*
 * @param dateValue A data inicial.
 * @param days Quantidade de dias.
 * @returns Retorna true se o tempo já passou.
@@ -5250,7 +5243,7 @@ function formatCep(value) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
 	const cep = String(data).replace(/\D/g, "");
-	if (cep.length === 8) return cep.replace(/^(\d{2})(\d{3})(\d{3})$/, "$1$2-$3");
+	if (cep.length === 8) return cep.replace(/^(\d{5})(\d{3})$/, "$1-$2");
 	return String(data);
 }
 function formatCpf(value) {
@@ -5273,8 +5266,10 @@ function formatPhone(phone_number) {
 	if (!data || isBlank(data)) return "";
 	const only_numbers = String(data).replace(/\D/g, "");
 	if (only_numbers.startsWith("0800")) return only_numbers.replace(/^0800(\d{3})(\d{4})$/, "0800 $1 $2");
-	if (only_numbers.length === 12) return only_numbers.replace(/55(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
-	if (only_numbers.length === 13) return only_numbers.replace(/55(\d{2})9(\d{4})(\d{4})/, "($1) 9 $2-$3");
+	if (only_numbers.length === 10) return only_numbers.replace(/^(\d{2})(\d{4})(\d{4})$/, "($1) $2-$3");
+	if (only_numbers.length === 11) return only_numbers.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+	if (only_numbers.length === 12) return only_numbers.replace(/^55(\d{2})(\d{4})(\d{4})$/, "($1) $2-$3");
+	if (only_numbers.length === 13) return only_numbers.replace(/^55(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
 	return String(data);
 }
 //#endregion
@@ -5282,7 +5277,7 @@ function formatPhone(phone_number) {
 function onlyLetters(value, space = false) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
-	return space ? String(data).replace(/[^a-zA-Z\s]/g, "") : String(data).replace(/[^a-zA-Z]/g, "");
+	return space ? String(data).replace(/[^a-zA-ZÀ-ÿ\s]/g, "") : String(data).replace(/[^a-zA-ZÀ-ÿ]/g, "");
 }
 function onlyNumbers(value, space = false) {
 	const data = toValue(value);
@@ -5297,7 +5292,7 @@ function onlySymbols(value) {
 function onlyLettersAndNumbers(value, space = false) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
-	return space ? String(data).replace(/[^a-zA-Z0-9\s]/g, "") : String(data).replace(/[^a-zA-Z0-9]/g, "");
+	return space ? String(data).replace(/[^a-zA-ZÀ-ÿ0-9\s]/g, "") : String(data).replace(/[^a-zA-ZÀ-ÿ0-9]/g, "");
 }
 function removeSpaces(value) {
 	const data = toValue(value);
@@ -5332,7 +5327,7 @@ function camelCase(value) {
 function toSearchableString(value) {
 	const data = toValue(value);
 	if (!data || isBlank(data)) return "";
-	return removeSpaces(data).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]/g, "").replace(/\s+/g, "").toLowerCase();
+	return String(data).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
 }
 var normalizeToSearch = toSearchableString;
 function toNumber(value, decimals = null) {
@@ -5451,21 +5446,19 @@ function getUlid() {
 */
 function Random(arg1 = 20, arg2 = "letter lower") {
 	if (String(arg1).includes("ulid") || String(arg2).includes("ulid")) return getUlid();
-	const length = typeof arg1 === "number" ? arg1 : arg2;
-	const params = {
-		length: typeof length === "number" ? length : 20,
-		type: typeof arg2 !== "number" ? arg2 : "letter lower",
-		chars: "abcdefghijklmnopqrstuvwxyz"
-	};
+	const length = typeof arg1 === "number" ? arg1 : typeof arg2 === "number" ? arg2 : 20;
 	const type_code = String(typeof arg1 === "string" ? arg1 : String(arg2)).toLowerCase();
-	if (type_code.includes("upper")) params.chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	if (type_code.includes("number") && !type_code.includes("nonumber")) params.chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	if (type_code.includes("number") && !type_code.includes("lower") && !type_code.includes("upper")) params.chars = "0123456789";
+	let chars = "";
+	if (type_code.includes("lower") || type_code.includes("letter")) chars += "abcdefghijklmnopqrstuvwxyz";
+	if (type_code.includes("upper")) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	if (type_code.includes("number") && !type_code.includes("nonumber")) chars += "0123456789";
+	if (!chars) chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+	if (type_code.includes("number") && !type_code.includes("lower") && !type_code.includes("upper") && !type_code.includes("letter")) chars = "0123456789";
 	let result = "";
-	const charactersLength = params.chars.length;
-	for (let i = 0; i < params.length; i++) {
+	const charactersLength = chars.length;
+	for (let i = 0; i < length; i++) {
 		const randomIndex = Math.floor(Math.random() * charactersLength);
-		result += params.chars.charAt(randomIndex);
+		result += chars.charAt(randomIndex);
 	}
 	return result;
 }
@@ -5491,15 +5484,11 @@ var Str = {
 	code: Random,
 	ulid,
 	intervalRandom,
-	interval: intervalRandom,
-	numberInterval: intervalRandom,
-	numberRandom: intervalRandom
+	interval: intervalRandom
 };
 var Convert = {
 	toNumber,
-	number: toNumber,
 	toSearchableString,
-	search: toSearchableString,
 	normalizeToSearch
 };
 var Format = {
@@ -5507,40 +5496,26 @@ var Format = {
 	cpf: formatCpf,
 	cnpj: formatCnpj,
 	cpfCnpj: formatCpfCnpj,
-	formatPhone,
 	phone: formatPhone,
 	onlyLetters,
 	onlyNumbers,
-	onlyLettersAndNumbers,
-	lettersAndNumbers: onlyLettersAndNumbers,
-	numbersAndLetters: onlyLettersAndNumbers,
-	toSearch: toSearchableString,
-	search: toSearchableString,
-	searchable: toSearchableString,
-	noSpaces: removeSpaces,
-	removeSpaces,
-	normalizeToSearch,
-	symbols: onlySymbols,
 	onlySymbols,
+	onlyLettersAndNumbers,
+	removeSpaces,
+	noSpaces: removeSpaces,
 	snakeCase,
-	snake: snakeCase,
-	snake_case: snakeCase,
 	kebabCase,
 	camelCase,
-	camel: camelCase,
-	camel_case: camelCase,
-	kebab: kebabCase,
-	kebab_case: kebabCase,
+	searchable: toSearchableString,
+	normalizeToSearch,
 	toNumber
 };
 var StrFilter = {
 	onlyLetters,
 	onlyNumbers,
 	onlyLettersAndNumbers,
-	lettersAndNumbers: onlyLettersAndNumbers,
-	numbersAndLetters: onlyLettersAndNumbers,
 	onlySymbols,
-	symbols: onlySymbols
+	removeSpaces
 };
 //#endregion
 //#region src/Helpers/format.ts
@@ -22443,7 +22418,7 @@ var exports_default = [
 //#endregion
 //#region src/Helpers/maxUseItems.ts
 var maxUseItems = () => {
-	return deepClone(uniq(exports_default));
+	return JSON.parse(JSON.stringify(uniq(exports_default)));
 };
 //#endregion
 //#region src/index.ts
