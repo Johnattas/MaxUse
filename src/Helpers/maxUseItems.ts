@@ -43,7 +43,7 @@ export const maxUseItems = (): string[] => {
 
 const autoImport = () => {
     const items = [...maxUseItems()];
-    console.log(items.filter((i) => i.includes('ow')));
+    console.log(items.filter((i) => i.includes('eset')));
     return {
         '@maxvue/max-use': maxUseItems()
     };
