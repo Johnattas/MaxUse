@@ -10,6 +10,8 @@ import * as Types from './Helpers/Types';
 import * as Validations from './Helpers/Validations';
 import * as Electrical from './Helpers/Electrical';
 import * as Format from './Helpers/Format';
+import * as Composables from './Composables';
+import * as Routes from './Routes';
 
 // Exporta os módulos principais
 export * from './Composables';
@@ -40,6 +42,8 @@ export const vueUse = vueUseCore.vueUse;
  * Helpers Próprios da MaxUse.
  */
 const ownHelpers = {
+    ...Composables,
+    ...Routes,
     ...Browser,
     ...Dates,
     ...Iterables,
