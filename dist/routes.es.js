@@ -1,3 +1,4 @@
+import { n as __exportAll } from "./chunk-C-Qwzh9l.js";
 import { n as apiRoute, r as axios, t as apiGetRoute } from "./apiGetRoute-BhiRofsc.js";
 //#region src/Routes/apiDeleteRoute.ts
 async function apiDeleteRoute(RouteName, data = null, options = null) {
@@ -55,6 +56,13 @@ async function apiUploadRoute(RouteName, files = null, data = {}, options = null
 	}
 }
 //#endregion
-export { apiDeleteRoute, apiGetRoute, apiUploadRoute };
+//#region src/Routes/index.ts
+var Routes_exports = /* @__PURE__ */ __exportAll({
+	apiDeleteRoute: () => apiDeleteRoute,
+	apiGetRoute: () => apiGetRoute,
+	apiUploadRoute: () => apiUploadRoute
+});
+//#endregion
+export { apiDeleteRoute, apiGetRoute, apiUploadRoute, Routes_exports as t };
 
 //# sourceMappingURL=routes.es.js.map

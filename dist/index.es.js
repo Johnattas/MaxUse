@@ -12,9 +12,9 @@ import { a as isNumeric, i as isNumber, n as canIterate, o as numeric, r as isIt
 import { isCnpj, isCpf, isCpfCnpj, isEmail, isValid, t as Validations_exports, validate } from "./validations.es.js";
 import { electric, electrical, t as Electrical_exports, wireSize } from "./electrical.es.js";
 import { format, formatBytes, formatCurrency, t as Format_exports } from "./format.es.js";
-import { a as useDefaultReset, i as useInCache, n as useRefStorage, r as useRefCached, t as useTimeAgo } from "./Composables-DUNe1fLm.js";
+import { a as useInCache, i as useRefCached, n as useTimeAgo, o as useDefaultReset, r as useRefStorage, t as Composables_exports } from "./Composables-UcvASVmE.js";
 import { t as apiGetRoute } from "./apiGetRoute-BhiRofsc.js";
-import { apiDeleteRoute, apiUploadRoute } from "./routes.es.js";
+import { apiDeleteRoute, apiUploadRoute, t as Routes_exports } from "./routes.es.js";
 //#region src/Helpers/maxUseItems.ts
 /**
 * Retorna a lista de todos os nomes de exports disponíveis na biblioteca MaxUse.
@@ -23,6 +23,8 @@ import { apiDeleteRoute, apiUploadRoute } from "./routes.es.js";
 var maxUseItems = () => {
 	const allKeys = /* @__PURE__ */ new Set();
 	const modules = [
+		Composables_exports,
+		Routes_exports,
 		Browser_exports,
 		Dates_exports,
 		Iterables_exports,
