@@ -44,9 +44,9 @@ var maxUseItems = () => {
 	return Array.from(allKeys).sort();
 };
 var autoImport = () => {
-	const items = [...maxUseItems()];
+	const items = [...maxUseItems(), "_"];
 	console.log(items.filter((i) => i.includes("eset")));
-	return { "@maxvue/max-use": maxUseItems() };
+	return { "@maxvue/max-use": items };
 };
 var maxUseAutoImport = autoImport();
 //#endregion
