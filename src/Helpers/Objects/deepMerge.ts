@@ -11,10 +11,10 @@ import { isArray } from '../Types/isArray';
  * @returns O objeto mesclado (modifica o primeiro objeto e o retorna).
  */
 export function deepMerge<T extends object>(target: MaybeRefOrGetter<T>, ...sources: any[]): T {
-    if (!sources.length) return target;
+    const dataTarget = toValue(target) as any;
+    if (!sources.length) return dataTarget;
     const source = sources.shift();
 
-    const dataTarget = toValue(target) as any;
     const dataSource = toValue(source);
 
     if (isObject(dataTarget) && !isArray(dataTarget) && isObject(dataSource) && !isArray(dataSource)) Object.keys(dataSource).forEach((key) => {
@@ -30,5 +30,6 @@ export function deepMerge<T extends object>(target: MaybeRefOrGetter<T>, ...sour
     });
 
 
-    return deepMerge(target, ...sources);
+    return deepMerge(dataTarget, ...sources);
 }
+

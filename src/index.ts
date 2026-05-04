@@ -31,20 +31,41 @@ export * from './Helpers/VueUse';
 
 export { maxUseItems } from './Helpers/maxUseItems';
 
-export const vueUse = vueUseCore;
+/**
+ * Exporta um objeto contendo todos os itens do VueUse sem exceção.
+ */
+export const vueUse = vueUseCore.vueUse;
 
-// EXPORTAR TODOS OS HELPERS DENTRO DE UM OBJETO PARA SIMULAR A BIBLIOTECA LODASH...
-export const _ = () => {
-    return {
-        Browser,
-        Dates,
-        Iterables,
-        Math,
-        Objects,
-        Strings,
-        Types,
-        Validations,
-        Electrical,
-        Format
-    };
+/**
+ * Helpers Próprios da MaxUse.
+ */
+const ownHelpers = {
+    ...Browser,
+    ...Dates,
+    ...Iterables,
+    ...Math,
+    ...Objects,
+    ...Strings,
+    ...Types,
+    ...Validations,
+    ...Electrical,
+    ...Format
+};
+
+/**
+ * Helpers do VueUse (filtrados para evitar duplicatas com os próprios).
+ */
+const filteredVueUse: Record<string, any> = {};
+const vueUseKeys = Object.keys(vueUseCore).filter((key) => key !== 'vueUse');
+
+for (const key of vueUseKeys) if (!(key in ownHelpers)) filteredVueUse[key] = (vueUseCore as any)[key];
+
+
+/**
+ * Objeto centralizado de helpers, semelhante ao Lodash (_).
+ * Contém os helpers próprios e os do VueUse (sem duplicatas).
+ */
+export const _ = {
+    ...ownHelpers,
+    ...filteredVueUse
 };
