@@ -14,6 +14,7 @@ export declare function toSearchableString(value: RefString): string;
 export declare const normalizeToSearch: typeof toSearchableString;
 export declare function snakeCase(value: RefString): string;
 export declare function kebabCase(value: RefString): string;
+export declare function camelCase(value: RefString): string;
 export declare function toNumber(value: RefString, decimals?: number | null): number;
 export declare const Convert: {
     toNumber: typeof toNumber;
@@ -35,15 +36,18 @@ export declare const Format: {
     toSearch: typeof toSearchableString;
     search: typeof toSearchableString;
     searchable: typeof toSearchableString;
-    removeSpaces: typeof removeSpaces;
     noSpaces: typeof removeSpaces;
+    removeSpaces: typeof removeSpaces;
     normalizeToSearch: typeof toSearchableString;
-    onlySymbols: typeof onlySymbols;
     symbols: typeof onlySymbols;
+    onlySymbols: typeof onlySymbols;
     snakeCase: typeof snakeCase;
     snake: typeof snakeCase;
     snake_case: typeof snakeCase;
     kebabCase: typeof kebabCase;
+    camelCase: typeof camelCase;
+    camel: typeof camelCase;
+    camel_case: typeof camelCase;
     kebab: typeof kebabCase;
     kebab_case: typeof kebabCase;
     toNumber: typeof toNumber;

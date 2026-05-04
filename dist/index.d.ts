@@ -82,6 +82,7 @@ export declare const maxUse: {
     toSearchableString(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
     snakeCase(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
     kebabCase(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
+    camelCase(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null)): string;
     toNumber(value: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null), decimals?: number | null): number;
     normalizeToSearch: typeof format.toSearchableString;
     Convert: {
@@ -104,15 +105,18 @@ export declare const maxUse: {
         toSearch: typeof format.toSearchableString;
         search: typeof format.toSearchableString;
         searchable: typeof format.toSearchableString;
-        removeSpaces: typeof format.removeSpaces;
         noSpaces: typeof format.removeSpaces;
+        removeSpaces: typeof format.removeSpaces;
         normalizeToSearch: typeof format.toSearchableString;
-        onlySymbols: typeof format.onlySymbols;
         symbols: typeof format.onlySymbols;
+        onlySymbols: typeof format.onlySymbols;
         snakeCase: typeof format.snakeCase;
         snake: typeof format.snakeCase;
         snake_case: typeof format.snakeCase;
         kebabCase: typeof format.kebabCase;
+        camelCase: typeof format.camelCase;
+        camel: typeof format.camelCase;
+        camel_case: typeof format.camelCase;
         kebab: typeof format.kebabCase;
         kebab_case: typeof format.kebabCase;
         toNumber: typeof format.toNumber;

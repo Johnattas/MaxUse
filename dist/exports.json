@@ -9,6 +9,7 @@
   "apiUploadRoute",
   "assert",
   "bypassFilter",
+  "camelCase",
   "camelize",
   "canIterate",
   "clamp",
