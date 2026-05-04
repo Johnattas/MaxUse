@@ -1,7 +1,8 @@
 # MaxUse
 
 [![npm version](https://img.shields.io/npm/v/max-use.svg)](https://www.npmjs.com/package/max-use)
-[![license](https://img.shields.io/npm/l/max-use.svg)](https://github.com/johnattas/MaxUse/blob/main/LICENSE)
+[![license](https://img.shields.io/npm/l/max-use.svg)](https://github.com/Johnattas/MaxUse/blob/main/LICENSE)
+[![tree-shaking](https://img.shields.io/badge/tree--shaking-supported-brightgreen)](https://www.npmjs.com/package/max-use)
 
 Uma poderosa biblioteca de utilitários para Vue 3, combinando as melhores ferramentas do **VueUse**, a praticidade do **Lodash** e uma vasta coleção de helpers customizados para o desenvolvimento moderno.
 
@@ -10,8 +11,13 @@ Totalmente projetada em torno do sistema de reatividade do Vue, todas as funçõ
 ## 📦 Instalação
 
 ```bash
-npm install max-use @vueuse/core @vueuse/integrations vue ziggy-js
+npm install max-use @vueuse/core @vueuse/integrations vue
 ```
+
+> Se você utilizar o submódulo `max-use/routes` (integração com Laravel/Ziggy), instale também:
+> ```bash
+> npm install ziggy-js
+> ```
 
 ## 🚀 Como Usar
 

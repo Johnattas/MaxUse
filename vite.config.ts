@@ -27,7 +27,7 @@ export default defineConfig({
                 composables: path.resolve(__dirname, './src/Composables/index.ts'),
                 routes: path.resolve(__dirname, './src/Routes/index.ts')
             },
-            name: 'MaxUse',
+            name: 'max-use',
             fileName: (format, entryName) => `${entryName}.${format}.js`,
             formats: ['es']
         },

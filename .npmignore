@@ -1,0 +1,20 @@
+# Código fonte (dist já contém o build)
+src/
+playground/
+
+# Configurações de editor/IDE
+.vscode/
+.windsurf/
+.agents/
+
+# Arquivos de configuração de desenvolvimento
+vite.config.ts
+tsconfig.json
+tsconfig.tsbuildinfo
+eslint.config.js
+env.d.ts
+.npmrc
+
+# Outros
+*.tgz
+.DS_Store
