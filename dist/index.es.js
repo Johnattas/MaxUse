@@ -44,9 +44,7 @@ var maxUseItems = () => {
 	return Array.from(allKeys).sort();
 };
 var autoImport = () => {
-	const items = [...maxUseItems(), "_"];
-	console.log(items.filter((i) => i.includes("api")));
-	return { "@maxvue/max-use": items };
+	return { "@maxvue/max-use": [...maxUseItems(), "_"] };
 };
 var maxUseAutoImport = autoImport();
 //#endregion
