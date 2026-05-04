@@ -1,4 +1,4 @@
-import conteudoMapa from '../../dist/exports.json?raw';
-import { cloneDeep } from './iterables';
+import conteudoMapa from '../../dist/exports.json';
+import { uniq } from './iterables';
 
-export const maxUseItems = () => { return cloneDeep(JSON.parse(conteudoMapa)); };
+export const maxUseItems = () => { return JSON.parse(JSON.stringify(uniq(conteudoMapa))); };

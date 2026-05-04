@@ -2,7 +2,6 @@ export { countBy } from './Iterables/countBy';
 export { filter } from './Iterables/filter';
 export { filterBy } from './Iterables/filterBy';
 export { filterByNot } from './Iterables/filterByNot';
-export { get } from './Iterables/get';
 export { groupBy } from './Iterables/groupBy';
 export { keyBy } from './Iterables/keyBy';
 export { orderBy } from './Iterables/orderBy';
@@ -13,12 +12,9 @@ export { sumBy } from './Iterables/sumBy';
 export { uniq } from './Iterables/uniq';
 export { valuesInKey } from './Iterables/valuesInKey';
 export { size } from './Iterables/size';
-export { now } from './Iterables/now';
-export { now as dateNow } from './Iterables/now';
-export { deepClone } from './Iterables/deepClone';
-export { deepClone as cloneDeep } from './Iterables/deepClone';
-export { unset } from './Iterables/unset';
-export { isEqual } from './Iterables/isEqual';
-export { isObject } from './Iterables/isObject';
-export { isArray } from './Iterables/isArray';
 export { sample } from './Iterables/sample';
+
+// Re-exportações movidas para compatibilidade
+export { get, unset, isEqual, deepClone, deepClone as cloneDeep } from './Objects';
+export { isObject, isArray } from './Types';
+export { now, now as dateNow } from './Dates';

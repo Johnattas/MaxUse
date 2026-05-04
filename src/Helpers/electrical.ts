@@ -71,6 +71,8 @@ async function wireSize(current: T, options: Options) {
     // BUSCA NA TABELA ABNT NBR-5410. Exemplo da nomenclatura dos Jsons:  al-70-bi-a1
     try {
 
+        // AVISO: O uso de fetch com caminho relativo pode falhar dependendo da rota atual no navegador.
+        // Recomenda-se usar caminhos absolutos ou passar a base via parâmetro se necessário.
         const resposta = await fetch(`../json/${material}-${isolation}-${phase_name}-${method}.json`);
         const dados = await resposta.json();
         const item = dados.find((c: { wire: number; max_current: number }) => c.max_current >= current);
