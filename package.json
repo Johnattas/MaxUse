@@ -1,5 +1,5 @@
 {
-    "name": "max-use",
+    "name": "@maxvue/max-use",
     "version": "1.0.4",
     "description": "Biblioteca de Funções e Composables Vue — VueUse + Lodash + Helpers com suporte total a reatividade",
     "main": "./dist/index.es.js",
@@ -78,7 +78,7 @@
         "type-check": "vue-tsc --noEmit",
         "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
         "postbuild": "git add dist tsconfig.tsbuildinfo && git commit -m 'chore: atualiza artefatos do build' || true",
-        "release": "npm run build && npm version patch -m 'Upgrade to %s' && git push origin main --follow-tags && npm publish",
+        "release": "npm run build && npm version patch -m 'Upgrade to %s' && git push origin main --follow-tags && npm publish --access public",
         "prepublishOnly": "npm run build"
     },
     "dependencies": {
@@ -125,13 +125,13 @@
     ],
     "author": "Johnattas Santana",
     "license": "MIT",
-    "homepage": "https://github.com/Johnattas/MaxUse#readme",
+    "homepage": "https://github.com/maxvue/MaxUse#readme",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Johnattas/MaxUse.git"
+        "url": "git+https://github.com/maxvue/MaxUse.git"
     },
     "bugs": {
-        "url": "https://github.com/Johnattas/MaxUse/issues"
+        "url": "https://github.com/maxvue/MaxUse/issues"
     },
     "engines": {
         "node": ">=18"

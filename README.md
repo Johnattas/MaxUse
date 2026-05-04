@@ -1,8 +1,8 @@
 # MaxUse
 
-[![npm version](https://img.shields.io/npm/v/max-use.svg)](https://www.npmjs.com/package/max-use)
-[![license](https://img.shields.io/npm/l/max-use.svg)](https://github.com/Johnattas/MaxUse/blob/main/LICENSE)
-[![tree-shaking](https://img.shields.io/badge/tree--shaking-supported-brightgreen)](https://www.npmjs.com/package/max-use)
+[![npm version](https://img.shields.io/npm/v/@maxvue/max-use.svg)](https://www.npmjs.com/package/@maxvue/max-use)
+[![license](https://img.shields.io/npm/l/@maxvue/max-use.svg)](https://github.com/maxvue/MaxUse/blob/main/LICENSE)
+[![tree-shaking](https://img.shields.io/badge/tree--shaking-supported-brightgreen)](https://www.npmjs.com/package/@maxvue/max-use)
 
 Uma poderosa biblioteca de utilitários para Vue 3, combinando as melhores ferramentas do **VueUse**, a praticidade do **Lodash** e uma vasta coleção de helpers customizados para o desenvolvimento moderno.
 
@@ -11,10 +11,10 @@ Totalmente projetada em torno do sistema de reatividade do Vue, todas as funçõ
 ## 📦 Instalação
 
 ```bash
-npm install max-use @vueuse/core @vueuse/integrations vue
+npm install @maxvue/max-use @vueuse/core @vueuse/integrations vue
 ```
 
-> Se você utilizar o submódulo `max-use/routes` (integração com Laravel/Ziggy), instale também:
+> Se você utilizar o submódulo `@maxvue/max-use/routes` (integração com Laravel/Ziggy), instale também:
 > ```bash
 > npm install ziggy-js
 > ```
@@ -26,7 +26,7 @@ A **MaxUse** possui uma arquitetura modularizada, oferecendo flexibilidade total
 ### 1. Importação Individual (Recomendado)
 
 ```ts
-import { isString, isWeekend, capitalize, deepMerge } from 'max-use'
+import { isString, isWeekend, capitalize, deepMerge } from '@maxvue/max-use'
 
 const text = "hello"
 if (isString(text)) {
@@ -39,7 +39,7 @@ if (isString(text)) {
 Para manter a conveniência do padrão Lodash, a MaxUse exporta o objeto `_`. Ele agrupa **todos os helpers próprios** e também inclui as funções do **VueUse**, priorizando a MaxUse em caso de conflitos.
 
 ```ts
-import { _ } from 'max-use'
+import { _ } from '@maxvue/max-use'
 
 // Helpers nativos da MaxUse
 const id = _.random(1, 10)
@@ -54,12 +54,12 @@ const { x, y } = _.useMouse()
 Para otimizar o build, você pode importar diretamente das categorias:
 
 ```ts
-import { isTouchDevice } from 'max-use/browser'
-import { addTime, isWeekend } from 'max-use/dates'
-import { first, uniqueBy } from 'max-use/iterables'
-import { average, median } from 'max-use/math'
-import { deepMerge, renameKeys } from 'max-use/objects'
-import { truncate, readingTime } from 'max-use/strings'
+import { isTouchDevice } from '@maxvue/max-use/browser'
+import { addTime, isWeekend } from '@maxvue/max-use/dates'
+import { first, uniqueBy } from '@maxvue/max-use/iterables'
+import { average, median } from '@maxvue/max-use/math'
+import { deepMerge, renameKeys } from '@maxvue/max-use/objects'
+import { truncate, readingTime } from '@maxvue/max-use/strings'
 ```
 
 ## ⚡ Poder de Reatividade
@@ -68,7 +68,7 @@ Diferente de bibliotecas utilitárias comuns, a MaxUse entende a reatividade do 
 
 ```ts
 import { ref, computed } from 'vue'
-import { isPast } from 'max-use'
+import { isPast } from '@maxvue/max-use'
 
 const date = ref(new Date('2020-01-01'))
 const isExpired = computed(() => isPast(date)) // Reativo!
@@ -99,7 +99,7 @@ A MaxUse oferece integração nativa com `unplugin-auto-import`. Com uma única 
 ```ts
 // vite.config.ts
 import AutoImport from 'unplugin-auto-import/vite'
-import { maxUseAutoImport } from 'max-use'
+import { maxUseAutoImport } from '@maxvue/max-use'
 
 export default defineConfig({
   plugins: [
@@ -123,4 +123,4 @@ Ao contribuir, siga estes princípios:
 
 ## 📄 Licença
 
-**MIT License** © [Johnattas Santana](https://github.com/johnattas)
+**MIT License** © [MaxVue](https://github.com/maxvue)
