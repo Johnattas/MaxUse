@@ -8,6 +8,11 @@ type Typecode = `${string}${'lower' | 'ulid' | 'upper'}${string}`;
  * @returns Retorna a string gerada.
  */
 export declare function Random(arg1?: MaybeRefOrGetter<number | Typecode>, arg2?: MaybeRefOrGetter<number | Typecode>): string;
+/**
+ * Gera um Universally Unique Lexicographically Sortable Identifier (ULID) em letras minúsculas.
+ *
+ * @returns Retorna o ULID gerado.
+ */
 export declare function ulid(): string;
 /**
  * Gera um número aleatório em um intervalo.

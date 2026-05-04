@@ -1,6 +1,14 @@
 import { n as __exportAll } from "./chunk-C-Qwzh9l.js";
 import { toValue } from "vue";
 //#region src/Helpers/Iterables/countBy.ts
+/**
+* Conta o número de elementos em uma coleção que possuem um determinado valor para uma chave.
+*
+* @param collection A coleção de objetos.
+* @param key A chave a ser verificada.
+* @param value O valor a ser comparado (padrão é true).
+* @returns O número de elementos correspondentes.
+*/
 function countBy(collection, key, value = true) {
 	const data = toValue(collection);
 	if (!data || typeof data !== "object") return 0;
@@ -8,6 +16,13 @@ function countBy(collection, key, value = true) {
 }
 //#endregion
 //#region src/Helpers/Iterables/filter.ts
+/**
+* Filtra uma coleção com base em uma função de callback.
+*
+* @param collection A coleção de objetos.
+* @param callback A função de callback para avaliar cada item.
+* @returns A coleção filtrada.
+*/
 function filter(collection, callback) {
 	const data = toValue(collection);
 	if (!data || typeof data !== "object") return Array.isArray(data) ? [] : {};
@@ -16,6 +31,14 @@ function filter(collection, callback) {
 }
 //#endregion
 //#region src/Helpers/Iterables/filterBy.ts
+/**
+* Filtra uma coleção mantendo apenas os elementos que possuem um determinado valor para uma chave.
+*
+* @param collection A coleção de objetos.
+* @param key A chave a ser verificada.
+* @param value O valor a ser comparado (padrão é true).
+* @returns A coleção filtrada.
+*/
 function filterBy(collection, key, value = true) {
 	const data = toValue(collection);
 	if (!data || typeof data !== "object") return [];
@@ -24,6 +47,14 @@ function filterBy(collection, key, value = true) {
 }
 //#endregion
 //#region src/Helpers/Iterables/filterByNot.ts
+/**
+* Filtra uma coleção removendo os elementos que possuem um determinado valor para uma chave.
+*
+* @param collection A coleção de objetos.
+* @param key A chave a ser verificada.
+* @param value O valor ou array de valores a serem excluídos (padrão é true).
+* @returns A coleção filtrada.
+*/
 function filterByNot(collection, key, value = true) {
 	const data = toValue(collection);
 	if (!data || typeof data !== "object") return Array.isArray(data) ? [] : {};
@@ -62,6 +93,13 @@ function groupBy(collection, iteratee) {
 }
 //#endregion
 //#region src/Helpers/Iterables/keyBy.ts
+/**
+* Cria um objeto composto por chaves geradas a partir dos resultados da execução de cada elemento de uma coleção através de uma chave especificada.
+*
+* @param collection A coleção de objetos.
+* @param key A chave a ser usada como índice do novo objeto.
+* @returns Um objeto mapeado pela chave especificada.
+*/
 function keyBy(collection, key) {
 	const data = toValue(collection);
 	if (!data || typeof data !== "object") return {};
@@ -73,6 +111,14 @@ function keyBy(collection, key) {
 }
 //#endregion
 //#region src/Helpers/Iterables/orderBy.ts
+/**
+* Ordena uma coleção de objetos com base em um ou mais critérios.
+*
+* @param collection A coleção de objetos a ser ordenada.
+* @param criteria O(s) critério(s) de ordenação (string, array de strings ou objeto com chaves e direções).
+* @param defaultOrder A direção de ordenação padrão se não for especificada (padrão é 'desc').
+* @returns Um novo array contendo a coleção ordenada.
+*/
 function orderBy(collection, criteria, defaultOrder = "desc") {
 	const data = toValue(collection);
 	if (!data || typeof data !== "object") return [];
@@ -102,6 +148,16 @@ function orderBy(collection, criteria, defaultOrder = "desc") {
 }
 //#endregion
 //#region src/Helpers/Iterables/orderByWithKey.ts
+/**
+* Ordena uma coleção de objetos com base em critérios e, em seguida, mapeia os resultados para um objeto indexado por uma chave específica.
+*
+* @param collection A coleção de objetos a ser ordenada e indexada.
+* @param criteria O(s) critério(s) de ordenação.
+* @param object_keyBy A chave a ser usada como índice do objeto retornado.
+* @param order A direção de ordenação (padrão é 'asc').
+* @param defaultOrder A direção de ordenação padrão.
+* @returns Um objeto mapeado pela chave e ordenado de acordo com os critérios.
+*/
 function orderByWithKey(collection, criteria, object_keyBy, order = "asc", defaultOrder = "asc") {
 	return keyBy(orderBy(collection, criteria, defaultOrder), object_keyBy);
 }
@@ -164,6 +220,13 @@ function sum(collection) {
 }
 //#endregion
 //#region src/Helpers/Iterables/sumBy.ts
+/**
+* Soma os valores de uma propriedade específica em uma coleção de objetos.
+*
+* @param collection A coleção de objetos.
+* @param key A chave que contém o valor numérico a ser somado.
+* @returns A soma total dos valores numéricos da chave especificada.
+*/
 function sumBy(collection, key) {
 	const data = toValue(collection);
 	if (!data || typeof data !== "object") return 0;
@@ -185,6 +248,14 @@ function uniq(array) {
 }
 //#endregion
 //#region src/Helpers/Iterables/valuesInKey.ts
+/**
+* Extrai e retorna um array plano (flat) contendo os valores de uma chave específica de todos os objetos em uma coleção.
+*
+* @param collection A coleção de objetos.
+* @param key A chave a ser extraída de cada objeto.
+* @param default_value O valor padrão a ser usado caso a chave não exista ou seja nula (padrão é false).
+* @returns Um array contendo os valores extraídos.
+*/
 function valuesInKey(collection, key, default_value = false) {
 	const data = toValue(collection);
 	if (!data || typeof data !== "object") return [];
@@ -197,6 +268,13 @@ function valuesInKey(collection, key, default_value = false) {
 }
 //#endregion
 //#region src/Helpers/Iterables/size.ts
+/**
+* Retorna o tamanho (comprimento) de uma coleção, string, objeto, Map ou Set.
+*
+* @param value O valor a ter seu tamanho calculado.
+* @param allow_number Se verdadeiro, retorna o próprio valor numérico caso o tipo seja número (padrão é true).
+* @returns O tamanho do valor especificado.
+*/
 function size(value, allow_number = true) {
 	const data = toValue(value);
 	if (!data || data === "" || data === " ") return 0;
@@ -379,4 +457,4 @@ var Iterables_exports = /* @__PURE__ */ __exportAll({
 //#endregion
 export { countBy as C, filter as S, orderBy as _, findLast as a, filterByNot as b, shuffle as c, valuesInKey as d, uniq as f, orderByWithKey as g, sortBy as h, sortByMulti as i, sample as l, sum as m, last as n, uniqueBy as o, sumBy as p, first as r, chunk as s, Iterables_exports as t, size as u, keyBy as v, filterBy as x, groupBy as y };
 
-//# sourceMappingURL=Iterables-BSMEy1OS.js.map
+//# sourceMappingURL=Iterables-BdjQQ3nU.js.map

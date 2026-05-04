@@ -1,8 +1,14 @@
 import { t as require_dist } from "./dist-NYeC31V0.js";
-import { t as isBlank } from "./isBlank-GzCKGiMl.js";
+import { t as isBlank } from "./isBlank-Bufr2VEO.js";
 import { toValue } from "vue";
 //#region src/Helpers/Strings/masks.ts
 var import_dist = require_dist();
+/**
+* Aplica a máscara de CEP brasileiro em uma string.
+*
+* @param value A string com o CEP.
+* @returns O CEP formatado ou a string original se não for possível.
+*/
 function formatCep(value) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
@@ -10,21 +16,45 @@ function formatCep(value) {
 	if (cep.length === 8) return cep.replace(/^(\d{5})(\d{3})$/, "$1-$2");
 	return String(data);
 }
+/**
+* Aplica a máscara de CPF em uma string.
+*
+* @param value A string com o CPF.
+* @returns O CPF formatado.
+*/
 function formatCpf(value) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
 	return import_dist.maskBr.cpf(data);
 }
+/**
+* Aplica a máscara de CNPJ em uma string.
+*
+* @param value A string com o CNPJ.
+* @returns O CNPJ formatado.
+*/
 function formatCnpj(value) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
 	return import_dist.maskBr.cnpj(data);
 }
+/**
+* Aplica a máscara de CPF ou CNPJ dependendo do tamanho da string.
+*
+* @param value A string com o CPF ou CNPJ.
+* @returns O documento formatado.
+*/
 function formatCpfCnpj(value) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
 	return import_dist.maskBr.cpfcnpj(data);
 }
+/**
+* Aplica a máscara de telefone brasileiro em uma string.
+*
+* @param phone_number O número de telefone.
+* @returns O telefone formatado.
+*/
 function formatPhone(phone_number) {
 	const data = toValue(phone_number);
 	if (!data || isBlank(data)) return "";
@@ -65,4 +95,4 @@ function maskSensitive(value, type = "text") {
 //#endregion
 export { formatPhone as a, formatCpfCnpj as i, formatCnpj as n, maskSensitive as o, formatCpf as r, formatCep as t };
 
-//# sourceMappingURL=masks-Beqdy4He.js.map
+//# sourceMappingURL=masks-BW8QWoFR.js.map

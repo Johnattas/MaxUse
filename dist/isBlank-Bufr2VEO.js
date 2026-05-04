@@ -1,5 +1,12 @@
 import { toValue } from "vue";
 //#region src/Helpers/Types/hasContent.ts
+/**
+* Verifica se um valor possui algum conteúdo, não sendo vazio, nulo, indefinido ou um array/objeto sem chaves.
+*
+* @param value O valor a ser verificado.
+* @param if_zero Define se o número 0 é considerado como tendo conteúdo (padrão é false).
+* @returns Retorna verdadeiro se o valor contiver dados.
+*/
 function hasContent(value, if_zero = false) {
 	const data = toValue(value);
 	if (!data && data !== 0 || String(data) === "null" || String(data) === "NULL" || String(data) === "undefined" || String(data) === "UNDEFINED") return false;
@@ -26,4 +33,4 @@ function isBlank(value, if_zero = false) {
 //#endregion
 export { hasContent as n, isBlank as t };
 
-//# sourceMappingURL=isBlank-GzCKGiMl.js.map
+//# sourceMappingURL=isBlank-Bufr2VEO.js.map

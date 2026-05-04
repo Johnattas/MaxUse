@@ -14,6 +14,13 @@ export type WireOptions = {
     max_loss?: number;
     voltage_drop?: number;
 };
+/**
+ * Calcula a seção nominal de um cabo elétrico com base na corrente, opções de material, isolação, entre outros.
+ *
+ * @param current A corrente elétrica do circuito.
+ * @param options Opções do cálculo, como material, tensão, método de instalação e distância.
+ * @returns Um objeto com a bitola do cabo, a corrente máxima, a queda de tensão e a porcentagem de perda.
+ */
 export declare function wireSize(current: T, options: WireOptions): Promise<{
     wire: number;
     max_current: number;

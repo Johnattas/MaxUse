@@ -45,6 +45,13 @@ function inDateInterval(value, interval) {
 	const end = rawInterval.end ? new Date(rawInterval.end).getTime() : false;
 	return target >= start && (!end || target <= end);
 }
+/**
+* Alias para inDateInterval. Verifica se uma data está dentro de um intervalo.
+*
+* @param value A data a ser verificada.
+* @param interval O intervalo (início e fim).
+* @returns Retorna true se estiver no intervalo.
+*/
 function isInDateInterval(value, interval) {
 	return inDateInterval(value, interval);
 }
@@ -290,4 +297,4 @@ var Dates_exports = /* @__PURE__ */ __exportAll({
 //#endregion
 export { isInDateInterval as _, diffInMonths as a, isWeekend as c, isPast as d, hasPassedDays as f, inDateInterval as g, isSameDay as h, diffInMinutes as i, addTime as l, hasPassedHours as m, diffInDays as n, diffInSeconds as o, hasPassedMinutes as p, diffInHours as r, diffInYears as s, Dates_exports as t, isFuture as u, isDate as v, now as y };
 
-//# sourceMappingURL=Dates-DYTlHN1Y.js.map
+//# sourceMappingURL=Dates-Dofebq8_.js.map

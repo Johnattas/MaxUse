@@ -1,7 +1,7 @@
 import { n as __exportAll } from "./chunk-C-Qwzh9l.js";
 import { t as ulid$1 } from "./browser-D3zs1kBf.js";
-import { t as isBlank } from "./isBlank-GzCKGiMl.js";
-import { a as formatPhone, i as formatCpfCnpj, n as formatCnpj, o as maskSensitive, r as formatCpf, t as formatCep } from "./masks-Beqdy4He.js";
+import { t as isBlank } from "./isBlank-Bufr2VEO.js";
+import { a as formatPhone, i as formatCpfCnpj, n as formatCnpj, o as maskSensitive, r as formatCpf, t as formatCep } from "./masks-BW8QWoFR.js";
 import { toValue } from "vue";
 //#region src/Helpers/Strings/random.ts
 function getUlid() {
@@ -34,6 +34,11 @@ function Random(arg1 = 20, arg2 = "letter lower") {
 	}
 	return result;
 }
+/**
+* Gera um Universally Unique Lexicographically Sortable Identifier (ULID) em letras minúsculas.
+*
+* @returns Retorna o ULID gerado.
+*/
 function ulid() {
 	return getUlid();
 }
@@ -51,26 +56,59 @@ function intervalRandom(min = 0, max = 1e3) {
 }
 //#endregion
 //#region src/Helpers/Strings/filters.ts
+/**
+* Filtra uma string, mantendo apenas letras (e opcionalmente espaços).
+*
+* @param value O valor a ser filtrado.
+* @param space Se verdadeiro, mantém os espaços na string retornada.
+* @returns A string contendo apenas letras.
+*/
 function onlyLetters(value, space = false) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
 	return space ? String(data).replace(/[^a-zA-ZÀ-ÿ\s]/g, "") : String(data).replace(/[^a-zA-ZÀ-ÿ]/g, "");
 }
+/**
+* Filtra uma string, mantendo apenas números (e opcionalmente espaços).
+*
+* @param value O valor a ser filtrado.
+* @param space Se verdadeiro, mantém os espaços na string retornada.
+* @returns A string contendo apenas números.
+*/
 function onlyNumbers(value, space = false) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
 	return space ? String(data).replace(/[^0-9\s]/g, "") : String(data).replace(/[^0-9]/g, "");
 }
+/**
+* Filtra uma string, mantendo apenas símbolos (caracteres não alfanuméricos).
+*
+* @param value O valor a ser filtrado.
+* @returns A string contendo apenas símbolos.
+*/
 function onlySymbols(value) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
 	return String(data).replace(/[^\W_]/g, "");
 }
+/**
+* Filtra uma string, mantendo apenas letras e números (e opcionalmente espaços).
+*
+* @param value O valor a ser filtrado.
+* @param space Se verdadeiro, mantém os espaços na string retornada.
+* @returns A string contendo apenas letras e números.
+*/
 function onlyLettersAndNumbers(value, space = false) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
 	return space ? String(data).replace(/[^a-zA-ZÀ-ÿ0-9\s]/g, "") : String(data).replace(/[^a-zA-ZÀ-ÿ0-9]/g, "");
 }
+/**
+* Remove todos os espaços de uma string.
+*
+* @param value O valor a ser processado.
+* @returns A string sem nenhum espaço.
+*/
 function removeSpaces(value) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
@@ -78,18 +116,36 @@ function removeSpaces(value) {
 }
 //#endregion
 //#region src/Helpers/Strings/cases.ts
+/**
+* Converte uma string para o formato snake_case.
+*
+* @param value A string a ser convertida.
+* @returns A string em formato snake_case.
+*/
 function snakeCase(value) {
 	const data = toValue(value);
 	if (!data || isBlank(data)) return "";
 	const words = String(data).match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g);
 	return words ? words.map((word) => word.toLowerCase()).join("_") : "";
 }
+/**
+* Converte uma string para o formato kebab-case.
+*
+* @param value A string a ser convertida.
+* @returns A string em formato kebab-case.
+*/
 function kebabCase(value) {
 	const data = toValue(value);
 	if (!data || isBlank(data)) return "";
 	const words = String(data).match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g);
 	return words ? words.map((word) => word.toLowerCase()).join("-") : "";
 }
+/**
+* Converte uma string para o formato camelCase.
+*
+* @param value A string a ser convertida.
+* @returns A string em formato camelCase.
+*/
 function camelCase(value) {
 	const data = toValue(value);
 	if (!data || isBlank(data)) return "";
@@ -112,12 +168,25 @@ function capitalize(value) {
 }
 //#endregion
 //#region src/Helpers/Strings/converters.ts
+/**
+* Converte uma string ou número em uma string padronizada, sem acentos, sem caracteres especiais e em letras minúsculas (ideal para busca).
+*
+* @param value O valor a ser normalizado.
+* @returns A string normalizada.
+*/
 function toSearchableString(value) {
 	const data = toValue(value);
 	if (!data || isBlank(data)) return "";
 	return String(data).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
 }
 var normalizeToSearch = toSearchableString;
+/**
+* Converte um valor em um número, com a opção de arredondar para uma quantidade específica de casas decimais.
+*
+* @param value O valor a ser convertido.
+* @param decimals Opcional. A quantidade de casas decimais.
+* @returns O número convertido ou arredondado.
+*/
 function toNumber(value, decimals = null) {
 	const data = toValue(value);
 	if (!data || isBlank(data) || isNaN(Number(data))) return 0;
