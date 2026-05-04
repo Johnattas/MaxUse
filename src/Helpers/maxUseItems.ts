@@ -40,3 +40,9 @@ export const maxUseItems = (): string[] => {
 
     return Array.from(allKeys).sort();
 };
+
+export const maxUseAutoImport = () => {
+    return {
+        'max-use': maxUseItems()
+    };
+};

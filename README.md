@@ -86,33 +86,27 @@ const isWeekendNow = isWeekend(() => new Date())
 | **Format** | Formatadores de exibição | `formatBytes`, `formatCurrency` |
 | **Electrical** | Cálculos de domínio elétrico | `wireSize` |
 
-## 🧩 Auto Import (Opcional)
+## 🧩 Auto Import
 
-A MaxUse é totalmente compatível com `unplugin-auto-import`.
+A MaxUse oferece integração nativa com `unplugin-auto-import`. Com uma única chamada, **todos os helpers e composables** ficam disponíveis globalmente sem precisar de imports manuais.
 
 ```ts
 // vite.config.ts
 import AutoImport from 'unplugin-auto-import/vite'
+import { maxUseAutoImport } from 'max-use'
 
 export default defineConfig({
   plugins: [
     AutoImport({
       imports: [
-        {
-          'max-use': [
-            '_', // Importa o objeto centralizado
-            'vueUse', // Importa o VueUse integral
-            // Ou liste os helpers específicos:
-            'isPast',
-            'deepMerge',
-            'capitalize'
-          ]
-        }
+        maxUseAutoImport(),
       ]
     })
   ]
 })
 ```
+
+> A função `maxUseAutoImport()` gera automaticamente a lista completa de exports da biblioteca, mantendo tudo sempre sincronizado com as atualizações da MaxUse.
 
 ## 🤝 Contribuindo
 

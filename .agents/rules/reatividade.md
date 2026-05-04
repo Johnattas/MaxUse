@@ -27,3 +27,19 @@ Changes not staged for commit:
 no changes added to commit (use "git add" and/or "git commit -a")
 npm error Git working directory not clean.
 npm error A complete log of this run can be found in: /home/johnattas/.npm/_logs/2026-05-04T14_55_39_118Z-debug-0.log"
+
+
+o Autoimport deverá ser:
+
+import AutoImport from 'unplugin-auto-import/vite'
+import { maxUseAutoImport } from 'max-use';
+
+export default defineConfig({
+  plugins: [
+    AutoImport({
+      imports: [
+          maxUseAutoImport(),
+      ]
+    })
+  ]
+})
