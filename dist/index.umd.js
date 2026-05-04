@@ -261,7 +261,7 @@
 	/**
 	* Embaralha os elementos de um array de forma aleatória.
 	* Algoritmo de Fisher-Yates.
-	* 
+	*
 	* @param array O array a ser embaralhado.
 	*/
 	function shuffle(array) {
@@ -276,7 +276,7 @@
 	//#region src/Helpers/Iterables/chunk.ts
 	/**
 	* Divide um array em sub-arrays de um tamanho específico.
-	* 
+	*
 	* @param array O array a ser dividido.
 	* @param size O tamanho de cada pedaço.
 	*/
@@ -286,6 +286,103 @@
 		const result = [];
 		for (let i = 0; i < data.length; i += size) result.push(data.slice(i, i + size));
 		return result;
+	}
+	//#endregion
+	//#region src/Helpers/Iterables/uniqueBy.ts
+	/**
+	* Retorna itens únicos de um array de objetos com base em uma propriedade específica.
+	* Útil para limpar listas de dados vindas de múltiplas fontes ou após junções de arrays.
+	*
+	* @param array O array a ser processado (pode ser um Ref).
+	* @param key A chave usada para identificar a unicidade ou uma função seletora.
+	* @returns Retorna o novo array de valores únicos.
+	*/
+	function uniqueBy(array, key) {
+		const data = (0, vue.unref)(array);
+		if (!Array.isArray(data)) return [];
+		const seen = /* @__PURE__ */ new Set();
+		return data.filter((item) => {
+			const k = typeof key === "function" ? key(item) : item[key];
+			if (seen.has(k)) return false;
+			seen.add(k);
+			return true;
+		});
+	}
+	//#endregion
+	//#region src/Helpers/Iterables/findLast.ts
+	/**
+	* Encontra o último item de uma lista que satisfaça uma condição.
+	*
+	* @param collection A coleção para pesquisar.
+	* @param predicate A função executada por iteração.
+	* @returns Retorna o elemento correspondente encontrado, ou undefined.
+	*/
+	function findLast(collection, predicate) {
+		const data = (0, vue.unref)(collection);
+		if (!data || !Array.isArray(data)) return void 0;
+		for (let i = data.length - 1; i >= 0; i--) if (predicate(data[i], i, data)) return data[i];
+	}
+	//#endregion
+	//#region src/Helpers/Iterables/sortByMulti.ts
+	/**
+	* Ordena um array por múltiplos critérios.
+	*
+	* @param collection A coleção para ordenar.
+	* @param criteria Lista de critérios (string de chave ou função de extração de valor).
+	* @param orders Lista de ordens ('asc' ou 'desc') correspondente aos critérios.
+	* @returns Retorna o novo array ordenado.
+	*/
+	function sortByMulti(collection, criteria, orders = []) {
+		const data = (0, vue.unref)(collection);
+		if (!data || !Array.isArray(data)) return [];
+		return [...data].sort((a, b) => {
+			for (let i = 0; i < criteria.length; i++) {
+				const criterion = criteria[i];
+				const order = orders[i] || "asc";
+				let valA;
+				let valB;
+				if (typeof criterion === "function") {
+					valA = criterion(a);
+					valB = criterion(b);
+				} else {
+					valA = a[criterion];
+					valB = b[criterion];
+				}
+				if (valA !== valB) {
+					if (valA === void 0 || valA === null) return 1;
+					if (valB === void 0 || valB === null) return -1;
+					if (order === "asc") return valA < valB ? -1 : 1;
+					else return valA < valB ? 1 : -1;
+				}
+			}
+			return 0;
+		});
+	}
+	//#endregion
+	//#region src/Helpers/Iterables/first.ts
+	/**
+	* Retorna o primeiro elemento de um array de forma segura.
+	*
+	* @param array O array para obter o elemento.
+	* @returns O primeiro elemento do array ou undefined se o array estiver vazio.
+	*/
+	function first(array) {
+		const data = (0, vue.unref)(array);
+		if (!Array.isArray(data) || data.length === 0) return void 0;
+		return data[0];
+	}
+	//#endregion
+	//#region src/Helpers/Iterables/last.ts
+	/**
+	* Retorna o último elemento de um array de forma segura.
+	*
+	* @param array O array para obter o elemento.
+	* @returns O último elemento do array ou undefined se o array estiver vazio.
+	*/
+	function last(array) {
+		const data = (0, vue.unref)(array);
+		if (!Array.isArray(data) || data.length === 0) return void 0;
+		return data[data.length - 1];
 	}
 	//#endregion
 	//#region src/Helpers/Objects/deepClone.ts
@@ -416,36 +513,18 @@
 		return true;
 	}
 	//#endregion
-	//#region src/Helpers/Objects/manipulations.ts
+	//#region src/Helpers/Types/isObject.ts
 	/**
-	* Cria um novo objeto contendo apenas as chaves que você especificar do objeto original.
-	* 
-	* @param obj O objeto original (pode ser um Ref).
-	* @param keys As chaves a serem mantidas.
+	* Verifica se o valor é classificado como um objeto (objetos, arrays, funções, regexes, etc).
+	* Semelhante ao _.isObject do Lodash.
+	*
+	* @param value O valor a ser verificado.
+	* @returns Retorna true se o valor for um objeto, caso contrário false.
 	*/
-	function pick(obj, keys) {
-		const data = (0, vue.unref)(obj);
-		const result = {};
-		if (!data) return result;
-		keys.forEach((key) => {
-			if (key in data) result[key] = data[key];
-		});
-		return result;
-	}
-	/**
-	* Cria um novo objeto removendo as chaves que você não deseja do objeto original.
-	* 
-	* @param obj O objeto original (pode ser um Ref).
-	* @param keys As chaves a serem removidas.
-	*/
-	function omit(obj, keys) {
-		const data = (0, vue.unref)(obj);
-		const result = { ...data };
-		if (!data) return result;
-		keys.forEach((key) => {
-			if (key in result) delete result[key];
-		});
-		return result;
+	function isObject(value) {
+		const data = (0, vue.unref)(value);
+		const type = typeof data;
+		return data !== null && (type === "object" || type === "function");
 	}
 	//#endregion
 	//#region src/Helpers/Types/isArray.ts
@@ -460,18 +539,150 @@
 		return Array.isArray((0, vue.unref)(value));
 	}
 	//#endregion
-	//#region src/Helpers/Types/isObject.ts
+	//#region src/Helpers/Objects/deepMerge.ts
 	/**
-	* Verifica se o valor é classificado como um objeto (objetos, arrays, funções, regexes, etc).
-	* Semelhante ao _.isObject do Lodash.
+	* Une dois ou mais objetos de forma profunda, mesclando inclusive propriedades aninhadas.
+	* Útil para lidar com configurações padrão que precisam ser sobrescritas parcialmente por configurações do usuário.
 	*
-	* @param value O valor a ser verificado.
-	* @returns Retorna true se o valor for um objeto, caso contrário false.
+	* @param target O objeto alvo que receberá as propriedades.
+	* @param sources Um ou mais objetos de origem para mesclar.
+	* @returns O objeto mesclado (modifica o primeiro objeto e o retorna).
 	*/
-	function isObject(value) {
-		const data = (0, vue.unref)(value);
-		const type = typeof data;
-		return data !== null && (type === "object" || type === "function");
+	function deepMerge(target, ...sources) {
+		if (!sources.length) return target;
+		const source = sources.shift();
+		const dataTarget = (0, vue.unref)(target);
+		const dataSource = (0, vue.unref)(source);
+		if (isObject(dataTarget) && !isArray(dataTarget) && isObject(dataSource) && !isArray(dataSource)) Object.keys(dataSource).forEach((key) => {
+			const targetValue = dataTarget[key];
+			const sourceValue = dataSource[key];
+			if (isObject(sourceValue) && !isArray(sourceValue)) {
+				if (!targetValue || !isObject(targetValue) || isArray(targetValue)) dataTarget[key] = {};
+				deepMerge(dataTarget[key], sourceValue);
+			} else dataTarget[key] = sourceValue;
+		});
+		return deepMerge(target, ...sources);
+	}
+	//#endregion
+	//#region src/Helpers/Objects/renameKeys.ts
+	/**
+	* Altera os nomes das chaves de um objeto usando um mapa de "de/para".
+	* Útil para adaptar dados da API para o seu padrão.
+	*
+	* @param object O objeto original.
+	* @param map O mapa de renomeação { chaveAntiga: chaveNova }.
+	* @returns Um novo objeto com as chaves renomeadas.
+	*/
+	function renameKeys(object, map) {
+		const rawObject = (0, vue.toValue)(object);
+		const rawMap = (0, vue.toValue)(map);
+		const renamedObject = {};
+		Object.keys(rawObject).forEach((key) => {
+			const newKey = rawMap[key] || key;
+			renamedObject[newKey] = rawObject[key];
+		});
+		return renamedObject;
+	}
+	//#endregion
+	//#region src/Helpers/Objects/manipulations.ts
+	/**
+	* Cria um novo objeto contendo apenas as chaves que você especificar do objeto original.
+	*
+	* @param obj O objeto original (pode ser um Ref).
+	* @param keys As chaves a serem mantidas.
+	*/
+	function pick(obj, keys) {
+		const data = (0, vue.unref)(obj);
+		const result = {};
+		if (!data) return result;
+		keys.forEach((key) => {
+			if (key in data) result[key] = data[key];
+		});
+		return result;
+	}
+	/**
+	* Cria um novo objeto removendo as chaves que você não deseja do objeto original.
+	*
+	* @param obj O objeto original (pode ser um Ref).
+	* @param keys As chaves a serem removidas.
+	*/
+	function omit(obj, keys) {
+		const data = (0, vue.unref)(obj);
+		const result = { ...data };
+		if (!data) return result;
+		keys.forEach((key) => {
+			if (key in result) delete result[key];
+		});
+		return result;
+	}
+	//#endregion
+	//#region src/Helpers/Objects/mapValues.ts
+	/**
+	* Cria um novo objeto transformando apenas os valores, mas mantendo as chaves originais.
+	*
+	* @param obj O objeto original.
+	* @param fn A função de transformação que recebe (valor, chave, objeto).
+	* @returns Um novo objeto com os valores transformados.
+	*/
+	function mapValues(obj, fn) {
+		const result = {};
+		Object.keys(obj).forEach((key) => {
+			const k = key;
+			result[k] = fn(obj[k], k, obj);
+		});
+		return result;
+	}
+	//#endregion
+	//#region src/Helpers/Objects/set.ts
+	/**
+	* Define o valor em um caminho específico de um objeto.
+	* Se o caminho não existir, ele será criado.
+	*
+	* @param object O objeto a ser modificado.
+	* @param path O caminho da propriedade a ser definida (string ou array).
+	* @param value O valor a ser definido.
+	* @returns Retorna o objeto modificado.
+	*/
+	function set(object, path, value) {
+		if (object === null || object === void 0) return object;
+		const pathArray = Array.isArray(path) ? path : path.replace(/\[(\w+)\]/g, ".$1").replace(/^\./, "").split(".");
+		let current = (0, vue.isRef)(object) ? object.value : object;
+		const length = pathArray.length;
+		for (let i = 0; i < length; i++) {
+			const key = pathArray[i];
+			if (i === length - 1) if ((0, vue.isRef)(current)) current.value[key] = value;
+			else current[key] = value;
+			else {
+				if ((0, vue.isRef)(current)) current = current.value;
+				if (current[key] === void 0 || current[key] === null || typeof current[key] !== "object") current[key] = {};
+				current = current[key];
+			}
+		}
+		return object;
+	}
+	//#endregion
+	//#region src/Helpers/Objects/diff.ts
+	/**
+	* Compara dois objetos e retorna um novo objeto contendo apenas as propriedades que foram alteradas.
+	* Útil para otimização de performance ao enviar apenas o que mudou para o backend (PATCH requests).
+	*
+	* @param oldObj O objeto original (estado anterior).
+	* @param newObj O objeto atualizado (estado novo).
+	* @param alwaysKeep Lista de chaves que devem ser obrigatoriamente mantidas no resultado, mesmo que não tenham mudado.
+	*/
+	function diff(oldObj, newObj, alwaysKeep = []) {
+		const original = (0, vue.toValue)(oldObj) || {};
+		const updated = (0, vue.toValue)(newObj) || {};
+		const result = {};
+		alwaysKeep.forEach((key) => {
+			if (key in updated) result[key] = updated[key];
+		});
+		Object.keys(updated).forEach((key) => {
+			const val1 = original[key];
+			const val2 = updated[key];
+			if (!isEqual(val1, val2)) result[key] = val2;
+		});
+		return result;
 	}
 	//#endregion
 	//#region src/Helpers/Types/hasContent.ts
@@ -645,6 +856,23 @@
 		return Date.now() - date.getTime() > timeInMs;
 	}
 	//#endregion
+	//#region src/Helpers/Dates/isWeekend.ts
+	/**
+	* Retorna true se a data informada cair em um sábado ou domingo.
+	* Utilidade: Regras de negócio para cálculo de prazos, agendamentos e bloqueios de interface em dias não úteis.
+	*
+	* @param dateValue A data a ser verificada.
+	* @returns Retorna true se a data cair em um sábado ou domingo.
+	*/
+	function isWeekend(dateValue) {
+		const rawValue = (0, vue.toValue)(dateValue);
+		if (!rawValue) return false;
+		const date = new Date(rawValue);
+		if (isNaN(date.getTime())) return false;
+		const day = date.getDay();
+		return day === 0 || day === 6;
+	}
+	//#endregion
 	//#region src/Helpers/Dates/differences.ts
 	function parseDate(value) {
 		const data = (0, vue.toValue)(value);
@@ -707,6 +935,8 @@
 		countBy: () => countBy,
 		dateNow: () => now,
 		deepClone: () => deepClone,
+		deepMerge: () => deepMerge,
+		diff: () => diff,
 		diffInDays: () => diffInDays,
 		diffInHours: () => diffInHours,
 		diffInMinutes: () => diffInMinutes,
@@ -716,24 +946,33 @@
 		filter: () => filter,
 		filterBy: () => filterBy,
 		filterByNot: () => filterByNot,
+		findLast: () => findLast,
+		first: () => first,
 		get: () => get,
 		groupBy: () => groupBy,
 		isArray: () => isArray,
 		isEqual: () => isEqual,
 		isObject: () => isObject,
+		isWeekend: () => isWeekend,
 		keyBy: () => keyBy,
+		last: () => last,
+		mapValues: () => mapValues,
 		now: () => now,
 		omit: () => omit,
 		orderBy: () => orderBy,
 		orderByWithKey: () => orderByWithKey,
 		pick: () => pick,
+		renameKeys: () => renameKeys,
 		sample: () => sample,
+		set: () => set,
 		shuffle: () => shuffle,
 		size: () => size,
 		sortBy: () => sortBy,
+		sortByMulti: () => sortByMulti,
 		sum: () => sum,
 		sumBy: () => sumBy,
 		uniq: () => uniq,
+		uniqueBy: () => uniqueBy,
 		unset: () => unset,
 		valuesInKey: () => valuesInKey
 	});
@@ -5256,8 +5495,8 @@
 		}
 	}));
 	//#endregion
-	//#region node_modules/js-brasil/dist/index.js
-	var require_dist = /* @__PURE__ */ __commonJSMin(((exports) => {
+	//#region src/Helpers/Validations/documents.ts
+	var import_dist = (/* @__PURE__ */ __commonJSMin(((exports) => {
 		Object.defineProperty(exports, "__esModule", { value: true });
 		exports.maskBr = exports.utilsBr = exports.createNumberMaskBr = exports.createCurrencyMask = void 0;
 		var utils_1 = require_utils();
@@ -5301,42 +5540,43 @@
 			ESTADOS: estados_1.ESTADOS
 		};
 		exports.maskBr = mask.maskBr;
-	}));
-	//#endregion
-	//#region src/Helpers/validations.ts
-	var validations_exports = /* @__PURE__ */ __exportAll({
-		canIterate: () => canIterate,
-		hasContent: () => hasContent,
-		hasPassedDays: () => hasPassedDays,
-		hasPassedHours: () => hasPassedHours,
-		hasPassedMinutes: () => hasPassedMinutes,
-		inDateInterval: () => inDateInterval,
-		isBlank: () => isBlank,
-		isCnpj: () => isCnpj,
-		isCpf: () => isCpf,
-		isCpfCnpj: () => isCpfCnpj,
-		isDate: () => isDate,
-		isInDateInterval: () => isInDateInterval,
-		isNumber: () => isNumber,
-		isNumeric: () => isNumeric,
-		isSameDay: () => isSameDay,
-		isValid: () => isValid,
-		numeric: () => numeric,
-		validate: () => validate
-	});
-	var import_dist = require_dist();
+	})))();
+	/**
+	* Valida se uma string é um CPF válido.
+	*/
 	function isCpf(value) {
 		const data = (0, vue.toValue)(value);
 		return import_dist.validateBr.cpf(data);
 	}
+	/**
+	* Valida se uma string é um CNPJ válido.
+	*/
 	function isCnpj(value) {
 		const data = (0, vue.toValue)(value);
 		return import_dist.validateBr.cnpj(data);
 	}
+	/**
+	* Valida se uma string é um CPF ou CNPJ válido.
+	*/
 	function isCpfCnpj(value) {
 		const data = (0, vue.toValue)(value);
 		return import_dist.validateBr.cpfcnpj(data);
 	}
+	//#endregion
+	//#region src/Helpers/Validations/isEmail.ts
+	/**
+	* Valida se uma string é um endereço de e-mail com formato válido.
+	*
+	* @param value O valor a ser validado (string, Ref ou Getter).
+	* @returns True se for um e-mail válido, false caso contrário.
+	*/
+	function isEmail(value) {
+		const data = (0, vue.toValue)(value);
+		if (!data || typeof data !== "string") return false;
+		return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(data);
+	}
+	//#endregion
+	//#region src/Helpers/Validations/index.ts
 	var validate = {
 		number: isNumber,
 		isNumber,
@@ -5348,6 +5588,8 @@
 		cnpj: isCnpj,
 		isCpfCnpj,
 		cpfcnpj: isCpfCnpj,
+		isEmail,
+		email: isEmail,
 		isDate,
 		date: isDate,
 		isIterable: canIterate,
@@ -5364,6 +5606,29 @@
 		passedDays: hasPassedDays
 	};
 	var isValid = validate;
+	//#endregion
+	//#region src/Helpers/validations.ts
+	var validations_exports = /* @__PURE__ */ __exportAll({
+		canIterate: () => canIterate,
+		hasContent: () => hasContent,
+		hasPassedDays: () => hasPassedDays,
+		hasPassedHours: () => hasPassedHours,
+		hasPassedMinutes: () => hasPassedMinutes,
+		inDateInterval: () => inDateInterval,
+		isBlank: () => isBlank,
+		isCnpj: () => isCnpj,
+		isCpf: () => isCpf,
+		isCpfCnpj: () => isCpfCnpj,
+		isDate: () => isDate,
+		isEmail: () => isEmail,
+		isInDateInterval: () => isInDateInterval,
+		isNumber: () => isNumber,
+		isNumeric: () => isNumeric,
+		isSameDay: () => isSameDay,
+		isValid: () => isValid,
+		numeric: () => numeric,
+		validate: () => validate
+	});
 	//#endregion
 	//#region src/Helpers/Strings/masks.ts
 	function formatCep(value) {
@@ -5398,6 +5663,32 @@
 		if (only_numbers.length === 12) return only_numbers.replace(/^55(\d{2})(\d{4})(\d{4})$/, "($1) $2-$3");
 		if (only_numbers.length === 13) return only_numbers.replace(/^55(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
 		return String(data);
+	}
+	/**
+	* Ofusca parte de uma informação sensível.
+	* Privacidade (LGPD) ao exibir dados do usuário em telas de confirmação ou perfis públicos.
+	*
+	* @param value A informação a ser ofuscada.
+	* @param type O tipo de informação ('email', 'card' ou 'text').
+	*/
+	function maskSensitive(value, type = "text") {
+		const data = (0, vue.toValue)(value);
+		if (isBlank(data)) return "";
+		const str = String(data).trim();
+		if (type === "email") {
+			const [user, domain] = str.split("@");
+			if (!domain) return str;
+			const mask = (s) => {
+				if (s.length <= 3) return s.charAt(0) + "***";
+				return s.slice(0, 3) + "***";
+			};
+			const [domainName, domainSuffix] = domain.split(".");
+			if (!domainSuffix) return `${mask(user)}@${mask(domain)}`;
+			return `${mask(user)}@${mask(domainName)}.${domainSuffix}`;
+		}
+		if (type === "card") return `**** **** **** ${str.replace(/\D/g, "").slice(-4)}`;
+		if (str.length <= 4) return "****";
+		return str.slice(0, 2) + "***" + str.slice(-2);
 	}
 	//#endregion
 	//#region src/Helpers/Strings/filters.ts
@@ -5451,7 +5742,7 @@
 	}
 	/**
 	* Garante que apenas a primeira letra da string seja maiúscula e o restante minúscula.
-	* 
+	*
 	* @param value A string a ser formatada.
 	*/
 	function capitalize(value) {
@@ -5480,7 +5771,7 @@
 	}
 	/**
 	* Formata um número para o padrão de moeda brasileira (R$).
-	* 
+	*
 	* @param value O valor a ser formatado.
 	*/
 	function formatCurrency(value) {
@@ -5492,6 +5783,32 @@
 			style: "currency",
 			currency: "BRL"
 		}).format(number);
+	}
+	/**
+	* Converte um número bruto de bytes em uma string legível.
+	*
+	* @param bytes A quantidade de bytes.
+	* @param decimals O número de casas decimais.
+	*/
+	function formatBytes(bytes, decimals = 2) {
+		const rawBytes = Number((0, vue.toValue)(bytes));
+		const rawDecimals = (0, vue.toValue)(decimals);
+		if (isNaN(rawBytes) || rawBytes === 0) return "0 Bytes";
+		const k = 1024;
+		const dm = rawDecimals < 0 ? 0 : rawDecimals;
+		const sizes = [
+			"Bytes",
+			"KB",
+			"MB",
+			"GB",
+			"TB",
+			"PB",
+			"EB",
+			"ZB",
+			"YB"
+		];
+		const i = Math.floor(Math.log(rawBytes) / Math.log(k));
+		return `${parseFloat((rawBytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 	}
 	//#endregion
 	//#region node_modules/ulid/dist/browser/index.js
@@ -5634,7 +5951,7 @@
 	//#region src/Helpers/Strings/manipulations.ts
 	/**
 	* Encurta uma string até um limite de caracteres, adicionando reticências (...) ao final se necessário.
-	* 
+	*
 	* @param value A string a ser encurtada.
 	* @param limit O limite máximo de caracteres.
 	* @param suffix O sufixo a ser adicionado (padrão: '...').
@@ -5649,13 +5966,53 @@
 	/**
 	* Converte uma string para um formato amigável para URLs (slug).
 	* Remove acentos, caracteres especiais e substitui espaços por hífens.
-	* 
+	*
 	* @param value A string a ser convertida.
 	*/
 	function slugify(value) {
 		const data = (0, vue.toValue)(value);
 		if (isBlank(data)) return "";
 		return String(data).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "").replace(/[\s_]+/g, "-").replace(/-+/g, "-");
+	}
+	/**
+	* Remove todas as tags HTML de uma string, mantendo apenas o texto puro.
+	* Útil para exibir prévias de conteúdos vindos de editores de texto (Rich Text) em notificações ou listas simplificadas.
+	*
+	* @param value A string contendo HTML.
+	*/
+	function stripHtml(value) {
+		const data = (0, vue.toValue)(value);
+		if (isBlank(data)) return "";
+		return String(data).replace(/<[^>]*>?/gm, "").replace(/&nbsp;/g, " ").trim();
+	}
+	/**
+	* Extrai as iniciais de um nome completo (ex: "João Victor Silva" ➔ "JS").
+	* Perfeito para gerar placeholders de avatares quando o usuário não tem uma foto de perfil.
+	*
+	* @param value O nome completo.
+	* @param limit O número máximo de iniciais (padrão: 2).
+	*/
+	function initials(value, limit = 2) {
+		const data = (0, vue.toValue)(value);
+		if (isBlank(data)) return "";
+		const names = String(data).trim().split(/\s+/);
+		if (names.length === 0) return "";
+		if (names.length === 1) return names[0].charAt(0).toUpperCase();
+		return names.map((name) => name.charAt(0).toUpperCase()).filter((char) => char.length > 0).slice(0, limit).join("");
+	}
+	/**
+	* Calcula o tempo estimado de leitura de um texto.
+	* Ótimo para blogs ou áreas de documentação, dando ao usuário uma ideia de quanto tempo ele levará para ler um conteúdo.
+	*
+	* @param value O texto a ser analisado (pode conter HTML).
+	* @param wordsPerMinute A média de palavras lidas por minuto (padrão: 200).
+	*/
+	function readingTime(value, wordsPerMinute = 200) {
+		const data = (0, vue.toValue)(value);
+		if (isBlank(data)) return "0 min de leitura";
+		const words = stripHtml(data).trim().split(/\s+/).filter((word) => word.length > 0).length;
+		if (words === 0) return "0 min de leitura";
+		return `${Math.ceil(words / wordsPerMinute)} min de leitura`;
 	}
 	//#endregion
 	//#region src/Helpers/Strings/index.ts
@@ -5667,7 +6024,12 @@
 		interval: intervalRandom,
 		truncate,
 		slugify,
-		capitalize
+		capitalize,
+		noHtml: stripHtml,
+		initials,
+		readingTime,
+		maskSensitive,
+		sensitive: maskSensitive
 	};
 	var Convert = {
 		toNumber,
@@ -5680,6 +6042,7 @@
 		cnpj: formatCnpj,
 		cpfCnpj: formatCpfCnpj,
 		phone: formatPhone,
+		sensitive: maskSensitive,
 		onlyLetters,
 		onlyNumbers,
 		onlySymbols,
@@ -5694,8 +6057,12 @@
 		normalizeToSearch,
 		toNumber,
 		currency: formatCurrency,
+		bytes: formatBytes,
 		truncate,
-		slugify
+		slugify,
+		noHtml: stripHtml,
+		initials,
+		readingTime
 	};
 	var StrFilter = {
 		onlyLetters,
@@ -5712,6 +6079,7 @@
 		StrFilter: () => StrFilter,
 		camelCase: () => camelCase,
 		capitalize: () => capitalize,
+		formatBytes: () => formatBytes,
 		formatCep: () => formatCep,
 		formatCnpj: () => formatCnpj,
 		formatCpf: () => formatCpf,
@@ -5719,6 +6087,7 @@
 		formatCurrency: () => formatCurrency,
 		formatPhone: () => formatPhone,
 		kebabCase: () => kebabCase,
+		maskSensitive: () => maskSensitive,
 		normalizeToSearch: () => normalizeToSearch,
 		onlyLetters: () => onlyLetters,
 		onlyLettersAndNumbers: () => onlyLettersAndNumbers,
@@ -5738,10 +6107,13 @@
 		Str: () => Str,
 		camelCase: () => camelCase,
 		capitalize: () => capitalize,
+		initials: () => initials,
 		intervalRandom: () => intervalRandom,
 		kebabCase: () => kebabCase,
+		readingTime: () => readingTime,
 		slugify: () => slugify,
 		snakeCase: () => snakeCase,
+		stripHtml: () => stripHtml,
 		truncate: () => truncate,
 		ulid: () => ulid
 	});
@@ -12625,7 +12997,7 @@
 	function useArrayFindIndex$1(list, fn) {
 		return (0, vue.computed)(() => (0, vue.toValue)(list).findIndex((element, index, array) => fn((0, vue.toValue)(element), index, array)));
 	}
-	function findLast(arr, cb) {
+	function findLast$1(arr, cb) {
 		let index = arr.length;
 		while (index-- > 0) if (cb(arr[index], index, arr)) return arr[index];
 	}
@@ -12641,7 +13013,7 @@
 	* @__NO_SIDE_EFFECTS__
 	*/
 	function useArrayFindLast$1(list, fn) {
-		return (0, vue.computed)(() => (0, vue.toValue)(!Array.prototype.findLast ? findLast((0, vue.toValue)(list), (element, index, array) => fn((0, vue.toValue)(element), index, array)) : (0, vue.toValue)(list).findLast((element, index, array) => fn((0, vue.toValue)(element), index, array))));
+		return (0, vue.computed)(() => (0, vue.toValue)(!Array.prototype.findLast ? findLast$1((0, vue.toValue)(list), (element, index, array) => fn((0, vue.toValue)(element), index, array)) : (0, vue.toValue)(list).findLast((element, index, array) => fn((0, vue.toValue)(element), index, array))));
 	}
 	function isArrayIncludesOptions(obj) {
 		return isObject$1(obj) && containsProp$1(obj, "formIndex", "comparator");
@@ -21769,6 +22141,82 @@
 		useTimeAgo: () => useTimeAgo
 	});
 	//#endregion
+	//#region src/Helpers/Math/average.ts
+	/**
+	* Calcula a média aritmética de um array de números.
+	*
+	* @param numbers - Array de números.
+	* @returns A média aritmética.
+	*/
+	function average(numbers) {
+		if (numbers.length === 0) return 0;
+		return numbers.reduce((acc, val) => acc + val, 0) / numbers.length;
+	}
+	//#endregion
+	//#region src/Helpers/Math/roundUp.ts
+	/**
+	* Arredonda um número para cima com uma quantidade específica de casas decimais.
+	*
+	* @param value - O número a ser arredondado.
+	* @param decimals - O número de casas decimais (padrão 0).
+	* @returns O número arredondado para cima.
+	*/
+	function roundUp(value, decimals = 0) {
+		const factor = Math.pow(10, decimals);
+		return Math.ceil(value * factor) / factor;
+	}
+	//#endregion
+	//#region src/Helpers/Math/roundDown.ts
+	/**
+	* Arredonda um número para baixo com uma quantidade específica de casas decimais.
+	*
+	* @param value - O número a ser arredondado.
+	* @param decimals - O número de casas decimais (padrão 0).
+	* @returns O número arredondado para baixo.
+	*/
+	function roundDown(value, decimals = 0) {
+		const factor = Math.pow(10, decimals);
+		return Math.floor(value * factor) / factor;
+	}
+	//#endregion
+	//#region src/Helpers/Math/median.ts
+	/**
+	* Calcula a mediana de uma lista de números.
+	* A mediana é excelente para estatísticas onde existem valores discrepantes (outliers)
+	* que distorceriam a média aritmética.
+	*
+	* @param numbers - Array de números.
+	* @returns A mediana dos números.
+	*/
+	function median(numbers) {
+		if (numbers.length === 0) return 0;
+		const sorted = [...numbers].sort((a, b) => a - b);
+		const middle = Math.floor(sorted.length / 2);
+		if (sorted.length % 2 === 0) return (sorted[middle - 1] + sorted[middle]) / 2;
+		return sorted[middle];
+	}
+	//#endregion
+	//#region src/Helpers/math.ts
+	var math_exports = /* @__PURE__ */ __exportAll({
+		average: () => average,
+		median: () => median,
+		roundDown: () => roundDown,
+		roundUp: () => roundUp
+	});
+	//#endregion
+	//#region src/Helpers/Browser/isTouchDevice.ts
+	/**
+	* Detecta se o dispositivo atual possui suporte a interações via toque (touch).
+	*
+	* @returns true se o dispositivo suportar toque, caso contrário false.
+	*/
+	function isTouchDevice() {
+		return "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+	}
+	//#endregion
+	//#region src/Helpers/browser.ts
+	var browser_exports = /* @__PURE__ */ __exportAll({ isTouchDevice: () => isTouchDevice });
+	//#endregion
 	//#region src/Helpers/vueUse.ts
 	var vueUse_exports = /* @__PURE__ */ __exportAll({
 		assert: () => assert,
@@ -21840,7 +22288,6 @@
 		refManualReset: () => refManualReset,
 		refThrottled: () => refThrottled,
 		refWithControl: () => refWithControl,
-		set: () => set,
 		setSSRHandler: () => setSSRHandler,
 		syncRef: () => syncRef,
 		syncRefs: () => syncRefs,
@@ -22095,7 +22542,6 @@
 	var refManualReset = refManualReset$1;
 	var refThrottled = refThrottled$1;
 	var refWithControl = refWithControl$1;
-	var set = set$2;
 	var setSSRHandler = setSSRHandler$1;
 	var syncRef = syncRef$1;
 	var syncRefs = syncRefs$1;
@@ -22290,6 +22736,7 @@
 		"apiGetRoute",
 		"apiUploadRoute",
 		"assert",
+		"average",
 		"bypassFilter",
 		"camelCase",
 		"camelize",
@@ -22318,6 +22765,8 @@
 		"dateNow",
 		"debounceFilter",
 		"deepClone",
+		"deepMerge",
+		"diff",
 		"diffInDays",
 		"diffInHours",
 		"diffInMinutes",
@@ -22330,6 +22779,9 @@
 		"filter",
 		"filterBy",
 		"filterByNot",
+		"findLast",
+		"first",
+		"formatBytes",
 		"formatCep",
 		"formatCnpj",
 		"formatCpf",
@@ -22353,6 +22805,7 @@
 		"identity",
 		"inDateInterval",
 		"increaseWithUnit",
+		"initials",
 		"injectLocal",
 		"intervalRandom",
 		"invoke",
@@ -22364,19 +22817,26 @@
 		"isDate",
 		"isDef",
 		"isDefined",
+		"isEmail",
 		"isEqual",
 		"isInDateInterval",
 		"isNumber",
 		"isNumeric",
 		"isObject",
 		"isSameDay",
+		"isTouchDevice",
 		"isValid",
+		"isWeekend",
 		"kebabCase",
 		"keyBy",
+		"last",
 		"makeDestructurable",
 		"mapGamepadToXbox360Controller",
+		"mapValues",
+		"maskSensitive",
 		"maxUse",
 		"maxUseItems",
+		"median",
 		"noop",
 		"normalizeDate",
 		"normalizeToSearch",
@@ -22413,6 +22873,7 @@
 		"reactiveComputed",
 		"reactiveOmit",
 		"reactivePick",
+		"readingTime",
 		"refAutoReset",
 		"refDebounced",
 		"refDefault",
@@ -22420,6 +22881,9 @@
 		"refThrottled",
 		"refWithControl",
 		"removeSpaces",
+		"renameKeys",
+		"roundDown",
+		"roundUp",
 		"sample",
 		"set",
 		"setSSRHandler",
@@ -22428,6 +22892,8 @@
 		"slugify",
 		"snakeCase",
 		"sortBy",
+		"sortByMulti",
+		"stripHtml",
 		"sum",
 		"sumBy",
 		"syncRef",
@@ -22447,6 +22913,7 @@
 		"tryOnUnmounted",
 		"ulid",
 		"uniq",
+		"uniqueBy",
 		"unrefElement",
 		"unset",
 		"until",
@@ -22639,6 +23106,8 @@
 		...format_exports,
 		...str_exports,
 		...electrical_exports,
+		...math_exports,
+		...browser_exports,
 		...Routes_exports,
 		...Composables_exports,
 		vueuse: vueUse_exports
@@ -22654,6 +23123,7 @@
 	exports.apiGetRoute = apiGetRoute;
 	exports.apiUploadRoute = apiUploadRoute;
 	exports.assert = assert;
+	exports.average = average;
 	exports.bypassFilter = bypassFilter;
 	exports.camelCase = camelCase;
 	exports.camelize = camelize;
@@ -22682,6 +23152,8 @@
 	exports.dateNow = now;
 	exports.debounceFilter = debounceFilter;
 	exports.deepClone = deepClone;
+	exports.deepMerge = deepMerge;
+	exports.diff = diff;
 	exports.diffInDays = diffInDays;
 	exports.diffInHours = diffInHours;
 	exports.diffInMinutes = diffInMinutes;
@@ -22694,6 +23166,9 @@
 	exports.filter = filter;
 	exports.filterBy = filterBy;
 	exports.filterByNot = filterByNot;
+	exports.findLast = findLast;
+	exports.first = first;
+	exports.formatBytes = formatBytes;
 	exports.formatCep = formatCep;
 	exports.formatCnpj = formatCnpj;
 	exports.formatCpf = formatCpf;
@@ -22717,6 +23192,7 @@
 	exports.identity = identity;
 	exports.inDateInterval = inDateInterval;
 	exports.increaseWithUnit = increaseWithUnit;
+	exports.initials = initials;
 	exports.injectLocal = injectLocal;
 	exports.intervalRandom = intervalRandom;
 	exports.invoke = invoke;
@@ -22728,19 +23204,26 @@
 	exports.isDate = isDate;
 	exports.isDef = isDef;
 	exports.isDefined = isDefined;
+	exports.isEmail = isEmail;
 	exports.isEqual = isEqual;
 	exports.isInDateInterval = isInDateInterval;
 	exports.isNumber = isNumber;
 	exports.isNumeric = isNumeric;
 	exports.isObject = isObject;
 	exports.isSameDay = isSameDay;
+	exports.isTouchDevice = isTouchDevice;
 	exports.isValid = isValid;
+	exports.isWeekend = isWeekend;
 	exports.kebabCase = kebabCase;
 	exports.keyBy = keyBy;
+	exports.last = last;
 	exports.makeDestructurable = makeDestructurable;
 	exports.mapGamepadToXbox360Controller = mapGamepadToXbox360Controller;
+	exports.mapValues = mapValues;
+	exports.maskSensitive = maskSensitive;
 	exports.maxUse = maxUse;
 	exports.maxUseItems = maxUseItems;
+	exports.median = median;
 	exports.noop = noop;
 	exports.normalizeDate = normalizeDate;
 	exports.normalizeToSearch = normalizeToSearch;
@@ -22777,6 +23260,7 @@
 	exports.reactiveComputed = reactiveComputed;
 	exports.reactiveOmit = reactiveOmit;
 	exports.reactivePick = reactivePick;
+	exports.readingTime = readingTime;
 	exports.refAutoReset = refAutoReset;
 	exports.refDebounced = refDebounced;
 	exports.refDefault = refDefault;
@@ -22784,6 +23268,9 @@
 	exports.refThrottled = refThrottled;
 	exports.refWithControl = refWithControl;
 	exports.removeSpaces = removeSpaces;
+	exports.renameKeys = renameKeys;
+	exports.roundDown = roundDown;
+	exports.roundUp = roundUp;
 	exports.sample = sample;
 	exports.set = set;
 	exports.setSSRHandler = setSSRHandler;
@@ -22792,6 +23279,8 @@
 	exports.slugify = slugify;
 	exports.snakeCase = snakeCase;
 	exports.sortBy = sortBy;
+	exports.sortByMulti = sortByMulti;
+	exports.stripHtml = stripHtml;
 	exports.sum = sum;
 	exports.sumBy = sumBy;
 	exports.syncRef = syncRef;
@@ -22811,6 +23300,7 @@
 	exports.tryOnUnmounted = tryOnUnmounted;
 	exports.ulid = ulid;
 	exports.uniq = uniq;
+	exports.uniqueBy = uniqueBy;
 	exports.unrefElement = unrefElement;
 	exports.unset = unset;
 	exports.until = until;

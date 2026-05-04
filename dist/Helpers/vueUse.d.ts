@@ -69,7 +69,6 @@ export declare const refDefault: typeof vueUseCore.refDefault;
 export declare const refManualReset: typeof vueUseCore.refManualReset;
 export declare const refThrottled: typeof vueUseCore.refThrottled;
 export declare const refWithControl: typeof vueUseCore.refWithControl;
-export declare const set: typeof vueUseCore.set;
 export declare const setSSRHandler: typeof vueUseCore.setSSRHandler;
 export declare const syncRef: typeof vueUseCore.syncRef;
 export declare const syncRefs: typeof vueUseCore.syncRefs;

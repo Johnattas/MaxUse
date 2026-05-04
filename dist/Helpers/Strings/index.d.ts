@@ -1,15 +1,16 @@
 import { Random, ulid, intervalRandom } from './random';
-import { formatCep, formatCpf, formatCnpj, formatCpfCnpj, formatPhone } from './masks';
+import { formatCep, formatCpf, formatCnpj, formatCpfCnpj, formatPhone, maskSensitive } from './masks';
 import { onlyLetters, onlyNumbers, onlySymbols, onlyLettersAndNumbers, removeSpaces } from './filters';
 import { snakeCase, kebabCase, camelCase, capitalize } from './cases';
-import { toSearchableString, toNumber, formatCurrency } from './converters';
-import { truncate, slugify } from './manipulations';
+import { toSearchableString, toNumber, formatCurrency, formatBytes } from './converters';
+import { truncate, slugify, stripHtml, initials, readingTime } from './manipulations';
 export * from './random';
 export * from './masks';
 export * from './filters';
 export * from './cases';
 export * from './converters';
 export * from './manipulations';
+export { stripHtml as noHtml };
 export declare const Str: {
     Random: typeof Random;
     code: typeof Random;
@@ -19,6 +20,11 @@ export declare const Str: {
     truncate: typeof truncate;
     slugify: typeof slugify;
     capitalize: typeof capitalize;
+    noHtml: typeof stripHtml;
+    initials: typeof initials;
+    readingTime: typeof readingTime;
+    maskSensitive: typeof maskSensitive;
+    sensitive: typeof maskSensitive;
 };
 export declare const Convert: {
     toNumber: typeof toNumber;
@@ -31,6 +37,7 @@ export declare const Format: {
     cnpj: typeof formatCnpj;
     cpfCnpj: typeof formatCpfCnpj;
     phone: typeof formatPhone;
+    sensitive: typeof maskSensitive;
     onlyLetters: typeof onlyLetters;
     onlyNumbers: typeof onlyNumbers;
     onlySymbols: typeof onlySymbols;
@@ -45,8 +52,12 @@ export declare const Format: {
     normalizeToSearch: typeof toSearchableString;
     toNumber: typeof toNumber;
     currency: typeof formatCurrency;
+    bytes: typeof formatBytes;
     truncate: typeof truncate;
     slugify: typeof slugify;
+    noHtml: typeof stripHtml;
+    initials: typeof initials;
+    readingTime: typeof readingTime;
 };
 export declare const StrFilter: {
     onlyLetters: typeof onlyLetters;

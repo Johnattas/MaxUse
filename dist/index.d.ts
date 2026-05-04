@@ -3,6 +3,8 @@ import * as validations from './Helpers/validations';
 import * as format from './Helpers/format';
 import * as str from './Helpers/str';
 import * as composables from './Composables';
+import * as math from './Helpers/math';
+import * as browser from './Helpers/browser';
 import * as vueUseCore from './Helpers/vueUse';
 export * from './Composables';
 export * from './Routes';
@@ -11,6 +13,8 @@ export * from './Helpers/validations';
 export * from './Helpers/format';
 export * from './Helpers/str';
 export * from './Helpers/electrical';
+export * from './Helpers/math';
+export * from './Helpers/browser';
 export * from './Helpers/vueUse';
 export { maxUseItems } from './Helpers/maxUseItems';
 export declare const maxUse: {
@@ -23,6 +27,11 @@ export declare const maxUse: {
     apiGetRoute(RouteName: string | null, data?: any, options?: any): Promise<any>;
     apiDeleteRoute(RouteName: string | null, data?: any | null, options?: any): Promise<any>;
     apiUploadRoute(RouteName: string, files?: any, data?: any, options?: null): Promise<any>;
+    isTouchDevice: typeof browser.isTouchDevice;
+    average: typeof math.average;
+    roundUp: typeof math.roundUp;
+    roundDown: typeof math.roundDown;
+    median: typeof math.median;
     electrical: {
         wireSize: (current: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null), options: {
             material?: "copper" | "aluminum" | "cobre" | "aluminio" | "alumínio" | "cu" | "al";
@@ -66,6 +75,11 @@ export declare const maxUse: {
         truncate: typeof str.truncate;
         slugify: typeof str.slugify;
         capitalize: typeof format.capitalize;
+        noHtml: typeof str.stripHtml;
+        initials: typeof str.initials;
+        readingTime: typeof str.readingTime;
+        maskSensitive: typeof format.maskSensitive;
+        sensitive: typeof format.maskSensitive;
     };
     Format: {
         cep: typeof format.formatCep;
@@ -73,6 +87,7 @@ export declare const maxUse: {
         cnpj: typeof format.formatCnpj;
         cpfCnpj: typeof format.formatCpfCnpj;
         phone: typeof format.formatPhone;
+        sensitive: typeof format.maskSensitive;
         onlyLetters: typeof format.onlyLetters;
         onlyNumbers: typeof format.onlyNumbers;
         onlySymbols: typeof format.onlySymbols;
@@ -87,8 +102,12 @@ export declare const maxUse: {
         normalizeToSearch: typeof format.toSearchableString;
         toNumber: typeof format.toNumber;
         currency: typeof format.formatCurrency;
+        bytes: typeof format.formatBytes;
         truncate: typeof str.truncate;
         slugify: typeof str.slugify;
+        noHtml: typeof str.stripHtml;
+        initials: typeof str.initials;
+        readingTime: typeof str.readingTime;
     };
     Convert: {
         toNumber: typeof format.toNumber;
@@ -100,6 +119,9 @@ export declare const maxUse: {
     intervalRandom(min?: number, max?: number): number;
     truncate(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined), limit?: number, suffix?: string): string;
     slugify(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
+    stripHtml(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
+    initials(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined), limit?: number): string;
+    readingTime(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined), wordsPerMinute?: number): string;
     snakeCase(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
     kebabCase(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
     camelCase(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
@@ -116,6 +138,7 @@ export declare const maxUse: {
     formatCnpj(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
     formatCpfCnpj(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
     formatPhone(phone_number: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
+    maskSensitive(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined), type?: "email" | "card" | "text"): string;
     onlyLetters(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined), space?: boolean): string;
     onlyNumbers(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined), space?: boolean): string;
     onlySymbols(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
@@ -124,23 +147,8 @@ export declare const maxUse: {
     toSearchableString(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
     toNumber(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined), decimals?: number | null): number;
     formatCurrency(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
+    formatBytes(bytes: import('vue').MaybeRefOrGetter<number | string>, decimals?: import('vue').MaybeRefOrGetter<number>): string;
     normalizeToSearch: typeof format.toSearchableString;
-    isCpf(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
-    isCnpj(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
-    isCpfCnpj(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
-    hasContent: typeof validations.hasContent;
-    isBlank: typeof validations.isBlank;
-    isNumber: typeof validations.isNumber;
-    isNumeric: typeof validations.isNumber;
-    numeric: typeof validations.isNumber;
-    isDate: typeof validations.isDate;
-    inDateInterval: typeof validations.inDateInterval;
-    isInDateInterval: typeof validations.isInDateInterval;
-    isSameDay: typeof validations.isSameDay;
-    hasPassedHours: typeof validations.hasPassedHours;
-    hasPassedMinutes: typeof validations.hasPassedMinutes;
-    hasPassedDays: typeof validations.hasPassedDays;
-    canIterate: typeof validations.canIterate;
     validate: {
         number: typeof validations.isNumber;
         isNumber: typeof validations.isNumber;
@@ -152,6 +160,8 @@ export declare const maxUse: {
         cnpj: typeof validations.isCnpj;
         isCpfCnpj: typeof validations.isCpfCnpj;
         cpfcnpj: typeof validations.isCpfCnpj;
+        isEmail: typeof validations.isEmail;
+        email: typeof validations.isEmail;
         isDate: typeof validations.isDate;
         date: typeof validations.isDate;
         isIterable: typeof validations.canIterate;
@@ -178,6 +188,8 @@ export declare const maxUse: {
         cnpj: typeof validations.isCnpj;
         isCpfCnpj: typeof validations.isCpfCnpj;
         cpfcnpj: typeof validations.isCpfCnpj;
+        isEmail: typeof validations.isEmail;
+        email: typeof validations.isEmail;
         isDate: typeof validations.isDate;
         date: typeof validations.isDate;
         isIterable: typeof validations.canIterate;
@@ -193,6 +205,23 @@ export declare const maxUse: {
         hasPassedDays: typeof validations.hasPassedDays;
         passedDays: typeof validations.hasPassedDays;
     };
+    hasContent: typeof validations.hasContent;
+    isBlank: typeof validations.isBlank;
+    isNumber: typeof validations.isNumber;
+    isNumeric: typeof validations.isNumber;
+    numeric: typeof validations.isNumber;
+    isDate: typeof validations.isDate;
+    inDateInterval: typeof validations.inDateInterval;
+    isInDateInterval: typeof validations.isInDateInterval;
+    isSameDay: typeof validations.isSameDay;
+    hasPassedHours: typeof validations.hasPassedHours;
+    hasPassedMinutes: typeof validations.hasPassedMinutes;
+    hasPassedDays: typeof validations.hasPassedDays;
+    canIterate: typeof validations.canIterate;
+    isCpf(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
+    isCnpj(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
+    isCpfCnpj(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
+    isEmail(value: import('vue').MaybeRefOrGetter<string | null | undefined>): boolean;
     countBy: typeof iterables.countBy;
     filter: typeof iterables.filter;
     filterBy: typeof iterables.filterBy;
@@ -210,17 +239,28 @@ export declare const maxUse: {
     sample: typeof iterables.sample;
     shuffle: typeof iterables.shuffle;
     chunk: typeof iterables.chunk;
+    uniqueBy: typeof iterables.uniqueBy;
+    findLast: typeof iterables.findLast;
+    sortByMulti: typeof iterables.sortByMulti;
+    first: typeof iterables.first;
+    last: typeof iterables.last;
     get: typeof iterables.get;
+    set: typeof iterables.set;
     unset: typeof iterables.unset;
     isEqual: typeof iterables.isEqual;
     deepClone: typeof iterables.deepClone;
     cloneDeep: typeof iterables.deepClone;
+    deepMerge: typeof iterables.deepMerge;
+    renameKeys: typeof iterables.renameKeys;
     pick: typeof iterables.pick;
     omit: typeof iterables.omit;
+    mapValues: typeof iterables.mapValues;
+    diff: typeof iterables.diff;
     isObject: typeof iterables.isObject;
     isArray: typeof iterables.isArray;
     now: typeof iterables.now;
     dateNow: typeof iterables.now;
+    isWeekend: typeof iterables.isWeekend;
     diffInSeconds: typeof iterables.diffInSeconds;
     diffInMinutes: typeof iterables.diffInMinutes;
     diffInHours: typeof iterables.diffInHours;

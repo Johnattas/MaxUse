@@ -15,7 +15,12 @@ export { size } from './Iterables/size';
 export { sample } from './Iterables/sample';
 export { shuffle } from './Iterables/shuffle';
 export { chunk } from './Iterables/chunk';
-export { get, unset, isEqual, deepClone, deepClone as cloneDeep, pick, omit } from './Objects';
+export { uniqueBy } from './Iterables/uniqueBy';
+export { findLast } from './Iterables/findLast';
+export { sortByMulti } from './Iterables/sortByMulti';
+export { first } from './Iterables/first';
+export { last } from './Iterables/last';
+export { get, set, unset, isEqual, deepClone, deepClone as cloneDeep, deepMerge, renameKeys, pick, omit, mapValues, diff } from './Objects';
 export { isObject, isArray } from './Types';
-export { now, now as dateNow, diffInSeconds, diffInMinutes, diffInHours, diffInDays, diffInMonths, diffInYears } from './Dates';
+export { now, now as dateNow, isWeekend, diffInSeconds, diffInMinutes, diffInHours, diffInDays, diffInMonths, diffInYears } from './Dates';
 //# sourceMappingURL=iterables.d.ts.map

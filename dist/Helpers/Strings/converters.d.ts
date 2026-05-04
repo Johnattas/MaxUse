@@ -9,5 +9,12 @@ export declare function toNumber(value: RefString, decimals?: number | null): nu
  * @param value O valor a ser formatado.
  */
 export declare function formatCurrency(value: RefString): string;
+/**
+ * Converte um número bruto de bytes em uma string legível.
+ *
+ * @param bytes A quantidade de bytes.
+ * @param decimals O número de casas decimais.
+ */
+export declare function formatBytes(bytes: MaybeRefOrGetter<number | string>, decimals?: MaybeRefOrGetter<number>): string;
 export {};
 //# sourceMappingURL=converters.d.ts.map
