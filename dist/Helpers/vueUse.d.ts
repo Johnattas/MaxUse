@@ -41,7 +41,6 @@ export declare const mapGamepadToXbox360Controller: typeof vueUseCore.mapGamepad
 export declare const noop: () => void;
 export declare const normalizeDate: typeof vueUseCore.normalizeDate;
 export declare const notNullish: <T = any>(val?: T | null | undefined) => val is T;
-export declare const now: () => number;
 export declare const objectEntries: typeof vueUseCore.objectEntries;
 export declare const objectOmit: typeof vueUseCore.objectOmit;
 export declare const objectPick: typeof vueUseCore.objectPick;

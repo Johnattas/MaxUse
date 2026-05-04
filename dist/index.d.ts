@@ -219,6 +219,8 @@ export declare const maxUse: {
     uniq: typeof iterables.uniq;
     valuesInKey: typeof iterables.valuesInKey;
     size: typeof iterables.size;
+    now: typeof iterables.now;
+    dateNow: typeof iterables.now;
     deepClone: typeof iterables.deepClone;
     cloneDeep: typeof iterables.deepClone;
     unset: typeof iterables.unset;
