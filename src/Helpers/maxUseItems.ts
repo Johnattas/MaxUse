@@ -41,10 +41,12 @@ export const maxUseItems = (): string[] => {
     return Array.from(allKeys).sort();
 };
 
-export const maxUseAutoImport = () => {
+const autoImport = () => {
     const items = [...maxUseItems()];
     console.log(items.filter((i) => i.includes('ow')));
     return {
         '@maxvue/max-use': maxUseItems()
     };
 };
+
+export const maxUseAutoImport = autoImport();
