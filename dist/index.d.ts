@@ -8,6 +8,7 @@ import * as Types from './Helpers/Types';
 import * as Validations from './Helpers/Validations';
 import * as Electrical from './Helpers/Electrical';
 import * as Format from './Helpers/Format';
+import * as Composables from './Composables';
 export * from './Composables';
 export * from './Routes';
 export * from './Helpers/Browser';
@@ -468,5 +469,13 @@ export declare const _: {
     diffInMonths(date1: import('vue').MaybeRef<string | number | Date | null | undefined> | import('vue').ComputedRef<string | number | Date | null | undefined> | (() => string | number | Date | null | undefined), date2: import('vue').MaybeRef<string | number | Date | null | undefined> | import('vue').ComputedRef<string | number | Date | null | undefined> | (() => string | number | Date | null | undefined)): number;
     diffInYears(date1: import('vue').MaybeRef<string | number | Date | null | undefined> | import('vue').ComputedRef<string | number | Date | null | undefined> | (() => string | number | Date | null | undefined), date2: import('vue').MaybeRef<string | number | Date | null | undefined> | import('vue').ComputedRef<string | number | Date | null | undefined> | (() => string | number | Date | null | undefined)): number;
     isTouchDevice: typeof Browser.isTouchDevice;
+    apiGetRoute(RouteName: string | null, data?: any, options?: any): Promise<any>;
+    apiDeleteRoute(RouteName: string | null, data?: any | null, options?: any): Promise<any>;
+    apiUploadRoute(RouteName: string, files?: any, data?: any, options?: null): Promise<any>;
+    useDefaultReset: typeof Composables.useDefaultReset;
+    useInCache: (route_name: string, data_get: any, key: string) => Promise<any>;
+    useRefCached: typeof Composables.useRefCached;
+    useRefStorage: typeof Composables.useRefStorage;
+    useTimeAgo: (initialDate: import('vue').MaybeRefOrGetter<Date | number | string>, format?: string) => import('@vueuse/core').UseTimeAgoReturn;
 };
 //# sourceMappingURL=index.d.ts.map

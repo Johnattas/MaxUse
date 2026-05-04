@@ -45,7 +45,7 @@ var maxUseItems = () => {
 };
 var autoImport = () => {
 	const items = [...maxUseItems(), "_"];
-	console.log(items.filter((i) => i.includes("eset")));
+	console.log(items.filter((i) => i.includes("api")));
 	return { "@maxvue/max-use": items };
 };
 var maxUseAutoImport = autoImport();
@@ -59,6 +59,8 @@ var vueUse = vueUse$1;
 * Helpers Próprios da MaxUse.
 */
 var ownHelpers = {
+	...Composables_exports,
+	...Routes_exports,
 	...Browser_exports,
 	...Dates_exports,
 	...Iterables_exports,
