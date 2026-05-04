@@ -1,9 +1,7 @@
 import { Random, ulid, intervalRandom } from './random';
-import { formatCep, formatCpf, formatCnpj, formatCpfCnpj, formatPhone, maskSensitive } from './masks';
+import { truncate, slugify, stripHtml, initials, readingTime } from './manipulations';
 import { onlyLetters, onlyNumbers, onlySymbols, onlyLettersAndNumbers, removeSpaces } from './filters';
 import { snakeCase, kebabCase, camelCase, capitalize } from './cases';
-import { toSearchableString, toNumber, formatCurrency, formatBytes } from './converters';
-import { truncate, slugify, stripHtml, initials, readingTime } from './manipulations';
 export * from './random';
 export * from './masks';
 export * from './filters';
@@ -23,41 +21,6 @@ export declare const Str: {
     noHtml: typeof stripHtml;
     initials: typeof initials;
     readingTime: typeof readingTime;
-    maskSensitive: typeof maskSensitive;
-    sensitive: typeof maskSensitive;
-};
-export declare const Convert: {
-    toNumber: typeof toNumber;
-    toSearchableString: typeof toSearchableString;
-    normalizeToSearch: typeof toSearchableString;
-};
-export declare const Format: {
-    cep: typeof formatCep;
-    cpf: typeof formatCpf;
-    cnpj: typeof formatCnpj;
-    cpfCnpj: typeof formatCpfCnpj;
-    phone: typeof formatPhone;
-    sensitive: typeof maskSensitive;
-    onlyLetters: typeof onlyLetters;
-    onlyNumbers: typeof onlyNumbers;
-    onlySymbols: typeof onlySymbols;
-    onlyLettersAndNumbers: typeof onlyLettersAndNumbers;
-    removeSpaces: typeof removeSpaces;
-    noSpaces: typeof removeSpaces;
-    snakeCase: typeof snakeCase;
-    kebabCase: typeof kebabCase;
-    camelCase: typeof camelCase;
-    capitalize: typeof capitalize;
-    searchable: typeof toSearchableString;
-    normalizeToSearch: typeof toSearchableString;
-    toNumber: typeof toNumber;
-    currency: typeof formatCurrency;
-    bytes: typeof formatBytes;
-    truncate: typeof truncate;
-    slugify: typeof slugify;
-    noHtml: typeof stripHtml;
-    initials: typeof initials;
-    readingTime: typeof readingTime;
 };
 export declare const StrFilter: {
     onlyLetters: typeof onlyLetters;
@@ -65,5 +28,11 @@ export declare const StrFilter: {
     onlyLettersAndNumbers: typeof onlyLettersAndNumbers;
     onlySymbols: typeof onlySymbols;
     removeSpaces: typeof removeSpaces;
+};
+export declare const StrCase: {
+    snakeCase: typeof snakeCase;
+    kebabCase: typeof kebabCase;
+    camelCase: typeof camelCase;
+    capitalize: typeof capitalize;
 };
 //# sourceMappingURL=index.d.ts.map

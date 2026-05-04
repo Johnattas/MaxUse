@@ -1,15 +1,8 @@
-import { isDate, inDateInterval, isInDateInterval, isSameDay, hasPassedHours, hasPassedMinutes, hasPassedDays } from '../Dates';
-import { isNumber, isNumeric, numeric, isBlank, hasContent, canIterate } from '../Types';
 import { isCpf, isCnpj, isCpfCnpj } from './documents';
 import { isEmail } from './isEmail';
 export * from './documents';
 export * from './isEmail';
-export { hasContent, isBlank, isNumber, isNumeric, numeric, isDate, inDateInterval, isInDateInterval, isSameDay, hasPassedHours, hasPassedMinutes, hasPassedDays, canIterate };
 export declare const validate: {
-    number: typeof isNumber;
-    isNumber: typeof isNumber;
-    hasContent: typeof hasContent;
-    isBlank: typeof isBlank;
     isCpf: typeof isCpf;
     cpf: typeof isCpf;
     isCnpj: typeof isCnpj;
@@ -18,26 +11,8 @@ export declare const validate: {
     cpfcnpj: typeof isCpfCnpj;
     isEmail: typeof isEmail;
     email: typeof isEmail;
-    isDate: typeof isDate;
-    date: typeof isDate;
-    isIterable: typeof canIterate;
-    inDateInterval: typeof inDateInterval;
-    isInDateInterval: typeof isInDateInterval;
-    canIterate: typeof canIterate;
-    isSameDay: typeof isSameDay;
-    sameDay: typeof isSameDay;
-    hasPassedHours: typeof hasPassedHours;
-    passedHours: typeof hasPassedHours;
-    hasPassedMinutes: typeof hasPassedMinutes;
-    passedMinutes: typeof hasPassedMinutes;
-    hasPassedDays: typeof hasPassedDays;
-    passedDays: typeof hasPassedDays;
 };
 export declare const isValid: {
-    number: typeof isNumber;
-    isNumber: typeof isNumber;
-    hasContent: typeof hasContent;
-    isBlank: typeof isBlank;
     isCpf: typeof isCpf;
     cpf: typeof isCpf;
     isCnpj: typeof isCnpj;
@@ -46,19 +21,5 @@ export declare const isValid: {
     cpfcnpj: typeof isCpfCnpj;
     isEmail: typeof isEmail;
     email: typeof isEmail;
-    isDate: typeof isDate;
-    date: typeof isDate;
-    isIterable: typeof canIterate;
-    inDateInterval: typeof inDateInterval;
-    isInDateInterval: typeof isInDateInterval;
-    canIterate: typeof canIterate;
-    isSameDay: typeof isSameDay;
-    sameDay: typeof isSameDay;
-    hasPassedHours: typeof hasPassedHours;
-    passedHours: typeof hasPassedHours;
-    hasPassedMinutes: typeof hasPassedMinutes;
-    passedMinutes: typeof hasPassedMinutes;
-    hasPassedDays: typeof hasPassedDays;
-    passedDays: typeof hasPassedDays;
 };
 //# sourceMappingURL=index.d.ts.map
