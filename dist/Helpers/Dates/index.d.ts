@@ -5,4 +5,7 @@ export { isSameDay } from './isSameDay';
 export { hasPassedHours } from './hasPassedHours';
 export { hasPassedMinutes } from './hasPassedMinutes';
 export { hasPassedDays } from './hasPassedDays';
+export { isPast } from './isPast';
+export { isFuture } from './isFuture';
+export * from './differences';
 //# sourceMappingURL=index.d.ts.map

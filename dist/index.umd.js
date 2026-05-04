@@ -257,6 +257,37 @@
 		return items[Math.floor(Math.random() * items.length)];
 	}
 	//#endregion
+	//#region src/Helpers/Iterables/shuffle.ts
+	/**
+	* Embaralha os elementos de um array de forma aleatória.
+	* Algoritmo de Fisher-Yates.
+	* 
+	* @param array O array a ser embaralhado.
+	*/
+	function shuffle(array) {
+		const data = [...(0, vue.toValue)(array)];
+		for (let i = data.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[data[i], data[j]] = [data[j], data[i]];
+		}
+		return data;
+	}
+	//#endregion
+	//#region src/Helpers/Iterables/chunk.ts
+	/**
+	* Divide um array em sub-arrays de um tamanho específico.
+	* 
+	* @param array O array a ser dividido.
+	* @param size O tamanho de cada pedaço.
+	*/
+	function chunk(array, size = 1) {
+		const data = (0, vue.toValue)(array);
+		if (!data || data.length === 0 || size <= 0) return [];
+		const result = [];
+		for (let i = 0; i < data.length; i += size) result.push(data.slice(i, i + size));
+		return result;
+	}
+	//#endregion
 	//#region src/Helpers/Objects/deepClone.ts
 	/**
 	* Cria uma cópia profunda de um valor, lidando com referências circulares e diversos tipos de dados.
@@ -383,6 +414,38 @@
 		if (keysA.length !== keysB.length) return false;
 		for (const key of keysA) if (!Object.prototype.hasOwnProperty.call(b, key) || !isEqual(a[key], b[key])) return false;
 		return true;
+	}
+	//#endregion
+	//#region src/Helpers/Objects/manipulations.ts
+	/**
+	* Cria um novo objeto contendo apenas as chaves que você especificar do objeto original.
+	* 
+	* @param obj O objeto original (pode ser um Ref).
+	* @param keys As chaves a serem mantidas.
+	*/
+	function pick(obj, keys) {
+		const data = (0, vue.unref)(obj);
+		const result = {};
+		if (!data) return result;
+		keys.forEach((key) => {
+			if (key in data) result[key] = data[key];
+		});
+		return result;
+	}
+	/**
+	* Cria um novo objeto removendo as chaves que você não deseja do objeto original.
+	* 
+	* @param obj O objeto original (pode ser um Ref).
+	* @param keys As chaves a serem removidas.
+	*/
+	function omit(obj, keys) {
+		const data = (0, vue.unref)(obj);
+		const result = { ...data };
+		if (!data) return result;
+		keys.forEach((key) => {
+			if (key in result) delete result[key];
+		});
+		return result;
 	}
 	//#endregion
 	//#region src/Helpers/Types/isArray.ts
@@ -582,12 +645,74 @@
 		return Date.now() - date.getTime() > timeInMs;
 	}
 	//#endregion
+	//#region src/Helpers/Dates/differences.ts
+	function parseDate(value) {
+		const data = (0, vue.toValue)(value);
+		if (!data) return null;
+		const date = new Date(data);
+		return isNaN(date.getTime()) ? null : date;
+	}
+	/**
+	* Calcula a diferença absoluta em segundos entre duas datas.
+	*/
+	function diffInSeconds(date1, date2) {
+		const d1 = parseDate(date1);
+		const d2 = parseDate(date2);
+		if (!d1 || !d2) return 0;
+		return Math.abs(Math.floor((d1.getTime() - d2.getTime()) / 1e3));
+	}
+	/**
+	* Calcula a diferença absoluta em minutos entre duas datas.
+	*/
+	function diffInMinutes(date1, date2) {
+		return Math.abs(Math.floor(diffInSeconds(date1, date2) / 60));
+	}
+	/**
+	* Calcula a diferença absoluta em horas entre duas datas.
+	*/
+	function diffInHours(date1, date2) {
+		return Math.abs(Math.floor(diffInMinutes(date1, date2) / 60));
+	}
+	/**
+	* Calcula a diferença absoluta em dias entre duas datas.
+	*/
+	function diffInDays(date1, date2) {
+		return Math.abs(Math.floor(diffInHours(date1, date2) / 24));
+	}
+	/**
+	* Calcula a diferença absoluta em meses entre duas datas.
+	*/
+	function diffInMonths(date1, date2) {
+		const d1 = parseDate(date1);
+		const d2 = parseDate(date2);
+		if (!d1 || !d2) return 0;
+		const years = d1.getFullYear() - d2.getFullYear();
+		const months = d1.getMonth() - d2.getMonth();
+		return Math.abs(years * 12 + months);
+	}
+	/**
+	* Calcula a diferença absoluta em anos entre duas datas.
+	*/
+	function diffInYears(date1, date2) {
+		const d1 = parseDate(date1);
+		const d2 = parseDate(date2);
+		if (!d1 || !d2) return 0;
+		return Math.abs(d1.getFullYear() - d2.getFullYear());
+	}
+	//#endregion
 	//#region src/Helpers/iterables.ts
 	var iterables_exports = /* @__PURE__ */ __exportAll({
+		chunk: () => chunk,
 		cloneDeep: () => deepClone,
 		countBy: () => countBy,
 		dateNow: () => now,
 		deepClone: () => deepClone,
+		diffInDays: () => diffInDays,
+		diffInHours: () => diffInHours,
+		diffInMinutes: () => diffInMinutes,
+		diffInMonths: () => diffInMonths,
+		diffInSeconds: () => diffInSeconds,
+		diffInYears: () => diffInYears,
 		filter: () => filter,
 		filterBy: () => filterBy,
 		filterByNot: () => filterByNot,
@@ -598,9 +723,12 @@
 		isObject: () => isObject,
 		keyBy: () => keyBy,
 		now: () => now,
+		omit: () => omit,
 		orderBy: () => orderBy,
 		orderByWithKey: () => orderByWithKey,
+		pick: () => pick,
 		sample: () => sample,
+		shuffle: () => shuffle,
 		size: () => size,
 		sortBy: () => sortBy,
 		sum: () => sum,
@@ -5321,6 +5449,17 @@
 			return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 		}).join("") : "";
 	}
+	/**
+	* Garante que apenas a primeira letra da string seja maiúscula e o restante minúscula.
+	* 
+	* @param value A string a ser formatada.
+	*/
+	function capitalize(value) {
+		const data = (0, vue.toValue)(value);
+		if (isBlank(data)) return "";
+		const str = String(data);
+		return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+	}
 	//#endregion
 	//#region src/Helpers/Strings/converters.ts
 	function toSearchableString(value) {
@@ -5338,6 +5477,21 @@
 			return Math.round(number * factor) / factor;
 		}
 		return number;
+	}
+	/**
+	* Formata um número para o padrão de moeda brasileira (R$).
+	* 
+	* @param value O valor a ser formatado.
+	*/
+	function formatCurrency(value) {
+		const data = (0, vue.toValue)(value);
+		if (isBlank(data)) return "R$ 0,00";
+		const number = Number(data);
+		if (isNaN(number)) return "R$ 0,00";
+		return new Intl.NumberFormat("pt-BR", {
+			style: "currency",
+			currency: "BRL"
+		}).format(number);
 	}
 	//#endregion
 	//#region node_modules/ulid/dist/browser/index.js
@@ -5477,13 +5631,43 @@
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 	//#endregion
+	//#region src/Helpers/Strings/manipulations.ts
+	/**
+	* Encurta uma string até um limite de caracteres, adicionando reticências (...) ao final se necessário.
+	* 
+	* @param value A string a ser encurtada.
+	* @param limit O limite máximo de caracteres.
+	* @param suffix O sufixo a ser adicionado (padrão: '...').
+	*/
+	function truncate(value, limit = 20, suffix = "...") {
+		const data = (0, vue.toValue)(value);
+		if (isBlank(data)) return "";
+		const str = String(data);
+		if (str.length <= limit) return str;
+		return str.slice(0, limit) + suffix;
+	}
+	/**
+	* Converte uma string para um formato amigável para URLs (slug).
+	* Remove acentos, caracteres especiais e substitui espaços por hífens.
+	* 
+	* @param value A string a ser convertida.
+	*/
+	function slugify(value) {
+		const data = (0, vue.toValue)(value);
+		if (isBlank(data)) return "";
+		return String(data).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "").replace(/[\s_]+/g, "-").replace(/-+/g, "-");
+	}
+	//#endregion
 	//#region src/Helpers/Strings/index.ts
 	var Str = {
 		Random,
 		code: Random,
 		ulid,
 		intervalRandom,
-		interval: intervalRandom
+		interval: intervalRandom,
+		truncate,
+		slugify,
+		capitalize
 	};
 	var Convert = {
 		toNumber,
@@ -5505,9 +5689,13 @@
 		snakeCase,
 		kebabCase,
 		camelCase,
+		capitalize,
 		searchable: toSearchableString,
 		normalizeToSearch,
-		toNumber
+		toNumber,
+		currency: formatCurrency,
+		truncate,
+		slugify
 	};
 	var StrFilter = {
 		onlyLetters,
@@ -5523,10 +5711,12 @@
 		Format: () => Format,
 		StrFilter: () => StrFilter,
 		camelCase: () => camelCase,
+		capitalize: () => capitalize,
 		formatCep: () => formatCep,
 		formatCnpj: () => formatCnpj,
 		formatCpf: () => formatCpf,
 		formatCpfCnpj: () => formatCpfCnpj,
+		formatCurrency: () => formatCurrency,
 		formatPhone: () => formatPhone,
 		kebabCase: () => kebabCase,
 		normalizeToSearch: () => normalizeToSearch,
@@ -5542,9 +5732,17 @@
 	//#endregion
 	//#region src/Helpers/str.ts
 	var str_exports = /* @__PURE__ */ __exportAll({
+		Convert: () => Convert,
+		Format: () => Format,
 		Random: () => Random,
 		Str: () => Str,
+		camelCase: () => camelCase,
+		capitalize: () => capitalize,
 		intervalRandom: () => intervalRandom,
+		kebabCase: () => kebabCase,
+		slugify: () => slugify,
+		snakeCase: () => snakeCase,
+		truncate: () => truncate,
 		ulid: () => ulid
 	});
 	//#endregion
@@ -22096,6 +22294,8 @@
 		"camelCase",
 		"camelize",
 		"canIterate",
+		"capitalize",
+		"chunk",
 		"clamp",
 		"cloneDeep",
 		"cloneFnJSON",
@@ -22118,6 +22318,12 @@
 		"dateNow",
 		"debounceFilter",
 		"deepClone",
+		"diffInDays",
+		"diffInHours",
+		"diffInMinutes",
+		"diffInMonths",
+		"diffInSeconds",
+		"diffInYears",
 		"electric",
 		"electrical",
 		"extendRef",
@@ -22128,6 +22334,7 @@
 		"formatCnpj",
 		"formatCpf",
 		"formatCpfCnpj",
+		"formatCurrency",
 		"formatDate",
 		"formatPhone",
 		"formatTimeAgo",
@@ -22179,6 +22386,7 @@
 		"objectEntries",
 		"objectOmit",
 		"objectPick",
+		"omit",
 		"onClickOutside",
 		"onElementRemoval",
 		"onKeyDown",
@@ -22194,6 +22402,7 @@
 		"orderBy",
 		"orderByWithKey",
 		"pausableFilter",
+		"pick",
 		"promiseTimeout",
 		"provideLocal",
 		"provideSSRWidth",
@@ -22214,7 +22423,9 @@
 		"sample",
 		"set",
 		"setSSRHandler",
+		"shuffle",
 		"size",
+		"slugify",
 		"snakeCase",
 		"sortBy",
 		"sum",
@@ -22228,6 +22439,7 @@
 		"toReactive",
 		"toSearchableString",
 		"transition",
+		"truncate",
 		"tryOnBeforeMount",
 		"tryOnBeforeUnmount",
 		"tryOnMounted",
@@ -22446,6 +22658,8 @@
 	exports.camelCase = camelCase;
 	exports.camelize = camelize;
 	exports.canIterate = canIterate;
+	exports.capitalize = capitalize;
+	exports.chunk = chunk;
 	exports.clamp = clamp;
 	exports.cloneDeep = deepClone;
 	exports.cloneFnJSON = cloneFnJSON;
@@ -22468,6 +22682,12 @@
 	exports.dateNow = now;
 	exports.debounceFilter = debounceFilter;
 	exports.deepClone = deepClone;
+	exports.diffInDays = diffInDays;
+	exports.diffInHours = diffInHours;
+	exports.diffInMinutes = diffInMinutes;
+	exports.diffInMonths = diffInMonths;
+	exports.diffInSeconds = diffInSeconds;
+	exports.diffInYears = diffInYears;
 	exports.electric = electric;
 	exports.electrical = electrical;
 	exports.extendRef = extendRef;
@@ -22478,6 +22698,7 @@
 	exports.formatCnpj = formatCnpj;
 	exports.formatCpf = formatCpf;
 	exports.formatCpfCnpj = formatCpfCnpj;
+	exports.formatCurrency = formatCurrency;
 	exports.formatDate = formatDate;
 	exports.formatPhone = formatPhone;
 	exports.formatTimeAgo = formatTimeAgo;
@@ -22529,6 +22750,7 @@
 	exports.objectEntries = objectEntries;
 	exports.objectOmit = objectOmit;
 	exports.objectPick = objectPick;
+	exports.omit = omit;
 	exports.onClickOutside = onClickOutside;
 	exports.onElementRemoval = onElementRemoval;
 	exports.onKeyDown = onKeyDown;
@@ -22544,6 +22766,7 @@
 	exports.orderBy = orderBy;
 	exports.orderByWithKey = orderByWithKey;
 	exports.pausableFilter = pausableFilter;
+	exports.pick = pick;
 	exports.promiseTimeout = promiseTimeout;
 	exports.provideLocal = provideLocal;
 	exports.provideSSRWidth = provideSSRWidth;
@@ -22564,7 +22787,9 @@
 	exports.sample = sample;
 	exports.set = set;
 	exports.setSSRHandler = setSSRHandler;
+	exports.shuffle = shuffle;
 	exports.size = size;
+	exports.slugify = slugify;
 	exports.snakeCase = snakeCase;
 	exports.sortBy = sortBy;
 	exports.sum = sum;
@@ -22578,6 +22803,7 @@
 	exports.toReactive = toReactive;
 	exports.toSearchableString = toSearchableString;
 	exports.transition = transition;
+	exports.truncate = truncate;
 	exports.tryOnBeforeMount = tryOnBeforeMount;
 	exports.tryOnBeforeUnmount = tryOnBeforeUnmount;
 	exports.tryOnMounted = tryOnMounted;

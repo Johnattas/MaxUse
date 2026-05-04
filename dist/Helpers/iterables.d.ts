@@ -13,7 +13,9 @@ export { uniq } from './Iterables/uniq';
 export { valuesInKey } from './Iterables/valuesInKey';
 export { size } from './Iterables/size';
 export { sample } from './Iterables/sample';
-export { get, unset, isEqual, deepClone, deepClone as cloneDeep } from './Objects';
+export { shuffle } from './Iterables/shuffle';
+export { chunk } from './Iterables/chunk';
+export { get, unset, isEqual, deepClone, deepClone as cloneDeep, pick, omit } from './Objects';
 export { isObject, isArray } from './Types';
-export { now, now as dateNow } from './Dates';
+export { now, now as dateNow, diffInSeconds, diffInMinutes, diffInHours, diffInDays, diffInMonths, diffInYears } from './Dates';
 //# sourceMappingURL=iterables.d.ts.map

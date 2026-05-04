@@ -1,3 +1,5 @@
 export * from './Strings/random';
-export { Str } from './Strings';
+export * from './Strings/manipulations';
+export * from './Strings/cases';
+export { Str, Format, Convert } from './Strings';
 //# sourceMappingURL=str.d.ts.map

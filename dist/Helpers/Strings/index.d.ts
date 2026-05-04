@@ -1,19 +1,24 @@
 import { Random, ulid, intervalRandom } from './random';
 import { formatCep, formatCpf, formatCnpj, formatCpfCnpj, formatPhone } from './masks';
 import { onlyLetters, onlyNumbers, onlySymbols, onlyLettersAndNumbers, removeSpaces } from './filters';
-import { snakeCase, kebabCase, camelCase } from './cases';
-import { toSearchableString, toNumber } from './converters';
+import { snakeCase, kebabCase, camelCase, capitalize } from './cases';
+import { toSearchableString, toNumber, formatCurrency } from './converters';
+import { truncate, slugify } from './manipulations';
 export * from './random';
 export * from './masks';
 export * from './filters';
 export * from './cases';
 export * from './converters';
+export * from './manipulations';
 export declare const Str: {
     Random: typeof Random;
     code: typeof Random;
     ulid: typeof ulid;
     intervalRandom: typeof intervalRandom;
     interval: typeof intervalRandom;
+    truncate: typeof truncate;
+    slugify: typeof slugify;
+    capitalize: typeof capitalize;
 };
 export declare const Convert: {
     toNumber: typeof toNumber;
@@ -35,9 +40,13 @@ export declare const Format: {
     snakeCase: typeof snakeCase;
     kebabCase: typeof kebabCase;
     camelCase: typeof camelCase;
+    capitalize: typeof capitalize;
     searchable: typeof toSearchableString;
     normalizeToSearch: typeof toSearchableString;
     toNumber: typeof toNumber;
+    currency: typeof formatCurrency;
+    truncate: typeof truncate;
+    slugify: typeof slugify;
 };
 export declare const StrFilter: {
     onlyLetters: typeof onlyLetters;

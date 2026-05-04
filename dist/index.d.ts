@@ -63,10 +63,10 @@ export declare const maxUse: {
         ulid: typeof str.ulid;
         intervalRandom: typeof str.intervalRandom;
         interval: typeof str.intervalRandom;
+        truncate: typeof str.truncate;
+        slugify: typeof str.slugify;
+        capitalize: typeof format.capitalize;
     };
-    Random(arg1?: number | (`${string}lower${string}` | `${string}ulid${string}` | `${string}upper${string}`), arg2?: number | (`${string}lower${string}` | `${string}ulid${string}` | `${string}upper${string}`)): string;
-    ulid(): string;
-    intervalRandom(min?: number, max?: number): number;
     Format: {
         cep: typeof format.formatCep;
         cpf: typeof format.formatCpf;
@@ -82,15 +82,28 @@ export declare const maxUse: {
         snakeCase: typeof format.snakeCase;
         kebabCase: typeof format.kebabCase;
         camelCase: typeof format.camelCase;
+        capitalize: typeof format.capitalize;
         searchable: typeof format.toSearchableString;
         normalizeToSearch: typeof format.toSearchableString;
         toNumber: typeof format.toNumber;
+        currency: typeof format.formatCurrency;
+        truncate: typeof str.truncate;
+        slugify: typeof str.slugify;
     };
     Convert: {
         toNumber: typeof format.toNumber;
         toSearchableString: typeof format.toSearchableString;
         normalizeToSearch: typeof format.toSearchableString;
     };
+    Random(arg1?: number | (`${string}lower${string}` | `${string}ulid${string}` | `${string}upper${string}`), arg2?: number | (`${string}lower${string}` | `${string}ulid${string}` | `${string}upper${string}`)): string;
+    ulid(): string;
+    intervalRandom(min?: number, max?: number): number;
+    truncate(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined), limit?: number, suffix?: string): string;
+    slugify(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
+    snakeCase(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
+    kebabCase(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
+    camelCase(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
+    capitalize(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
     StrFilter: {
         onlyLetters: typeof format.onlyLetters;
         onlyNumbers: typeof format.onlyNumbers;
@@ -108,11 +121,9 @@ export declare const maxUse: {
     onlySymbols(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
     onlyLettersAndNumbers(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined), space?: boolean): string;
     removeSpaces(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
-    snakeCase(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
-    kebabCase(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
-    camelCase(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
     toSearchableString(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
     toNumber(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined), decimals?: number | null): number;
+    formatCurrency(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): string;
     normalizeToSearch: typeof format.toSearchableString;
     isCpf(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
     isCnpj(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
@@ -197,15 +208,25 @@ export declare const maxUse: {
     valuesInKey: typeof iterables.valuesInKey;
     size: typeof iterables.size;
     sample: typeof iterables.sample;
+    shuffle: typeof iterables.shuffle;
+    chunk: typeof iterables.chunk;
     get: typeof iterables.get;
     unset: typeof iterables.unset;
     isEqual: typeof iterables.isEqual;
     deepClone: typeof iterables.deepClone;
     cloneDeep: typeof iterables.deepClone;
+    pick: typeof iterables.pick;
+    omit: typeof iterables.omit;
     isObject: typeof iterables.isObject;
     isArray: typeof iterables.isArray;
     now: typeof iterables.now;
     dateNow: typeof iterables.now;
+    diffInSeconds: typeof iterables.diffInSeconds;
+    diffInMinutes: typeof iterables.diffInMinutes;
+    diffInHours: typeof iterables.diffInHours;
+    diffInDays: typeof iterables.diffInDays;
+    diffInMonths: typeof iterables.diffInMonths;
+    diffInYears: typeof iterables.diffInYears;
 };
 export declare const vueUse: typeof vueUseCore;
 //# sourceMappingURL=index.d.ts.map
