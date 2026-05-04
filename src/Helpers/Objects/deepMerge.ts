@@ -1,4 +1,4 @@
-import { unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 import { isObject } from '../Types/isObject';
 import { isArray } from '../Types/isArray';
 
@@ -10,12 +10,12 @@ import { isArray } from '../Types/isArray';
  * @param sources Um ou mais objetos de origem para mesclar.
  * @returns O objeto mesclado (modifica o primeiro objeto e o retorna).
  */
-export function deepMerge<T extends object>(target: T, ...sources: any[]): T {
+export function deepMerge<T extends object>(target: MaybeRefOrGetter<T>, ...sources: any[]): T {
     if (!sources.length) return target;
     const source = sources.shift();
 
-    const dataTarget = unref(target) as any;
-    const dataSource = unref(source);
+    const dataTarget = toValue(target) as any;
+    const dataSource = toValue(source);
 
     if (isObject(dataTarget) && !isArray(dataTarget) && isObject(dataSource) && !isArray(dataSource)) Object.keys(dataSource).forEach((key) => {
         const targetValue = dataTarget[key];

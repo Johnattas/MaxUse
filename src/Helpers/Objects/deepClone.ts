@@ -1,4 +1,4 @@
-import { unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 /**
  * Cria uma cópia profunda de um valor, lidando com referências circulares e diversos tipos de dados.
@@ -8,9 +8,9 @@ import { unref } from 'vue';
  * @param map Um WeakMap para rastrear referências circulares (uso interno).
  * @returns Uma cópia profunda do valor.
  */
-export function deepClone<T>(value: T, map = new WeakMap()): T {
-    // Resolve o valor se for uma Ref do Vue
-    const data = unref(value);
+export function deepClone<T>(value: MaybeRefOrGetter<T>, map = new WeakMap()): T {
+    // Resolve o valor se for uma Ref ou Getter do Vue
+    const data = toValue(value);
 
     // Se não for um objeto ou for nulo, retorna o próprio valor (primitivos)
     if (data === null || typeof data !== 'object') return data as T;

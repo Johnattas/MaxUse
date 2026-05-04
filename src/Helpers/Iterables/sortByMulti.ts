@@ -1,4 +1,4 @@
-import { unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 /**
  * Ordena um array por múltiplos critérios.
@@ -9,11 +9,11 @@ import { unref } from 'vue';
  * @returns Retorna o novo array ordenado.
  */
 export function sortByMulti<T>(
-    collection: T[] | null | undefined,
+    collection: MaybeRefOrGetter<T[] | null | undefined>,
     criteria: ((item: T) => any | string)[],
     orders: ('asc' | 'desc')[] = []
 ): T[] {
-    const data = unref(collection);
+    const data = toValue(collection);
     if (!data || !Array.isArray(data)) return [];
 
     return [...data].sort((a, b) => {

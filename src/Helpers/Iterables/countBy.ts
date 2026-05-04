@@ -1,9 +1,9 @@
-import { type Ref, unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 type T = Record<string, any> | null | undefined;
 
-export function countBy(collection: T | Ref<T>, key: string, value: T[keyof T] | any = true): number {
-    const data = unref(collection);
+export function countBy(collection: MaybeRefOrGetter<T>, key: string, value: T[keyof T] | any = true): number {
+    const data = toValue(collection);
 
     if (!data || typeof data !== 'object') return 0;
 

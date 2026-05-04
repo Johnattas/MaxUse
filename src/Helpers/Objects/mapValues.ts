@@ -1,3 +1,5 @@
+import { toValue, type MaybeRefOrGetter } from 'vue';
+
 /**
  * Cria um novo objeto transformando apenas os valores, mas mantendo as chaves originais.
  *
@@ -6,14 +8,15 @@
  * @returns Um novo objeto com os valores transformados.
  */
 export function mapValues<T extends object, V>(
-    obj: T,
+    obj: MaybeRefOrGetter<T>,
     fn: (value: T[keyof T], key: keyof T, object: T) => V
 ): { [K in keyof T]: V } {
+    const data = toValue(obj);
     const result = {} as { [K in keyof T]: V };
 
-    Object.keys(obj).forEach((key) => {
+    Object.keys(data).forEach((key) => {
         const k = key as keyof T;
-        result[k] = fn(obj[k], k, obj);
+        result[k] = fn(data[k], k, data);
     });
 
     return result;

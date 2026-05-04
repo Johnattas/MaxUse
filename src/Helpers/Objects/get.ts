@@ -1,4 +1,4 @@
-import { unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 /**
  * Obtém o valor no caminho específico de um objeto.
@@ -9,8 +9,8 @@ import { unref } from 'vue';
  * @param defaultValue O valor retornado se o caminho resolvido for undefined.
  * @returns Retorna o valor resolvido.
  */
-export function get<T = any>(object: any, path: string | string[], defaultValue?: T): T {
-    const data = unref(object);
+export function get<T = any>(object: MaybeRefOrGetter<any>, path: string | string[], defaultValue?: T): T {
+    const data = toValue(object);
     if (data === null || data === undefined) return defaultValue as T;
 
     const pathArray = Array.isArray(path)

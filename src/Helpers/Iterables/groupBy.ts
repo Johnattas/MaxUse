@@ -1,4 +1,4 @@
-import { unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 /**
  * Agrupa os elementos de uma coleção de acordo com o resultado de um iteratee.
@@ -8,8 +8,8 @@ import { unref } from 'vue';
  * @param iteratee O iteratee para transformar as chaves.
  * @returns Retorna o objeto agrupado.
  */
-export function groupBy<T>(collection: T[] | Record<string, T> | any, iteratee: string | ((item: T) => string | number)): Record<string, T[]> {
-    const data = unref(collection);
+export function groupBy<T>(collection: MaybeRefOrGetter<T[] | Record<string, T> | any>, iteratee: string | ((item: T) => string | number)): Record<string, T[]> {
+    const data = toValue(collection);
     if (!data) return {};
 
     const items = Array.isArray(data) ? data : Object.values(data);

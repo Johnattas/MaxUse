@@ -1,10 +1,10 @@
-import { type Ref, unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 type T = Record<string, any> | any[] | null | undefined | string;
 type OrderCriteria = string | null | any | any[] | Record<string, 'asc' | 'desc'>;
 
-export function orderBy(collection: T | Ref<T>, criteria: OrderCriteria, defaultOrder: 'asc' | 'desc' = 'desc'): T[] {
-    const data = unref(collection);
+export function orderBy(collection: MaybeRefOrGetter<T>, criteria: OrderCriteria, defaultOrder: 'asc' | 'desc' = 'desc'): T[] {
+    const data = toValue(collection);
 
     if (!data || typeof data !== 'object') return [];
 

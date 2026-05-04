@@ -1,4 +1,4 @@
-import { unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 /**
  * Obtém um elemento aleatório de uma coleção.
@@ -7,8 +7,8 @@ import { unref } from 'vue';
  * @param collection A coleção de onde extrair o elemento.
  * @returns Retorna o elemento aleatório.
  */
-export function sample<T>(collection: T[] | Record<string, T> | any): T | undefined {
-    const data = unref(collection);
+export function sample<T>(collection: MaybeRefOrGetter<T[] | Record<string, T> | any>): T | undefined {
+    const data = toValue(collection);
     if (!data) return undefined;
 
     const items = Array.isArray(data) ? data : Object.values(data);

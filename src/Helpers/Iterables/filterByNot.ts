@@ -1,8 +1,8 @@
-import { type Ref, unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 type T = Record<string, any> | any[] | null | undefined;
-export function filterByNot(collection: T | Ref<T>, key: string, value: any = true): T[] | Record<string, T> {
-    const data = unref(collection);
+export function filterByNot(collection: MaybeRefOrGetter<T>, key: string, value: any = true): T[] | Record<string, T> {
+    const data = toValue(collection);
 
     if (!data || typeof data !== 'object') return Array.isArray(data) ? [] : {};
 

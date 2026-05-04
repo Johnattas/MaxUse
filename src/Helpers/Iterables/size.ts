@@ -1,8 +1,8 @@
-import { type Ref, unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 type T = Record<string, any> | string | number | null | undefined;
-export function size(value: T | Ref<T>, allow_number: boolean = true): number {
-    const data: any = unref(value);
+export function size(value: MaybeRefOrGetter<T>, allow_number: boolean = true): number {
+    const data: any = toValue(value);
 
     if (!data || data === '' || data === ' ') return 0;
 

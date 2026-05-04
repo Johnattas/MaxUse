@@ -1,8 +1,8 @@
-import { type Ref, unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 type T = Record<string, any>;
-export function sumBy(collection: T[] | Record<string, T> | Ref<T[] | Record<string, T>> | null | undefined, key: keyof T): number {
-    const data = unref(collection);
+export function sumBy(collection: MaybeRefOrGetter<T[] | Record<string, T> | null | undefined>, key: keyof T): number {
+    const data = toValue(collection);
 
     if (!data || typeof data !== 'object') return 0;
 

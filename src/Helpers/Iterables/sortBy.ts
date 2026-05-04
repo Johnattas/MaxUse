@@ -1,4 +1,4 @@
-import { unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 /**
  * Cria um array de elementos, ordenados em ordem crescente pelos resultados da execução de cada iteratee.
@@ -8,8 +8,8 @@ import { unref } from 'vue';
  * @param iteratees Os iteratees para ordenar.
  * @returns Retorna o novo array ordenado.
  */
-export function sortBy<T>(collection: T[] | Record<string, T> | any, iteratees: any | any[] = [(x: any) => x]): T[] {
-    const data = unref(collection);
+export function sortBy<T>(collection: MaybeRefOrGetter<T[] | Record<string, T> | any>, iteratees: any | any[] = [(x: any) => x]): T[] {
+    const data = toValue(collection);
     if (!data) return [];
 
     const items = Array.isArray(data) ? [...data] : Object.values(data);

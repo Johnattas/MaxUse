@@ -1,8 +1,8 @@
-import { type Ref, unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 type T = Record<string, any> | any[] | null | undefined;
-export function keyBy(collection: T | Ref<T[]>, key: string): Record<string, T> {
-    const data = unref(collection);
+export function keyBy(collection: MaybeRefOrGetter<T | any[]>, key: string): Record<string, T> {
+    const data = toValue(collection);
 
     if (!data || typeof data !== 'object') return {};
 

@@ -1,4 +1,4 @@
-import { unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 /**
  * Realiza uma comparação profunda entre dois valores para determinar se eles são equivalentes.
@@ -8,9 +8,9 @@ import { unref } from 'vue';
  * @param other O outro valor a ser comparado.
  * @returns Retorna true se os valores forem equivalentes, caso contrário false.
  */
-export function isEqual(value: any, other: any): boolean {
-    const a = unref(value);
-    const b = unref(other);
+export function isEqual(value: MaybeRefOrGetter<any>, other: MaybeRefOrGetter<any>): boolean {
+    const a = toValue(value);
+    const b = toValue(other);
 
     // Comparação estrita (lida com primitivos e mesmas referências)
     if (a === b) return true;

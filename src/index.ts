@@ -1,3 +1,16 @@
+import * as vueUseCore from './Helpers/VueUse';
+
+import * as Browser from './Helpers/Browser';
+import * as Dates from './Helpers/Dates';
+import * as Iterables from './Helpers/Iterables';
+import * as Math from './Helpers/Math';
+import * as Objects from './Helpers/Objects';
+import * as Strings from './Helpers/Strings';
+import * as Types from './Helpers/Types';
+import * as Validations from './Helpers/Validations';
+import * as Electrical from './Helpers/Electrical';
+import * as Format from './Helpers/Format';
+
 // Exporta os módulos principais
 export * from './Composables';
 export * from './Routes';
@@ -14,9 +27,24 @@ export * from './Helpers/Validations';
 export * from './Helpers/Electrical';
 export * from './Helpers/Format';
 
-// VueUse é exportado separadamente para evitar colisões no namespace global (get, set, etc.)
-export * as vueUse from './Helpers/VueUse';
+export * from './Helpers/VueUse';
 
-
-// Exporta itens específicos
 export { maxUseItems } from './Helpers/maxUseItems';
+
+export const vueUse = vueUseCore;
+
+// EXPORTAR TODOS OS HELPERS DENTRO DE UM OBJETO PARA SIMULAR A BIBLIOTECA LODASH...
+export const _ = () => {
+    return {
+        Browser,
+        Dates,
+        Iterables,
+        Math,
+        Objects,
+        Strings,
+        Types,
+        Validations,
+        Electrical,
+        Format
+    };
+};

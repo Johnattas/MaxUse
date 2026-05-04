@@ -1,4 +1,4 @@
-import { unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 /**
  * Remove a propriedade em um caminho específico de um objeto.
@@ -8,8 +8,8 @@ import { unref } from 'vue';
  * @param path O caminho da propriedade a ser removida (string ou array).
  * @returns Retorna true se a propriedade for removida com sucesso, caso contrário false.
  */
-export function unset(object: any, path: string | string[]): boolean {
-    const data = unref(object);
+export function unset(object: MaybeRefOrGetter<any>, path: string | string[]): boolean {
+    const data = toValue(object);
     if (data === null || typeof data !== 'object') return false;
 
     const pathArray = Array.isArray(path)

@@ -1,4 +1,4 @@
-import { unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 /**
  * Encontra o último item de uma lista que satisfaça uma condição.
@@ -8,10 +8,10 @@ import { unref } from 'vue';
  * @returns Retorna o elemento correspondente encontrado, ou undefined.
  */
 export function findLast<T>(
-    collection: T[] | null | undefined,
+    collection: MaybeRefOrGetter<T[] | null | undefined>,
     predicate: (value: T, index: number, collection: T[]) => boolean
 ): T | undefined {
-    const data = unref(collection);
+    const data = toValue(collection);
 
     if (!data || !Array.isArray(data)) return undefined;
 

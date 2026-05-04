@@ -1,4 +1,4 @@
-import { unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 /**
  * Verifica se o valor é classificado como um Array.
@@ -7,6 +7,6 @@ import { unref } from 'vue';
  * @param value O valor a ser verificado.
  * @returns Retorna true se o valor for um array, caso contrário false.
  */
-export function isArray(value: any): value is any[] {
-    return Array.isArray(unref(value));
+export function isArray(value: MaybeRefOrGetter<any>): value is any[] {
+    return Array.isArray(toValue(value));
 }

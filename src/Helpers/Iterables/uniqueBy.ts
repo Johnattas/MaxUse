@@ -1,4 +1,4 @@
-import { unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 /**
  * Retorna itens únicos de um array de objetos com base em uma propriedade específica.
@@ -8,8 +8,8 @@ import { unref } from 'vue';
  * @param key A chave usada para identificar a unicidade ou uma função seletora.
  * @returns Retorna o novo array de valores únicos.
  */
-export function uniqueBy<T>(array: T[] | any, key: string | ((item: T) => any)): T[] {
-    const data = unref(array);
+export function uniqueBy<T>(array: MaybeRefOrGetter<T[] | any>, key: string | ((item: T) => any)): T[] {
+    const data = toValue(array);
     if (!Array.isArray(data)) return [];
 
     const seen = new Set();

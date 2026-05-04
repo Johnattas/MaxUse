@@ -1,4 +1,4 @@
-import { isRef } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 /**
  * Define o valor em um caminho específico de um objeto.
@@ -9,24 +9,22 @@ import { isRef } from 'vue';
  * @param value O valor a ser definido.
  * @returns Retorna o objeto modificado.
  */
-export function set<T = any>(object: any, path: string | string[], value: any): T {
-    if (object === null || object === undefined) return object;
+export function set<T = any>(object: MaybeRefOrGetter<any>, path: string | string[], value: any): T {
+    const data = toValue(object);
+    if (data === null || data === undefined) return object as any;
 
     const pathArray = Array.isArray(path)
         ? path
         : path.replace(/\[(\w+)\]/g, '.$1').replace(/^\./, '').split('.');
 
-    let current = isRef(object) ? object.value : object;
+    let current = data;
     const length = pathArray.length;
 
     for (let i = 0; i < length; i++) {
         const key = pathArray[i];
 
-        if (i === length - 1) if (isRef(current)) (current.value as any)[key] = value;
-        else current[key] = value;
+        if (i === length - 1) current[key] = value;
         else {
-            if (isRef(current)) current = current.value;
-
             if (current[key] === undefined || current[key] === null || typeof current[key] !== 'object') current[key] = {};
 
 

@@ -1,4 +1,4 @@
-import { unref } from 'vue';
+import { toValue, type MaybeRefOrGetter } from 'vue';
 
 /**
  * Cria um novo objeto contendo apenas as chaves que você especificar do objeto original.
@@ -6,8 +6,8 @@ import { unref } from 'vue';
  * @param obj O objeto original (pode ser um Ref).
  * @param keys As chaves a serem mantidas.
  */
-export function pick<T extends object, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
-    const data = unref(obj) as T;
+export function pick<T extends object, K extends keyof T>(obj: MaybeRefOrGetter<T>, keys: K[]): Pick<T, K> {
+    const data = toValue(obj) as T;
     const result = {} as Pick<T, K>;
 
     if (!data) return result;
@@ -26,8 +26,8 @@ export function pick<T extends object, K extends keyof T>(obj: T, keys: K[]): Pi
  * @param obj O objeto original (pode ser um Ref).
  * @param keys As chaves a serem removidas.
  */
-export function omit<T extends object, K extends keyof T>(obj: T, keys: K[]): Omit<T, K> {
-    const data = unref(obj) as T;
+export function omit<T extends object, K extends keyof T>(obj: MaybeRefOrGetter<T>, keys: K[]): Omit<T, K> {
+    const data = toValue(obj) as T;
     const result = { ...data };
 
     if (!data) return result as Omit<T, K>;
