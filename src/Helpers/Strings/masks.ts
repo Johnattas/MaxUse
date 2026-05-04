@@ -4,6 +4,12 @@ import { isBlank } from '../Types/isBlank';
 
 type RefString = MaybeRefOrGetter<string | number | null | undefined>;
 
+/**
+ * Aplica a máscara de CEP brasileiro em uma string.
+ *
+ * @param value A string com o CEP.
+ * @returns O CEP formatado ou a string original se não for possível.
+ */
 export function formatCep(value: RefString): string {
     const data = toValue(value);
     if (isBlank(data)) return '';
@@ -13,24 +19,48 @@ export function formatCep(value: RefString): string {
     return String(data);
 }
 
+/**
+ * Aplica a máscara de CPF em uma string.
+ *
+ * @param value A string com o CPF.
+ * @returns O CPF formatado.
+ */
 export function formatCpf(value: RefString): string {
     const data = toValue(value);
     if (isBlank(data)) return '';
     return maskBr.cpf(data);
 }
 
+/**
+ * Aplica a máscara de CNPJ em uma string.
+ *
+ * @param value A string com o CNPJ.
+ * @returns O CNPJ formatado.
+ */
 export function formatCnpj(value: RefString): string {
     const data = toValue(value);
     if (isBlank(data)) return '';
     return maskBr.cnpj(data);
 }
 
+/**
+ * Aplica a máscara de CPF ou CNPJ dependendo do tamanho da string.
+ *
+ * @param value A string com o CPF ou CNPJ.
+ * @returns O documento formatado.
+ */
 export function formatCpfCnpj(value: RefString): string {
     const data = toValue(value);
     if (isBlank(data)) return '';
     return maskBr.cpfcnpj(data);
 }
 
+/**
+ * Aplica a máscara de telefone brasileiro em uma string.
+ *
+ * @param phone_number O número de telefone.
+ * @returns O telefone formatado.
+ */
 export function formatPhone(phone_number: RefString): string {
     const data = toValue(phone_number);
 

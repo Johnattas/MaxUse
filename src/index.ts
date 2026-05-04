@@ -55,10 +55,10 @@ const ownHelpers = {
 /**
  * Helpers do VueUse (filtrados para evitar duplicatas com os próprios).
  */
-const filteredVueUse: Record<string, any> = {};
+const filteredVueUse = {} as Omit<typeof vueUseCore, keyof typeof ownHelpers | 'vueUse'>;
 const vueUseKeys = Object.keys(vueUseCore).filter((key) => key !== 'vueUse');
 
-for (const key of vueUseKeys) if (!(key in ownHelpers)) filteredVueUse[key] = (vueUseCore as any)[key];
+for (const key of vueUseKeys) if (!(key in ownHelpers)) (filteredVueUse as Record<string, any>)[key] = (vueUseCore as Record<string, any>)[key];
 
 
 /**

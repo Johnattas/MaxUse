@@ -1,12 +1,13 @@
 # MaxUse
 
-Uma poderosa biblioteca de utilitários para Vue 3, combinando as melhores ferramentas do **VueUse**, a praticidade e conveniência do **Lodash** e uma vasta coleção de helpers customizados para facilitar o dia a dia do desenvolvimento.
+[![npm version](https://img.shields.io/npm/v/max-use.svg)](https://www.npmjs.com/package/max-use)
+[![license](https://img.shields.io/npm/l/max-use.svg)](https://github.com/johnattas/MaxUse/blob/main/LICENSE)
 
-Totalmente projetada em torno do sistema de reatividade do Vue, todas as funções processam de maneira fluida tanto valores reativos (Refs, Computeds, Getters) quanto primitivos, utilizando nativamente `toValue` e `MaybeRefOrGetter`.
+Uma poderosa biblioteca de utilitários para Vue 3, combinando as melhores ferramentas do **VueUse**, a praticidade do **Lodash** e uma vasta coleção de helpers customizados para o desenvolvimento moderno.
+
+Totalmente projetada em torno do sistema de reatividade do Vue, todas as funções processam de maneira fluida tanto valores reativos (Refs, Computeds, Getters) quanto primitivos, utilizando nativamente `toValue`.
 
 ## 📦 Instalação
-
-Instale a biblioteca e suas `peerDependencies` através do npm (ou yarn, pnpm):
 
 ```bash
 npm install max-use @vueuse/core @vueuse/integrations vue ziggy-js
@@ -14,24 +15,22 @@ npm install max-use @vueuse/core @vueuse/integrations vue ziggy-js
 
 ## 🚀 Como Usar
 
-A **MaxUse** possui uma arquitetura modularizada, oferecendo flexibilidade total na forma de importação, adaptando-se às necessidades do seu projeto e suportando *tree-shaking*.
+A **MaxUse** possui uma arquitetura modularizada, oferecendo flexibilidade total na forma de importação e suporte total a *tree-shaking*.
 
-### Importação Individual (Recomendado)
-
-A melhor forma de importar apenas o que você precisa:
+### 1. Importação Individual (Recomendado)
 
 ```ts
 import { isString, isWeekend, capitalize, deepMerge } from 'max-use'
 
 const text = "hello"
 if (isString(text)) {
-  console.log(capitalize(text)) // Saída: Hello
+  console.log(capitalize(text)) // Hello
 }
 ```
 
-### Importando como Lodash (`_`)
+### 2. O Objeto Centralizado (`_`)
 
-Para manter a consistência e facilidade do padrão Lodash, a MaxUse exporta o objeto `_`. Ele agrupa **todos os helpers próprios da MaxUse** e também inclui as funções e composables do **VueUse**, priorizando as funções da MaxUse para prevenir conflitos de nomes de forma inteligente.
+Para manter a conveniência do padrão Lodash, a MaxUse exporta o objeto `_`. Ele agrupa **todos os helpers próprios** e também inclui as funções do **VueUse**, priorizando a MaxUse em caso de conflitos.
 
 ```ts
 import { _ } from 'max-use'
@@ -40,70 +39,88 @@ import { _ } from 'max-use'
 const id = _.random(1, 10)
 const merged = _.deepMerge({ a: 1 }, { b: 2 })
 
-// Composables do VueUse injetados no mesmo objeto
+// Composables do VueUse integrados
 const { x, y } = _.useMouse()
 ```
 
-### Importando por Categoria
+### 3. Importação por Submódulos
 
-Módulos individuais podem ser importados utilizando os *subpaths*, mantendo o pacote e as referências sempre leves:
+Para otimizar o build, você pode importar diretamente das categorias:
 
 ```ts
 import { isTouchDevice } from 'max-use/browser'
-import { isPast, isFuture, isWeekend } from 'max-use/dates'
-import { first, last, uniqueBy } from 'max-use/iterables'
+import { addTime, isWeekend } from 'max-use/dates'
+import { first, uniqueBy } from 'max-use/iterables'
 import { average, median } from 'max-use/math'
-import { deepMerge, renameKeys, mapValues } from 'max-use/objects'
-import { truncate, noHtml, initials, readingTime, maskSensitive } from 'max-use/strings'
-import { isEmail } from 'max-use/validations'
-import { formatBytes } from 'max-use/format'
+import { deepMerge, renameKeys } from 'max-use/objects'
+import { truncate, readingTime } from 'max-use/strings'
 ```
 
-### VueUse Original Completo
+## ⚡ Poder de Reatividade
 
-Se em algum momento você precisar de acesso à instância integral e intocada do `VueUse`, a MaxUse exporta o objeto `vueUse` com todos os itens sem nenhuma exceção.
+Diferente de bibliotecas utilitárias comuns, a MaxUse entende a reatividade do Vue. Você pode passar valores puros, `refs` ou funções `getter`.
 
 ```ts
-import { vueUse } from 'max-use'
+import { ref, computed } from 'vue'
+import { isPast } from 'max-use'
 
-const { x, y } = vueUse.useMouse()
+const date = ref(new Date('2020-01-01'))
+const isExpired = computed(() => isPast(date)) // Reativo!
+
+// Também aceita getters
+const isWeekendNow = isWeekend(() => new Date())
 ```
 
-## 🛠️ Funcionalidades e Categorias
+## 🛠️ Categorias e Funcionalidades
 
-- **Browser**: Verificações relativas a ambiente e dispositivos (ex: `isTouchDevice`).
-- **Dates**: Utilitários focados em manipulação, como verificações rápidas (`isPast`, `isFuture`, `isWeekend`, `addTime`).
-- **Iterables**: Helpers de arrays modernos e encadeados (`first`, `last`, `uniqueBy`, `chunk`).
-- **Math**: Funções numéricas e estatísticas compatíveis com reatividade (`average`, `median`, `roundUp`, `roundDown`).
-- **Objects**: Manipulação inteligente e recursiva de objetos (`deepMerge`, `renameKeys`, `set`, `mapValues`).
-- **Strings**: Limpeza, máscara e análise de texto (`truncate`, `stripHtml`/`noHtml`, `readingTime`, `maskSensitive`, `initials`).
-- **Types**: Validação rigorosa de tipagens e estado da variável (`isString`, `isArray`, `isBlank`).
-- **Validations**: Conjunto de verificações comuns (`isEmail`, e mais).
-- **Format**: Formatadores úteis (`formatBytes` etc).
-- **Electrical**: Cálculos úteis focados no domínio elétrico/físico.
-- **Composables**: Hooks reativos complementares ao VueUse.
-- **Routes**: Helpers de integração, focado primordialmente no contexto do `ziggy-js` no Vue.
+| Categoria | Descrição | Exemplos |
+| :--- | :--- | :--- |
+| **Browser** | Ambiente e dispositivos | `isTouchDevice` |
+| **Dates** | Manipulação e verificação de datas | `isWeekend`, `addTime`, `isPast`, `isFuture`, `differences` |
+| **Iterables** | Manipulação de arrays e coleções | `uniqueBy`, `first`, `last`, `chunk`, `groupBy`, `sortBy`, `sample` |
+| **Math** | Cálculos e estatísticas | `average`, `median`, `roundUp`, `roundDown` |
+| **Objects** | Manipulação profunda de objetos | `deepMerge`, `deepClone`, `set`, `get`, `renameKeys`, `mapValues` |
+| **Strings** | Transformação e análise de texto | `capitalize`, `truncate`, `maskSensitive`, `readingTime`, `noHtml`, `initials` |
+| **Types** | Validação de tipos e estados | `isBlank`, `hasContent`, `isObject`, `isNumber` |
+| **Validations** | Verificações de dados comuns | `isEmail`, `isCpf`, `isCnpj` |
+| **Format** | Formatadores de exibição | `formatBytes`, `formatCurrency` |
+| **Electrical** | Cálculos de domínio elétrico | `wireSize` |
 
-## ⚡ Suporte à Reatividade do Vue 3
+## 🧩 Auto Import (Opcional)
 
-Esta não é uma simples biblioteca JavaScript. Todos os helpers foram refatorados para aceitar um tipo primitivo, um `Ref` ou até um `Getter function`. Através da função `toValue()`, as funções resolvem a reatividade e devolvem os resultados correspondentes.
+A MaxUse é totalmente compatível com `unplugin-auto-import`.
 
 ```ts
-import { ref } from 'vue'
-import { _ } from 'max-use'
+// vite.config.ts
+import AutoImport from 'unplugin-auto-import/vite'
 
-const myText = ref("texto confidencial")
-// O helper entende que é um Ref automaticamente!
-const masked = _.maskSensitive(myText) 
+export default defineConfig({
+  plugins: [
+    AutoImport({
+      imports: [
+        {
+          'max-use': [
+            '_', // Importa o objeto centralizado
+            'vueUse', // Importa o VueUse integral
+            // Ou liste os helpers específicos:
+            'isPast',
+            'deepMerge',
+            'capitalize'
+          ]
+        }
+      ]
+    })
+  ]
+})
 ```
 
 ## 🤝 Contribuindo
 
-Ao contribuir com novas funcionalidades para a MaxUse, lembre-se:
-1. Sempre receba `MaybeRefOrGetter<T>` para argumentos principais quando for lidar com valores reativos.
-2. Utilize `toValue(arg)` internamente em vez de `unref(arg)`.
-3. Garanta que a função não conflite negativamente com as ferramentas essenciais do VueUse, a menos que seja intencional.
+Ao contribuir, siga estes princípios:
+1. **Padrão de Reatividade**: Use sempre `MaybeRefOrGetter<T>` para argumentos.
+2. **Implementação**: Utilize `toValue(arg)` internamente.
+3. **Documentação**: Adicione JSDoc completo para todas as funções.
 
 ## 📄 Licença
 
-**MIT License** © Desenvolvido por [Johnattas Santana](https://github.com/johnattas)
+**MIT License** © [Johnattas Santana](https://github.com/johnattas)

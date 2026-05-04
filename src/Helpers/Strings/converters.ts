@@ -3,6 +3,12 @@ import { isBlank } from '../Types/isBlank';
 
 type RefString = MaybeRefOrGetter<string | number | null | undefined>;
 
+/**
+ * Converte uma string ou número em uma string padronizada, sem acentos, sem caracteres especiais e em letras minúsculas (ideal para busca).
+ *
+ * @param value O valor a ser normalizado.
+ * @returns A string normalizada.
+ */
 export function toSearchableString(value: RefString): string {
     const data = toValue(value);
     if (!data || isBlank(data)) return '';
@@ -12,6 +18,13 @@ export function toSearchableString(value: RefString): string {
 
 export const normalizeToSearch = toSearchableString;
 
+/**
+ * Converte um valor em um número, com a opção de arredondar para uma quantidade específica de casas decimais.
+ *
+ * @param value O valor a ser convertido.
+ * @param decimals Opcional. A quantidade de casas decimais.
+ * @returns O número convertido ou arredondado.
+ */
 export function toNumber(value: RefString, decimals: number | null = null): number {
     const data = toValue(value);
     if (!data || isBlank(data) || isNaN(Number(data))) return 0;

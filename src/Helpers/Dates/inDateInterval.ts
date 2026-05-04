@@ -23,6 +23,13 @@ export function inDateInterval(value: MaybeRefOrGetter<TDate>, interval: MaybeRe
     return target >= start && (!end || target <= end);
 }
 
+/**
+ * Alias para inDateInterval. Verifica se uma data está dentro de um intervalo.
+ *
+ * @param value A data a ser verificada.
+ * @param interval O intervalo (início e fim).
+ * @returns Retorna true se estiver no intervalo.
+ */
 export function isInDateInterval(value: MaybeRefOrGetter<TDate>, interval: MaybeRefOrGetter<IDateInterval>): boolean {
     return inDateInterval(value, interval);
 }

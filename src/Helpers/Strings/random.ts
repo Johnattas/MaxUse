@@ -49,6 +49,11 @@ export function Random (
     return result;
 }
 
+/**
+ * Gera um Universally Unique Lexicographically Sortable Identifier (ULID) em letras minúsculas.
+ *
+ * @returns Retorna o ULID gerado.
+ */
 export function ulid () {
     return getUlid();
 }

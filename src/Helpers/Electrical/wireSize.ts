@@ -25,6 +25,13 @@ function toPhasePhase(phaseNeutralVoltage: number): number {
     return array.reduce((anterior, atual) => Math.abs(atual - valor) < Math.abs(anterior - valor) ? atual : anterior);
 }
 
+/**
+ * Calcula a seção nominal de um cabo elétrico com base na corrente, opções de material, isolação, entre outros.
+ *
+ * @param current A corrente elétrica do circuito.
+ * @param options Opções do cálculo, como material, tensão, método de instalação e distância.
+ * @returns Um objeto com a bitola do cabo, a corrente máxima, a queda de tensão e a porcentagem de perda.
+ */
 export async function wireSize(current: T, options: WireOptions) {
     const data = toValue(current);
     if (isBlank(data)) return null;

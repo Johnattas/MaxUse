@@ -3,6 +3,12 @@ import { isBlank } from '../Types/isBlank';
 
 type RefString = MaybeRefOrGetter<string | number | null | undefined>;
 
+/**
+ * Converte uma string para o formato snake_case.
+ *
+ * @param value A string a ser convertida.
+ * @returns A string em formato snake_case.
+ */
 export function snakeCase(value: RefString): string {
     const data = toValue(value);
     if (!data || isBlank(data)) return '';
@@ -13,6 +19,12 @@ export function snakeCase(value: RefString): string {
     return words ? words.map((word: string) => word.toLowerCase()).join('_') : '';
 }
 
+/**
+ * Converte uma string para o formato kebab-case.
+ *
+ * @param value A string a ser convertida.
+ * @returns A string em formato kebab-case.
+ */
 export function kebabCase(value: RefString): string {
     const data = toValue(value);
     if (!data || isBlank(data)) return '';
@@ -23,6 +35,12 @@ export function kebabCase(value: RefString): string {
     return words ? words.map((word: string) => word.toLowerCase()).join('-') : '';
 }
 
+/**
+ * Converte uma string para o formato camelCase.
+ *
+ * @param value A string a ser convertida.
+ * @returns A string em formato camelCase.
+ */
 export function camelCase(value: RefString): string {
     const data = toValue(value);
     if (!data || isBlank(data)) return '';
