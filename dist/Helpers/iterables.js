@@ -18,4 +18,3 @@ export { isEqual } from './Iterables/isEqual';
 export { isObject } from './Iterables/isObject';
 export { isArray } from './Iterables/isArray';
 export { sample } from './Iterables/sample';
-//# sourceMappingURL=iterables.d.ts.map

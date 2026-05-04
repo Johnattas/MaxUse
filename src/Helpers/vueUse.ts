@@ -39,7 +39,6 @@ export const injectLocal = vueUseCore.injectLocal;
 export const invoke = vueUseCore.invoke;
 export const isDef = vueUseCore.isDef;
 export const isDefined = vueUseCore.isDefined;
-export const isObject = vueUseCore.isObject;
 export const makeDestructurable = vueUseCore.makeDestructurable;
 export const mapGamepadToXbox360Controller = vueUseCore.mapGamepadToXbox360Controller;
 export const noop = vueUseCore.noop;
