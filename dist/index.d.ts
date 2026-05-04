@@ -321,6 +321,8 @@ export declare const _: {
         cpfcnpj: typeof Validations.isCpfCnpj;
         isEmail: typeof Validations.isEmail;
         email: typeof Validations.isEmail;
+        cepIsValid: typeof Validations.cepIsValid;
+        cep: typeof Validations.cepIsValid;
     };
     isValid: {
         isCpf: typeof Validations.isCpf;
@@ -331,11 +333,14 @@ export declare const _: {
         cpfcnpj: typeof Validations.isCpfCnpj;
         isEmail: typeof Validations.isEmail;
         email: typeof Validations.isEmail;
+        cepIsValid: typeof Validations.cepIsValid;
+        cep: typeof Validations.cepIsValid;
     };
     isCpf(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
     isCnpj(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
     isCpfCnpj(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
     isEmail(value: import('vue').MaybeRefOrGetter<string | null | undefined>): boolean;
+    cepIsValid(value: import('vue').MaybeRefOrGetter<string | number | null | undefined>): boolean;
     isArray: typeof Types.isArray;
     isObject: typeof Types.isObject;
     isNumber: typeof Types.isNumber;

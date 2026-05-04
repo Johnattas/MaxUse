@@ -38,8 +38,21 @@ function isEmail(value) {
 	return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(data);
 }
 //#endregion
+//#region src/Helpers/Validations/cepIsValid.ts
+/**
+* Valida se uma string é um CEP válido.
+*
+* @param value O valor a ser validado (string, Ref ou Getter).
+* @returns True se for um CEP válido, false caso contrário.
+*/
+function cepIsValid(value) {
+	const data = toValue(value);
+	return import_dist.validateBr.cep(data);
+}
+//#endregion
 //#region src/Helpers/Validations/index.ts
 var Validations_exports = /* @__PURE__ */ __exportAll({
+	cepIsValid: () => cepIsValid,
 	isCnpj: () => isCnpj,
 	isCpf: () => isCpf,
 	isCpfCnpj: () => isCpfCnpj,
@@ -55,10 +68,12 @@ var validate = {
 	isCpfCnpj,
 	cpfcnpj: isCpfCnpj,
 	isEmail,
-	email: isEmail
+	email: isEmail,
+	cepIsValid,
+	cep: cepIsValid
 };
 var isValid = validate;
 //#endregion
-export { isCnpj, isCpf, isCpfCnpj, isEmail, isValid, Validations_exports as t, validate };
+export { cepIsValid, isCnpj, isCpf, isCpfCnpj, isEmail, isValid, Validations_exports as t, validate };
 
 //# sourceMappingURL=validations.es.js.map
