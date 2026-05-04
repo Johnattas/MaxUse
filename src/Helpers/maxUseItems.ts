@@ -1,3 +1,5 @@
+import * as Composables from '../Composables';
+import * as Routes from '../Routes';
 import * as Browser from './Browser';
 import * as Dates from './Dates';
 import * as Iterables from './Iterables';
@@ -18,6 +20,8 @@ export const maxUseItems = (): string[] => {
     const allKeys = new Set<string>();
 
     const modules = [
+        Composables,
+        Routes,
         Browser,
         Dates,
         Iterables,
