@@ -21970,7 +21970,7 @@
 	//#endregion
 	//#region src/Helpers/maxUseItems.ts
 	var maxUseItems = () => {
-		return [...JSON.parse(exports_default)];
+		return [...[], ...JSON.parse(exports_default)];
 	};
 	//#endregion
 	//#region src/index.ts
