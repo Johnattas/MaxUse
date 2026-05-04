@@ -4,6 +4,6 @@
  */
 export declare const maxUseItems: () => string[];
 export declare const maxUseAutoImport: () => {
-    'max-use': string[];
+    '@maxvue/max-use': string[];
 };
 //# sourceMappingURL=maxUseItems.d.ts.map

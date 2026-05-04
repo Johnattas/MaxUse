@@ -42,7 +42,9 @@ var maxUseItems = () => {
 	return Array.from(allKeys).sort();
 };
 var maxUseAutoImport = () => {
-	return { "max-use": maxUseItems() };
+	const items = [...maxUseItems()];
+	console.log(items.filter((i) => i.includes("ow")));
+	return { "@maxvue/max-use": maxUseItems() };
 };
 //#endregion
 //#region src/index.ts
