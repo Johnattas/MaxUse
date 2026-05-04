@@ -44,7 +44,6 @@ export const mapGamepadToXbox360Controller = vueUseCore.mapGamepadToXbox360Contr
 export const noop = vueUseCore.noop;
 export const normalizeDate = vueUseCore.normalizeDate;
 export const notNullish = vueUseCore.notNullish;
-export const now = vueUseCore.now;
 export const objectEntries = vueUseCore.objectEntries;
 export const objectOmit = vueUseCore.objectOmit;
 export const objectPick = vueUseCore.objectPick;
