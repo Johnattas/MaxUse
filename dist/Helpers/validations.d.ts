@@ -1,29 +1,11 @@
 import { MaybeRefOrGetter } from 'vue';
+import { isDate, inDateInterval, isInDateInterval, isSameDay, hasPassedHours, hasPassedMinutes, hasPassedDays } from './Dates';
+import { isNumber, isNumeric, numeric, isBlank, hasContent, canIterate } from './Types';
 type RefString = MaybeRefOrGetter<string | number | null | undefined>;
-export declare function hasContent(value: RefString, if_zero?: boolean): boolean;
-export declare function isBlank(value: RefString, if_zero?: boolean): boolean;
-export declare function isNumber(value: RefString): boolean;
-export declare const isNumeric: typeof isNumber;
-export declare const numeric: typeof isNumber;
+export { hasContent, isBlank, isNumber, isNumeric, numeric, isDate, inDateInterval, isInDateInterval, isSameDay, hasPassedHours, hasPassedMinutes, hasPassedDays, canIterate };
 export declare function isCpf(value: RefString): any;
 export declare function isCnpj(value: RefString): any;
 export declare function isCpfCnpj(value: RefString): any;
-export declare function isDate(valor: RefString): boolean;
-type TDate = string | Date | null | undefined;
-type IDateInterval = {
-    start: Date | string;
-    end?: Date | string | null;
-};
-export declare function inDateInterval(value: MaybeRefOrGetter<TDate>, interval: MaybeRefOrGetter<IDateInterval>): boolean;
-export declare function isInDateInterval(value: MaybeRefOrGetter<TDate>, interval: MaybeRefOrGetter<IDateInterval>): boolean;
-type TDateArray = Date[] | string[];
-type Operator = 'and' | 'or';
-export declare function isSameDay(dates: MaybeRefOrGetter<TDateArray>, operator?: Operator): boolean;
-type TPassed = string | Date | null | undefined;
-export declare function hasPassedHours(dateValue: MaybeRefOrGetter<TPassed>, hours?: number): boolean;
-export declare function hasPassedMinutes(dateValue: MaybeRefOrGetter<TPassed>, minutes?: number): boolean;
-export declare function hasPassedDays(dateValue: MaybeRefOrGetter<TPassed>, days?: number): boolean;
-export declare function canIterate<T>(obj: any): obj is Iterable<T>;
 export declare const validate: {
     number: typeof isNumber;
     isNumber: typeof isNumber;
@@ -76,5 +58,4 @@ export declare const isValid: {
     hasPassedDays: typeof hasPassedDays;
     passedDays: typeof hasPassedDays;
 };
-export {};
 //# sourceMappingURL=validations.d.ts.map

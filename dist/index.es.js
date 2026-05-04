@@ -71,28 +71,6 @@ function filterByNot(collection, key, value = true) {
 	return Object.fromEntries(Object.entries(data).filter(([, item]) => !isExcluded(item)));
 }
 //#endregion
-//#region src/Helpers/Iterables/get.ts
-/**
-* Obtém o valor no caminho específico de um objeto.
-* Semelhante ao _.get do Lodash.
-*
-* @param object O objeto para consultar.
-* @param path O caminho da propriedade a ser obtida (string ou array).
-* @param defaultValue O valor retornado se o caminho resolvido for undefined.
-* @returns Retorna o valor resolvido.
-*/
-function get(object, path, defaultValue) {
-	const data = unref(object);
-	if (data === null || data === void 0) return defaultValue;
-	const pathArray = Array.isArray(path) ? path : path.replace(/\[(\w+)\]/g, ".$1").replace(/^\./, "").split(".");
-	let result = data;
-	for (const key of pathArray) {
-		if (result === null || result === void 0) break;
-		result = result[key];
-	}
-	return result === void 0 ? defaultValue : result;
-}
-//#endregion
 //#region src/Helpers/Iterables/groupBy.ts
 /**
 * Agrupa os elementos de uma coleção de acordo com o resultado de um iteratee.
@@ -264,18 +242,23 @@ function size(value, allow_number = true) {
 	return data.length;
 }
 //#endregion
-//#region src/Helpers/Iterables/now.ts
+//#region src/Helpers/Iterables/sample.ts
 /**
-* Obtém o timestamp em milissegundos que se passaram desde a Era Unix.
-* Semelhante ao _.now do Lodash.
+* Obtém um elemento aleatório de uma coleção.
+* Semelhante ao _.sample do Lodash.
 *
-* @returns Retorna o timestamp.
+* @param collection A coleção de onde extrair o elemento.
+* @returns Retorna o elemento aleatório.
 */
-function now() {
-	return Date.now();
+function sample(collection) {
+	const data = unref(collection);
+	if (!data) return void 0;
+	const items = Array.isArray(data) ? data : Object.values(data);
+	if (items.length === 0) return void 0;
+	return items[Math.floor(Math.random() * items.length)];
 }
 //#endregion
-//#region src/Helpers/Iterables/deepClone.ts
+//#region src/Helpers/Objects/deepClone.ts
 /**
 * Cria uma cópia profunda de um valor, lidando com referências circulares e diversos tipos de dados.
 * Semelhante ao _.cloneDeep do Lodash.
@@ -314,7 +297,29 @@ function deepClone(value, map = /* @__PURE__ */ new WeakMap()) {
 	return clone;
 }
 //#endregion
-//#region src/Helpers/Iterables/unset.ts
+//#region src/Helpers/Objects/get.ts
+/**
+* Obtém o valor no caminho específico de um objeto.
+* Semelhante ao _.get do Lodash.
+*
+* @param object O objeto para consultar.
+* @param path O caminho da propriedade a ser obtida (string ou array).
+* @param defaultValue O valor retornado se o caminho resolvido for undefined.
+* @returns Retorna o valor resolvido.
+*/
+function get(object, path, defaultValue) {
+	const data = unref(object);
+	if (data === null || data === void 0) return defaultValue;
+	const pathArray = Array.isArray(path) ? path : path.replace(/\[(\w+)\]/g, ".$1").replace(/^\./, "").split(".");
+	let result = data;
+	for (const key of pathArray) {
+		if (result === null || result === void 0) break;
+		result = result[key];
+	}
+	return result === void 0 ? defaultValue : result;
+}
+//#endregion
+//#region src/Helpers/Objects/unset.ts
 /**
 * Remove a propriedade em um caminho específico de um objeto.
 * Semelhante ao _.unset do Lodash.
@@ -338,7 +343,7 @@ function unset(object, path) {
 	return delete current[lastKey];
 }
 //#endregion
-//#region src/Helpers/Iterables/isEqual.ts
+//#region src/Helpers/Objects/isEqual.ts
 /**
 * Realiza uma comparação profunda entre dois valores para determinar se eles são equivalentes.
 * Semelhante ao _.isEqual do Lodash.
@@ -381,7 +386,19 @@ function isEqual(value, other) {
 	return true;
 }
 //#endregion
-//#region src/Helpers/Iterables/isObject.ts
+//#region src/Helpers/Types/isArray.ts
+/**
+* Verifica se o valor é classificado como um Array.
+* Semelhante ao _.isArray do Lodash.
+*
+* @param value O valor a ser verificado.
+* @returns Retorna true se o valor for um array, caso contrário false.
+*/
+function isArray(value) {
+	return Array.isArray(unref(value));
+}
+//#endregion
+//#region src/Helpers/Types/isObject.ts
 /**
 * Verifica se o valor é classificado como um objeto (objetos, arrays, funções, regexes, etc).
 * Semelhante ao _.isObject do Lodash.
@@ -395,32 +412,182 @@ function isObject(value) {
 	return data !== null && (type === "object" || type === "function");
 }
 //#endregion
-//#region src/Helpers/Iterables/isArray.ts
+//#region src/Helpers/Types/hasContent.ts
 /**
-* Verifica se o valor é classificado como um Array.
-* Semelhante ao _.isArray do Lodash.
-*
+* Verifica se um valor possui conteúdo (não é nulo, indefinido, string vazia, array vazio, etc).
+* 
 * @param value O valor a ser verificado.
-* @returns Retorna true se o valor for um array, caso contrário false.
+* @param if_zero Se true, considera o número 0 como tendo conteúdo.
+* @returns Retorna true se houver conteúdo.
 */
-function isArray(value) {
-	return Array.isArray(unref(value));
+function hasContent(value, if_zero = false) {
+	const data = toValue(value);
+	if (!data || String(data) === "null" || String(data) === "NULL" || String(data) === "undefined" || String(data) === "UNDEFINED") return false;
+	if (typeof data === "number") return data === 0 ? if_zero : true;
+	if (typeof data === "string") return data.trim().length > 0;
+	if (Array.isArray(data)) return data.length > 0;
+	if (String(data) !== "[object Object]") return String(data).length > 0;
+	if (data instanceof Map || data instanceof Set) return data.size > 0;
+	if (typeof data === "object") return Object.keys(data).length > 0;
+	return data.length > 0;
 }
 //#endregion
-//#region src/Helpers/Iterables/sample.ts
+//#region src/Helpers/Types/isBlank.ts
 /**
-* Obtém um elemento aleatório de uma coleção.
-* Semelhante ao _.sample do Lodash.
-*
-* @param collection A coleção de onde extrair o elemento.
-* @returns Retorna o elemento aleatório.
+* Verifica se um valor está "em branco".
+* 
+* @param value O valor a ser verificado.
+* @param if_zero Se true, considera o número 0 como NÃO estando em branco.
+* @returns Retorna true se estiver em branco.
 */
-function sample(collection) {
-	const data = unref(collection);
-	if (!data) return void 0;
-	const items = Array.isArray(data) ? data : Object.values(data);
-	if (items.length === 0) return void 0;
-	return items[Math.floor(Math.random() * items.length)];
+function isBlank(value, if_zero = false) {
+	return !hasContent(value, if_zero);
+}
+//#endregion
+//#region src/Helpers/Types/isNumber.ts
+/**
+* Verifica se um valor é um número válido.
+* 
+* @param value O valor a ser verificado.
+* @returns Retorna true se for um número.
+*/
+function isNumber(value) {
+	const data = toValue(value);
+	if (isBlank(data, true)) return false;
+	if (String(data).trim() === "") return false;
+	return !Number.isNaN(Number(data));
+}
+var isNumeric = isNumber;
+var numeric = isNumber;
+//#endregion
+//#region src/Helpers/Types/canIterate.ts
+/**
+* Verifica se um objeto é iterável.
+* 
+* @param obj O objeto a ser verificado.
+* @returns Retorna true se for iterável.
+*/
+function canIterate(obj) {
+	return typeof obj?.[Symbol.iterator] === "function";
+}
+//#endregion
+//#region src/Helpers/Dates/now.ts
+/**
+* Obtém o timestamp em milissegundos que se passaram desde a Era Unix.
+* Semelhante ao _.now do Lodash.
+*
+* @returns Retorna o timestamp.
+*/
+function now() {
+	return Date.now();
+}
+//#endregion
+//#region src/Helpers/Dates/isDate.ts
+/**
+* Verifica se um valor é uma data válida.
+*
+* @param valor O valor a ser verificado.
+* @returns Retorna true se for uma data válida.
+*/
+function isDate(valor) {
+	const data = toValue(valor);
+	if (data instanceof Date) return !isNaN(data.getTime());
+	if (typeof data === "string" || typeof data === "number") {
+		const parsed = new Date(data);
+		return !isNaN(parsed.getTime());
+	}
+	return false;
+}
+//#endregion
+//#region src/Helpers/Dates/inDateInterval.ts
+/**
+* Verifica se uma data está dentro de um intervalo.
+*
+* @param value A data a ser verificada.
+* @param interval O intervalo (início e fim).
+* @returns Retorna true se estiver no intervalo.
+*/
+function inDateInterval(value, interval) {
+	const targetDate = toValue(value);
+	const rawInterval = toValue(interval);
+	if (!targetDate || !rawInterval) return true;
+	const target = new Date(targetDate).getTime();
+	const start = new Date(rawInterval.start).getTime();
+	const end = rawInterval.end ? new Date(rawInterval.end).getTime() : false;
+	return target >= start && (!end || target <= end);
+}
+function isInDateInterval(value, interval) {
+	return inDateInterval(value, interval);
+}
+//#endregion
+//#region src/Helpers/Dates/isSameDay.ts
+/**
+* Verifica se as datas fornecidas são do mesmo dia.
+*
+* @param dates Array de datas.
+* @param operator Operador de comparação ('and' ou 'or').
+* @returns Retorna true conforme o operador.
+*/
+function isSameDay(dates, operator = "or") {
+	const values = toValue(dates);
+	if (!values || values.length <= 1) return true;
+	const days = values.map((date) => {
+		const d = new Date(date);
+		return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+	});
+	if (operator === "and") return days.every((day) => day === days[0]);
+	return new Set(days).size < days.length;
+}
+//#endregion
+//#region src/Helpers/Dates/hasPassedHours.ts
+/**
+* Verifica se um determinado número de horas se passou desde a data fornecida.
+*
+* @param dateValue A data inicial.
+* @param hours Quantidade de horas.
+* @returns Retorna true se o tempo já passou.
+*/
+function hasPassedHours(dateValue, hours = 1) {
+	const rawValue = toValue(dateValue);
+	if (!rawValue) return true;
+	const date = new Date(rawValue);
+	if (isNaN(date.getTime())) return true;
+	const timeInMs = hours * 60 * 60 * 1e3;
+	return Date.now() - date.getTime() > timeInMs;
+}
+//#endregion
+//#region src/Helpers/Dates/hasPassedMinutes.ts
+/**
+* Verifica se um determinado número de minutos se passou desde a data fornecida.
+*
+* @param dateValue A data inicial.
+* @param minutes Quantidade de minutos.
+* @returns Retorna true se o tempo já passou.
+*/
+function hasPassedMinutes(dateValue, minutes = 1) {
+	const rawValue = toValue(dateValue);
+	if (!rawValue) return true;
+	const date = new Date(rawValue);
+	if (isNaN(date.getTime())) return true;
+	const timeInMs = minutes * 60 * 1e3;
+	return Date.now() - date.getTime() > timeInMs;
+}
+//#endregion
+//#region src/Helpers/Dates/hasPassedDays.ts
+/**
+* Verifica se um determinado número de dias se passou desde a data fornecida.
+* 
+* @param dateValue A data inicial.
+* @param days Quantidade de dias.
+* @returns Retorna true se o tempo já passou.
+*/
+function hasPassedDays(dateValue, days = 1) {
+	const rawValue = toValue(dateValue);
+	if (!rawValue) return true;
+	const date = new Date(rawValue);
+	if (isNaN(date.getTime())) return true;
+	const timeInMs = days * 24 * 60 * 60 * 1e3;
+	return Date.now() - date.getTime() > timeInMs;
 }
 //#endregion
 //#region src/Helpers/iterables.ts
@@ -5038,28 +5205,6 @@ var validations_exports = /* @__PURE__ */ __exportAll({
 	validate: () => validate
 });
 var import_dist = require_dist();
-function hasContent(value, if_zero = false) {
-	const data = toValue(value);
-	if (!data || String(data) === "null" || String(data) === "NULL" || String(data) === "undefined" || String(data) === "UNDEFINED") return false;
-	if (typeof data === "number") return data === 0 ? if_zero : true;
-	if (typeof data === "string") return data.trim().length > 0;
-	if (Array.isArray(data)) return data.length > 0;
-	if (String(data) !== "[object Object]") return String(data).length > 0;
-	if (data instanceof Map || data instanceof Set) return data.size > 0;
-	if (typeof data === "object") return Object.keys(data).length > 0;
-	return data.length > 0;
-}
-function isBlank(value, if_zero = false) {
-	return !hasContent(value, if_zero);
-}
-function isNumber(value) {
-	const data = toValue(value);
-	if (isBlank(data, true)) return false;
-	if (String(data).trim() === "") return false;
-	return !Number.isNaN(Number(data));
-}
-var isNumeric = isNumber;
-var numeric = isNumber;
 function isCpf(value) {
 	const data = toValue(value);
 	return import_dist.validateBr.cpf(data);
@@ -5071,64 +5216,6 @@ function isCnpj(value) {
 function isCpfCnpj(value) {
 	const data = toValue(value);
 	return import_dist.validateBr.cpfcnpj(data);
-}
-function isDate(valor) {
-	const data = toValue(valor);
-	if (data instanceof Date) return !isNaN(data.getTime());
-	if (typeof data === "string" || typeof data === "number") {
-		const parsed = new Date(data);
-		return !isNaN(parsed.getTime());
-	}
-	return false;
-}
-function inDateInterval(value, interval) {
-	const targetDate = toValue(value);
-	const rawInterval = toValue(interval);
-	if (!targetDate || !rawInterval) return true;
-	const target = new Date(targetDate).getTime();
-	const start = new Date(rawInterval.start).getTime();
-	const end = rawInterval.end ? new Date(rawInterval.end).getTime() : false;
-	return target >= start && (!end || target <= end);
-}
-function isInDateInterval(value, interval) {
-	return inDateInterval(value, interval);
-}
-function isSameDay(dates, operator = "or") {
-	const values = toValue(dates);
-	if (!values || values.length <= 1) return true;
-	const days = values.map((date) => {
-		const d = new Date(date);
-		return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-	});
-	if (operator === "and") return days.every((day) => day === days[0]);
-	return new Set(days).size < days.length;
-}
-function hasPassedHours(dateValue, hours = 1) {
-	const rawValue = toValue(dateValue);
-	if (!rawValue) return true;
-	const date = new Date(rawValue);
-	if (isNaN(date.getTime())) return true;
-	const timeInMs = hours * 60 * 60 * 1e3;
-	return Date.now() - date.getTime() > timeInMs;
-}
-function hasPassedMinutes(dateValue, minutes = 1) {
-	const rawValue = toValue(dateValue);
-	if (!rawValue) return true;
-	const date = new Date(rawValue);
-	if (isNaN(date.getTime())) return true;
-	const timeInMs = minutes * 60 * 1e3;
-	return Date.now() - date.getTime() > timeInMs;
-}
-function hasPassedDays(dateValue, days = 1) {
-	const rawValue = toValue(dateValue);
-	if (!rawValue) return true;
-	const date = new Date(rawValue);
-	if (isNaN(date.getTime())) return true;
-	const timeInMs = days * 24 * 60 * 60 * 1e3;
-	return Date.now() - date.getTime() > timeInMs;
-}
-function canIterate(obj) {
-	return typeof obj?.[Symbol.iterator] === "function";
 }
 var validate = {
 	number: isNumber,
@@ -5158,28 +5245,7 @@ var validate = {
 };
 var isValid = validate;
 //#endregion
-//#region src/Helpers/format.ts
-var format_exports = /* @__PURE__ */ __exportAll({
-	Convert: () => Convert,
-	Format: () => Format,
-	StrFilter: () => StrFilter,
-	camelCase: () => camelCase,
-	formatCep: () => formatCep,
-	formatCnpj: () => formatCnpj,
-	formatCpf: () => formatCpf,
-	formatCpfCnpj: () => formatCpfCnpj,
-	formatPhone: () => formatPhone,
-	kebabCase: () => kebabCase,
-	normalizeToSearch: () => normalizeToSearch,
-	onlyLetters: () => onlyLetters,
-	onlyLettersAndNumbers: () => onlyLettersAndNumbers,
-	onlyNumbers: () => onlyNumbers,
-	onlySymbols: () => onlySymbols,
-	removeSpaces: () => removeSpaces,
-	snakeCase: () => snakeCase,
-	toNumber: () => toNumber,
-	toSearchableString: () => toSearchableString
-});
+//#region src/Helpers/Strings/masks.ts
 function formatCep(value) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
@@ -5211,6 +5277,8 @@ function formatPhone(phone_number) {
 	if (only_numbers.length === 13) return only_numbers.replace(/55(\d{2})9(\d{4})(\d{4})/, "($1) 9 $2-$3");
 	return String(data);
 }
+//#endregion
+//#region src/Helpers/Strings/filters.ts
 function onlyLetters(value, space = false) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
@@ -5236,12 +5304,8 @@ function removeSpaces(value) {
 	if (isBlank(data)) return "";
 	return String(data).replace(/\s+/g, "");
 }
-function toSearchableString(value) {
-	const data = toValue(value);
-	if (!data || isBlank(data)) return "";
-	return removeSpaces(data).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]/g, "").replace(/\s+/g, "").toLowerCase();
-}
-var normalizeToSearch = toSearchableString;
+//#endregion
+//#region src/Helpers/Strings/cases.ts
 function snakeCase(value) {
 	const data = toValue(value);
 	if (!data || isBlank(data)) return "";
@@ -5263,6 +5327,14 @@ function camelCase(value) {
 		return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 	}).join("") : "";
 }
+//#endregion
+//#region src/Helpers/Strings/converters.ts
+function toSearchableString(value) {
+	const data = toValue(value);
+	if (!data || isBlank(data)) return "";
+	return removeSpaces(data).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]/g, "").replace(/\s+/g, "").toLowerCase();
+}
+var normalizeToSearch = toSearchableString;
 function toNumber(value, decimals = null) {
 	const data = toValue(value);
 	if (!data || isBlank(data) || isNaN(Number(data))) return 0;
@@ -5273,51 +5345,6 @@ function toNumber(value, decimals = null) {
 	}
 	return number;
 }
-var Convert = {
-	toNumber,
-	number: toNumber,
-	toSearchableString
-};
-var Format = {
-	cep: formatCep,
-	cpf: formatCpf,
-	cnpj: formatCnpj,
-	cpfCnpj: formatCpfCnpj,
-	formatPhone,
-	phone: formatPhone,
-	onlyLetters,
-	onlyNumbers,
-	onlyLettersAndNumbers,
-	lettersAndNumbers: onlyLettersAndNumbers,
-	numbersAndLetters: onlyLettersAndNumbers,
-	toSearch: toSearchableString,
-	search: toSearchableString,
-	searchable: toSearchableString,
-	noSpaces: removeSpaces,
-	removeSpaces,
-	normalizeToSearch,
-	symbols: onlySymbols,
-	onlySymbols,
-	snakeCase,
-	snake: snakeCase,
-	snake_case: snakeCase,
-	kebabCase,
-	camelCase,
-	camel: camelCase,
-	camel_case: camelCase,
-	kebab: kebabCase,
-	kebab_case: kebabCase,
-	toNumber
-};
-var StrFilter = {
-	onlyLetters,
-	onlyNumbers,
-	onlyLettersAndNumbers,
-	lettersAndNumbers: onlyLettersAndNumbers,
-	numbersAndLetters: onlyLettersAndNumbers,
-	onlySymbols,
-	symbols: onlySymbols
-};
 //#endregion
 //#region node_modules/ulid/dist/browser/index.js
 var ENCODING = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
@@ -5411,16 +5438,17 @@ function ulid$1(seedTime, prng) {
 	return encodeTime(!seedTime || isNaN(seedTime) ? Date.now() : seedTime, 10) + encodeRandom(RANDOM_LEN, currentPRNG);
 }
 //#endregion
-//#region src/Helpers/str.ts
-var str_exports = /* @__PURE__ */ __exportAll({
-	Random: () => Random,
-	Str: () => Str,
-	intervalRandom: () => intervalRandom,
-	ulid: () => ulid
-});
+//#region src/Helpers/Strings/random.ts
 function getUlid() {
 	return ulid$1().toLowerCase();
 }
+/**
+* Gera uma string aleatória.
+*
+* @param arg1 Comprimento ou código de tipo.
+* @param arg2 Comprimento ou código de tipo.
+* @returns Retorna a string gerada.
+*/
 function Random(arg1 = 20, arg2 = "letter lower") {
 	if (String(arg1).includes("ulid") || String(arg2).includes("ulid")) return getUlid();
 	const length = typeof arg1 === "number" ? arg1 : arg2;
@@ -5429,7 +5457,7 @@ function Random(arg1 = 20, arg2 = "letter lower") {
 		type: typeof arg2 !== "number" ? arg2 : "letter lower",
 		chars: "abcdefghijklmnopqrstuvwxyz"
 	};
-	const type_code = Format.toSearch(typeof arg1 === "string" ? arg1 : String(arg2));
+	const type_code = String(typeof arg1 === "string" ? arg1 : String(arg2)).toLowerCase();
 	if (type_code.includes("upper")) params.chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	if (type_code.includes("number") && !type_code.includes("nonumber")) params.chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	if (type_code.includes("number") && !type_code.includes("lower") && !type_code.includes("upper")) params.chars = "0123456789";
@@ -5444,20 +5472,107 @@ function Random(arg1 = 20, arg2 = "letter lower") {
 function ulid() {
 	return getUlid();
 }
+/**
+* Gera um número aleatório em um intervalo.
+*
+* @param min Valor mínimo.
+* @param max Valor máximo.
+* @returns Retorna o número gerado.
+*/
 function intervalRandom(min = 0, max = 1e3) {
 	min = Math.ceil(min);
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+//#endregion
+//#region src/Helpers/Strings/index.ts
 var Str = {
 	Random,
 	code: Random,
-	ulid: getUlid,
+	ulid,
 	intervalRandom,
 	interval: intervalRandom,
 	numberInterval: intervalRandom,
 	numberRandom: intervalRandom
 };
+var Convert = {
+	toNumber,
+	number: toNumber,
+	toSearchableString,
+	search: toSearchableString,
+	normalizeToSearch
+};
+var Format = {
+	cep: formatCep,
+	cpf: formatCpf,
+	cnpj: formatCnpj,
+	cpfCnpj: formatCpfCnpj,
+	formatPhone,
+	phone: formatPhone,
+	onlyLetters,
+	onlyNumbers,
+	onlyLettersAndNumbers,
+	lettersAndNumbers: onlyLettersAndNumbers,
+	numbersAndLetters: onlyLettersAndNumbers,
+	toSearch: toSearchableString,
+	search: toSearchableString,
+	searchable: toSearchableString,
+	noSpaces: removeSpaces,
+	removeSpaces,
+	normalizeToSearch,
+	symbols: onlySymbols,
+	onlySymbols,
+	snakeCase,
+	snake: snakeCase,
+	snake_case: snakeCase,
+	kebabCase,
+	camelCase,
+	camel: camelCase,
+	camel_case: camelCase,
+	kebab: kebabCase,
+	kebab_case: kebabCase,
+	toNumber
+};
+var StrFilter = {
+	onlyLetters,
+	onlyNumbers,
+	onlyLettersAndNumbers,
+	lettersAndNumbers: onlyLettersAndNumbers,
+	numbersAndLetters: onlyLettersAndNumbers,
+	onlySymbols,
+	symbols: onlySymbols
+};
+//#endregion
+//#region src/Helpers/format.ts
+var format_exports = /* @__PURE__ */ __exportAll({
+	Convert: () => Convert,
+	Format: () => Format,
+	StrFilter: () => StrFilter,
+	camelCase: () => camelCase,
+	formatCep: () => formatCep,
+	formatCnpj: () => formatCnpj,
+	formatCpf: () => formatCpf,
+	formatCpfCnpj: () => formatCpfCnpj,
+	formatPhone: () => formatPhone,
+	kebabCase: () => kebabCase,
+	normalizeToSearch: () => normalizeToSearch,
+	onlyLetters: () => onlyLetters,
+	onlyLettersAndNumbers: () => onlyLettersAndNumbers,
+	onlyNumbers: () => onlyNumbers,
+	onlySymbols: () => onlySymbols,
+	removeSpaces: () => removeSpaces,
+	snakeCase: () => snakeCase,
+	toNumber: () => toNumber,
+	toSearchableString: () => toSearchableString
+});
+//#endregion
+//#region src/Helpers/str.ts
+var str_exports = /* @__PURE__ */ __exportAll({
+	Random: () => Random,
+	Str: () => Str,
+	intervalRandom: () => intervalRandom,
+	ulid: () => ulid
+});
 //#endregion
 //#region node_modules/axios/lib/helpers/bind.js
 /**
@@ -21992,12 +22107,343 @@ var watchTriggerable = watchTriggerable$1;
 var watchWithFilter = watchWithFilter$1;
 var whenever = whenever$1;
 //#endregion
-//#region dist/exports.json?raw
-var exports_default = "[\n  \"Convert\",\n  \"Format\",\n  \"Random\",\n  \"Str\",\n  \"StrFilter\",\n  \"apiDeleteRoute\",\n  \"apiGetRoute\",\n  \"apiUploadRoute\",\n  \"assert\",\n  \"bypassFilter\",\n  \"camelCase\",\n  \"camelize\",\n  \"canIterate\",\n  \"clamp\",\n  \"cloneDeep\",\n  \"cloneFnJSON\",\n  \"computedAsync\",\n  \"computedInject\",\n  \"computedWithControl\",\n  \"containsProp\",\n  \"countBy\",\n  \"createEventHook\",\n  \"createFetch\",\n  \"createFilterWrapper\",\n  \"createGlobalState\",\n  \"createInjectionState\",\n  \"createRef\",\n  \"createReusableTemplate\",\n  \"createSharedComposable\",\n  \"createSingletonPromise\",\n  \"createTemplatePromise\",\n  \"createUnrefFn\",\n  \"debounceFilter\",\n  \"deepClone\",\n  \"electric\",\n  \"electrical\",\n  \"extendRef\",\n  \"filter\",\n  \"filterBy\",\n  \"filterByNot\",\n  \"formatCep\",\n  \"formatCnpj\",\n  \"formatCpf\",\n  \"formatCpfCnpj\",\n  \"formatDate\",\n  \"formatPhone\",\n  \"formatTimeAgo\",\n  \"formatTimeAgoIntl\",\n  \"formatTimeAgoIntlParts\",\n  \"get\",\n  \"getLifeCycleTarget\",\n  \"getSSRHandler\",\n  \"groupBy\",\n  \"hasContent\",\n  \"hasOwn\",\n  \"hasPassedDays\",\n  \"hasPassedHours\",\n  \"hasPassedMinutes\",\n  \"hyphenate\",\n  \"identity\",\n  \"inDateInterval\",\n  \"increaseWithUnit\",\n  \"injectLocal\",\n  \"intervalRandom\",\n  \"invoke\",\n  \"isArray\",\n  \"isBlank\",\n  \"isCnpj\",\n  \"isCpf\",\n  \"isCpfCnpj\",\n  \"isDate\",\n  \"isDef\",\n  \"isDefined\",\n  \"isEqual\",\n  \"isInDateInterval\",\n  \"isNumber\",\n  \"isNumeric\",\n  \"isObject\",\n  \"isSameDay\",\n  \"isValid\",\n  \"kebabCase\",\n  \"keyBy\",\n  \"makeDestructurable\",\n  \"mapGamepadToXbox360Controller\",\n  \"maxUse\",\n  \"maxUseItems\",\n  \"noop\",\n  \"normalizeDate\",\n  \"normalizeToSearch\",\n  \"notNullish\",\n  \"now\",\n  \"numeric\",\n  \"objectEntries\",\n  \"objectOmit\",\n  \"objectPick\",\n  \"onClickOutside\",\n  \"onElementRemoval\",\n  \"onKeyDown\",\n  \"onKeyPressed\",\n  \"onKeyStroke\",\n  \"onKeyUp\",\n  \"onLongPress\",\n  \"onStartTyping\",\n  \"onlyLetters\",\n  \"onlyLettersAndNumbers\",\n  \"onlyNumbers\",\n  \"onlySymbols\",\n  \"orderBy\",\n  \"orderByWithKey\",\n  \"pausableFilter\",\n  \"promiseTimeout\",\n  \"provideLocal\",\n  \"provideSSRWidth\",\n  \"pxValue\",\n  \"rand\",\n  \"reactify\",\n  \"reactifyObject\",\n  \"reactiveComputed\",\n  \"reactiveOmit\",\n  \"reactivePick\",\n  \"refAutoReset\",\n  \"refDebounced\",\n  \"refDefault\",\n  \"refManualReset\",\n  \"refThrottled\",\n  \"refWithControl\",\n  \"removeSpaces\",\n  \"sample\",\n  \"set\",\n  \"setSSRHandler\",\n  \"size\",\n  \"snakeCase\",\n  \"sortBy\",\n  \"sum\",\n  \"sumBy\",\n  \"syncRef\",\n  \"syncRefs\",\n  \"throttleFilter\",\n  \"timestamp\",\n  \"toArray\",\n  \"toNumber\",\n  \"toReactive\",\n  \"toSearchableString\",\n  \"transition\",\n  \"tryOnBeforeMount\",\n  \"tryOnBeforeUnmount\",\n  \"tryOnMounted\",\n  \"tryOnScopeDispose\",\n  \"tryOnUnmounted\",\n  \"ulid\",\n  \"uniq\",\n  \"unrefElement\",\n  \"unset\",\n  \"until\",\n  \"useActiveElement\",\n  \"useAnimate\",\n  \"useArrayDifference\",\n  \"useArrayEvery\",\n  \"useArrayFilter\",\n  \"useArrayFind\",\n  \"useArrayFindIndex\",\n  \"useArrayFindLast\",\n  \"useArrayIncludes\",\n  \"useArrayJoin\",\n  \"useArrayMap\",\n  \"useArrayReduce\",\n  \"useArraySome\",\n  \"useArrayUnique\",\n  \"useAsyncQueue\",\n  \"useAsyncState\",\n  \"useBase64\",\n  \"useBattery\",\n  \"useBluetooth\",\n  \"useBreakpoints\",\n  \"useBroadcastChannel\",\n  \"useBrowserLocation\",\n  \"useCached\",\n  \"useClipboard\",\n  \"useClipboardItems\",\n  \"useCloned\",\n  \"useColorMode\",\n  \"useConfirmDialog\",\n  \"useCountdown\",\n  \"useCounter\",\n  \"useCssSupports\",\n  \"useCssVar\",\n  \"useCurrentElement\",\n  \"useCycleList\",\n  \"useDark\",\n  \"useDateFormat\",\n  \"useDebounceFn\",\n  \"useDebouncedRefHistory\",\n  \"useDefaultReset\",\n  \"useDeviceMotion\",\n  \"useDeviceOrientation\",\n  \"useDevicePixelRatio\",\n  \"useDevicesList\",\n  \"useDisplayMedia\",\n  \"useDocumentVisibility\",\n  \"useDraggable\",\n  \"useDropZone\",\n  \"useElementBounding\",\n  \"useElementByPoint\",\n  \"useElementHover\",\n  \"useElementSize\",\n  \"useElementVisibility\",\n  \"useEventBus\",\n  \"useEventListener\",\n  \"useEventSource\",\n  \"useEyeDropper\",\n  \"useFavicon\",\n  \"useFetch\",\n  \"useFileDialog\",\n  \"useFileSystemAccess\",\n  \"useFocus\",\n  \"useFocusWithin\",\n  \"useFps\",\n  \"useFullscreen\",\n  \"useGamepad\",\n  \"useGeolocation\",\n  \"useIdle\",\n  \"useImage\",\n  \"useInCache\",\n  \"useInfiniteScroll\",\n  \"useIntersectionObserver\",\n  \"useInterval\",\n  \"useIntervalFn\",\n  \"useKeyModifier\",\n  \"useLastChanged\",\n  \"useLocalStorage\",\n  \"useMagicKeys\",\n  \"useManualRefHistory\",\n  \"useMediaControls\",\n  \"useMediaQuery\",\n  \"useMemoize\",\n  \"useMemory\",\n  \"useMounted\",\n  \"useMouse\",\n  \"useMouseInElement\",\n  \"useMousePressed\",\n  \"useMutationObserver\",\n  \"useNavigatorLanguage\",\n  \"useNetwork\",\n  \"useNow\",\n  \"useObjectUrl\",\n  \"useOffsetPagination\",\n  \"useOnline\",\n  \"usePageLeave\",\n  \"useParallax\",\n  \"useParentElement\",\n  \"usePerformanceObserver\",\n  \"usePermission\",\n  \"usePointer\",\n  \"usePointerLock\",\n  \"usePointerSwipe\",\n  \"usePreferredColorScheme\",\n  \"usePreferredContrast\",\n  \"usePreferredDark\",\n  \"usePreferredLanguages\",\n  \"usePreferredReducedMotion\",\n  \"usePreferredReducedTransparency\",\n  \"usePrevious\",\n  \"useRafFn\",\n  \"useRefCached\",\n  \"useRefHistory\",\n  \"useRefStorage\",\n  \"useResizeObserver\",\n  \"useSSRWidth\",\n  \"useScreenOrientation\",\n  \"useScreenSafeArea\",\n  \"useScriptTag\",\n  \"useScroll\",\n  \"useScrollLock\",\n  \"useSessionStorage\",\n  \"useShare\",\n  \"useSorted\",\n  \"useSpeechRecognition\",\n  \"useSpeechSynthesis\",\n  \"useStepper\",\n  \"useStorage\",\n  \"useStorageAsync\",\n  \"useStyleTag\",\n  \"useSupported\",\n  \"useSwipe\",\n  \"useTemplateRefsList\",\n  \"useTextDirection\",\n  \"useTextSelection\",\n  \"useTextareaAutosize\",\n  \"useThrottleFn\",\n  \"useThrottledRefHistory\",\n  \"useTimeAgo\",\n  \"useTimeAgoIntl\",\n  \"useTimeout\",\n  \"useTimeoutFn\",\n  \"useTimeoutPoll\",\n  \"useTimestamp\",\n  \"useTitle\",\n  \"useToNumber\",\n  \"useToString\",\n  \"useToggle\",\n  \"useTransition\",\n  \"useUrlSearchParams\",\n  \"useUserMedia\",\n  \"useVModel\",\n  \"useVModels\",\n  \"useVibrate\",\n  \"useVirtualList\",\n  \"useWakeLock\",\n  \"useWebNotification\",\n  \"useWebSocket\",\n  \"useWebWorker\",\n  \"useWebWorkerFn\",\n  \"useWindowFocus\",\n  \"useWindowScroll\",\n  \"useWindowSize\",\n  \"validate\",\n  \"valuesInKey\",\n  \"vueUse\",\n  \"watchArray\",\n  \"watchAtMost\",\n  \"watchDebounced\",\n  \"watchDeep\",\n  \"watchIgnorable\",\n  \"watchImmediate\",\n  \"watchOnce\",\n  \"watchThrottled\",\n  \"watchTriggerable\",\n  \"watchWithFilter\",\n  \"whenever\"\n]";
+//#region dist/exports.json
+var exports_default = [
+	"Convert",
+	"Format",
+	"Random",
+	"Str",
+	"StrFilter",
+	"apiDeleteRoute",
+	"apiGetRoute",
+	"apiUploadRoute",
+	"assert",
+	"bypassFilter",
+	"camelCase",
+	"camelize",
+	"canIterate",
+	"clamp",
+	"cloneDeep",
+	"cloneFnJSON",
+	"computedAsync",
+	"computedInject",
+	"computedWithControl",
+	"containsProp",
+	"countBy",
+	"createEventHook",
+	"createFetch",
+	"createFilterWrapper",
+	"createGlobalState",
+	"createInjectionState",
+	"createRef",
+	"createReusableTemplate",
+	"createSharedComposable",
+	"createSingletonPromise",
+	"createTemplatePromise",
+	"createUnrefFn",
+	"dateNow",
+	"debounceFilter",
+	"deepClone",
+	"electric",
+	"electrical",
+	"extendRef",
+	"filter",
+	"filterBy",
+	"filterByNot",
+	"formatCep",
+	"formatCnpj",
+	"formatCpf",
+	"formatCpfCnpj",
+	"formatDate",
+	"formatPhone",
+	"formatTimeAgo",
+	"formatTimeAgoIntl",
+	"formatTimeAgoIntlParts",
+	"get",
+	"getLifeCycleTarget",
+	"getSSRHandler",
+	"groupBy",
+	"hasContent",
+	"hasOwn",
+	"hasPassedDays",
+	"hasPassedHours",
+	"hasPassedMinutes",
+	"hyphenate",
+	"identity",
+	"inDateInterval",
+	"increaseWithUnit",
+	"injectLocal",
+	"intervalRandom",
+	"invoke",
+	"isArray",
+	"isBlank",
+	"isCnpj",
+	"isCpf",
+	"isCpfCnpj",
+	"isDate",
+	"isDef",
+	"isDefined",
+	"isEqual",
+	"isInDateInterval",
+	"isNumber",
+	"isNumeric",
+	"isObject",
+	"isSameDay",
+	"isValid",
+	"kebabCase",
+	"keyBy",
+	"makeDestructurable",
+	"mapGamepadToXbox360Controller",
+	"maxUse",
+	"maxUseItems",
+	"noop",
+	"normalizeDate",
+	"normalizeToSearch",
+	"notNullish",
+	"now",
+	"numeric",
+	"objectEntries",
+	"objectOmit",
+	"objectPick",
+	"onClickOutside",
+	"onElementRemoval",
+	"onKeyDown",
+	"onKeyPressed",
+	"onKeyStroke",
+	"onKeyUp",
+	"onLongPress",
+	"onStartTyping",
+	"onlyLetters",
+	"onlyLettersAndNumbers",
+	"onlyNumbers",
+	"onlySymbols",
+	"orderBy",
+	"orderByWithKey",
+	"pausableFilter",
+	"promiseTimeout",
+	"provideLocal",
+	"provideSSRWidth",
+	"pxValue",
+	"rand",
+	"reactify",
+	"reactifyObject",
+	"reactiveComputed",
+	"reactiveOmit",
+	"reactivePick",
+	"refAutoReset",
+	"refDebounced",
+	"refDefault",
+	"refManualReset",
+	"refThrottled",
+	"refWithControl",
+	"removeSpaces",
+	"sample",
+	"set",
+	"setSSRHandler",
+	"size",
+	"snakeCase",
+	"sortBy",
+	"sum",
+	"sumBy",
+	"syncRef",
+	"syncRefs",
+	"throttleFilter",
+	"timestamp",
+	"toArray",
+	"toNumber",
+	"toReactive",
+	"toSearchableString",
+	"transition",
+	"tryOnBeforeMount",
+	"tryOnBeforeUnmount",
+	"tryOnMounted",
+	"tryOnScopeDispose",
+	"tryOnUnmounted",
+	"ulid",
+	"uniq",
+	"unrefElement",
+	"unset",
+	"until",
+	"useActiveElement",
+	"useAnimate",
+	"useArrayDifference",
+	"useArrayEvery",
+	"useArrayFilter",
+	"useArrayFind",
+	"useArrayFindIndex",
+	"useArrayFindLast",
+	"useArrayIncludes",
+	"useArrayJoin",
+	"useArrayMap",
+	"useArrayReduce",
+	"useArraySome",
+	"useArrayUnique",
+	"useAsyncQueue",
+	"useAsyncState",
+	"useBase64",
+	"useBattery",
+	"useBluetooth",
+	"useBreakpoints",
+	"useBroadcastChannel",
+	"useBrowserLocation",
+	"useCached",
+	"useClipboard",
+	"useClipboardItems",
+	"useCloned",
+	"useColorMode",
+	"useConfirmDialog",
+	"useCountdown",
+	"useCounter",
+	"useCssSupports",
+	"useCssVar",
+	"useCurrentElement",
+	"useCycleList",
+	"useDark",
+	"useDateFormat",
+	"useDebounceFn",
+	"useDebouncedRefHistory",
+	"useDefaultReset",
+	"useDeviceMotion",
+	"useDeviceOrientation",
+	"useDevicePixelRatio",
+	"useDevicesList",
+	"useDisplayMedia",
+	"useDocumentVisibility",
+	"useDraggable",
+	"useDropZone",
+	"useElementBounding",
+	"useElementByPoint",
+	"useElementHover",
+	"useElementSize",
+	"useElementVisibility",
+	"useEventBus",
+	"useEventListener",
+	"useEventSource",
+	"useEyeDropper",
+	"useFavicon",
+	"useFetch",
+	"useFileDialog",
+	"useFileSystemAccess",
+	"useFocus",
+	"useFocusWithin",
+	"useFps",
+	"useFullscreen",
+	"useGamepad",
+	"useGeolocation",
+	"useIdle",
+	"useImage",
+	"useInCache",
+	"useInfiniteScroll",
+	"useIntersectionObserver",
+	"useInterval",
+	"useIntervalFn",
+	"useKeyModifier",
+	"useLastChanged",
+	"useLocalStorage",
+	"useMagicKeys",
+	"useManualRefHistory",
+	"useMediaControls",
+	"useMediaQuery",
+	"useMemoize",
+	"useMemory",
+	"useMounted",
+	"useMouse",
+	"useMouseInElement",
+	"useMousePressed",
+	"useMutationObserver",
+	"useNavigatorLanguage",
+	"useNetwork",
+	"useNow",
+	"useObjectUrl",
+	"useOffsetPagination",
+	"useOnline",
+	"usePageLeave",
+	"useParallax",
+	"useParentElement",
+	"usePerformanceObserver",
+	"usePermission",
+	"usePointer",
+	"usePointerLock",
+	"usePointerSwipe",
+	"usePreferredColorScheme",
+	"usePreferredContrast",
+	"usePreferredDark",
+	"usePreferredLanguages",
+	"usePreferredReducedMotion",
+	"usePreferredReducedTransparency",
+	"usePrevious",
+	"useRafFn",
+	"useRefCached",
+	"useRefHistory",
+	"useRefStorage",
+	"useResizeObserver",
+	"useSSRWidth",
+	"useScreenOrientation",
+	"useScreenSafeArea",
+	"useScriptTag",
+	"useScroll",
+	"useScrollLock",
+	"useSessionStorage",
+	"useShare",
+	"useSorted",
+	"useSpeechRecognition",
+	"useSpeechSynthesis",
+	"useStepper",
+	"useStorage",
+	"useStorageAsync",
+	"useStyleTag",
+	"useSupported",
+	"useSwipe",
+	"useTemplateRefsList",
+	"useTextDirection",
+	"useTextSelection",
+	"useTextareaAutosize",
+	"useThrottleFn",
+	"useThrottledRefHistory",
+	"useTimeAgo",
+	"useTimeAgoIntl",
+	"useTimeout",
+	"useTimeoutFn",
+	"useTimeoutPoll",
+	"useTimestamp",
+	"useTitle",
+	"useToNumber",
+	"useToString",
+	"useToggle",
+	"useTransition",
+	"useUrlSearchParams",
+	"useUserMedia",
+	"useVModel",
+	"useVModels",
+	"useVibrate",
+	"useVirtualList",
+	"useWakeLock",
+	"useWebNotification",
+	"useWebSocket",
+	"useWebWorker",
+	"useWebWorkerFn",
+	"useWindowFocus",
+	"useWindowScroll",
+	"useWindowSize",
+	"validate",
+	"valuesInKey",
+	"vueUse",
+	"watchArray",
+	"watchAtMost",
+	"watchDebounced",
+	"watchDeep",
+	"watchIgnorable",
+	"watchImmediate",
+	"watchOnce",
+	"watchThrottled",
+	"watchTriggerable",
+	"watchWithFilter",
+	"whenever"
+];
 //#endregion
 //#region src/Helpers/maxUseItems.ts
 var maxUseItems = () => {
-	return deepClone(JSON.parse(exports_default));
+	return deepClone(uniq(exports_default));
 };
 //#endregion
 //#region src/index.ts
