@@ -10,6 +10,7 @@ export { orderByWithKey } from './Iterables/orderByWithKey';
 export { sortBy } from './Iterables/sortBy';
 export { sum } from './Iterables/sum';
 export { sumBy } from './Iterables/sumBy';
+export { uniq } from './Iterables/uniq';
 export { valuesInKey } from './Iterables/valuesInKey';
 export { size } from './Iterables/size';
 export { deepClone } from './Iterables/deepClone';

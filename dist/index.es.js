@@ -227,6 +227,20 @@ function sumBy(collection, key) {
 	return (Array.isArray(data) ? data : Object.values(data)).reduce((acc, item) => acc + (Number(item[key]) || 0), 0);
 }
 //#endregion
+//#region src/Helpers/Iterables/uniq.ts
+/**
+* Cria uma versão sem duplicatas de um array.
+* Semelhante ao _.uniq do Lodash.
+*
+* @param array O array a ser processado.
+* @returns Retorna o novo array de valores únicos.
+*/
+function uniq(array) {
+	const data = unref(array);
+	if (!Array.isArray(data)) return [];
+	return Array.from(new Set(data));
+}
+//#endregion
 //#region src/Helpers/Iterables/valuesInKey.ts
 function valuesInKey(collection, key, default_value = false) {
 	const data = unref(collection);
@@ -419,6 +433,7 @@ var iterables_exports = /* @__PURE__ */ __exportAll({
 	sortBy: () => sortBy,
 	sum: () => sum,
 	sumBy: () => sumBy,
+	uniq: () => uniq,
 	unset: () => unset,
 	valuesInKey: () => valuesInKey
 });
@@ -12419,7 +12434,7 @@ function useArrayReduce$1(list, reducer, ...args) {
 function useArraySome$1(list, fn) {
 	return computed(() => toValue(list).some((element, index, array) => fn(toValue(element), index, array)));
 }
-function uniq(array) {
+function uniq$1(array) {
 	return Array.from(new Set(array));
 }
 function uniqueElementsBy(array, fn) {
@@ -12440,7 +12455,7 @@ function uniqueElementsBy(array, fn) {
 function useArrayUnique$1(list, compareFn) {
 	return computed(() => {
 		const resolvedList = toValue(list).map((element) => toValue(element));
-		return compareFn ? uniqueElementsBy(resolvedList, compareFn) : uniq(resolvedList);
+		return compareFn ? uniqueElementsBy(resolvedList, compareFn) : uniq$1(resolvedList);
 	});
 }
 /**
@@ -21971,7 +21986,7 @@ var exports_default = "[\n  \"Convert\",\n  \"Format\",\n  \"Random\",\n  \"Str\
 //#endregion
 //#region src/Helpers/maxUseItems.ts
 var maxUseItems = () => {
-	return [...[], ...JSON.parse(exports_default)];
+	return JSON.parse(exports_default);
 };
 //#endregion
 //#region src/index.ts
@@ -21987,6 +22002,6 @@ var maxUse = {
 };
 var vueUse = vueUse_exports;
 //#endregion
-export { Convert, Format, Random, Str, StrFilter, apiDeleteRoute, apiGetRoute, apiUploadRoute, assert, bypassFilter, camelCase, camelize, canIterate, clamp, deepClone as cloneDeep, deepClone, cloneFnJSON, computedAsync, computedInject, computedWithControl, containsProp, countBy, createEventHook, createFetch, createFilterWrapper, createGlobalState, createInjectionState, createRef, createReusableTemplate, createSharedComposable, createSingletonPromise, createTemplatePromise, createUnrefFn, debounceFilter, electric, electrical, extendRef, filter, filterBy, filterByNot, formatCep, formatCnpj, formatCpf, formatCpfCnpj, formatDate, formatPhone, formatTimeAgo, formatTimeAgoIntl, formatTimeAgoIntlParts, get, getLifeCycleTarget, getSSRHandler, groupBy, hasContent, hasOwn, hasPassedDays, hasPassedHours, hasPassedMinutes, hyphenate, identity, inDateInterval, increaseWithUnit, injectLocal, intervalRandom, invoke, isArray, isBlank, isCnpj, isCpf, isCpfCnpj, isDate, isDef, isDefined, isEqual, isInDateInterval, isNumber, isNumeric, isObject, isSameDay, isValid, kebabCase, keyBy, makeDestructurable, mapGamepadToXbox360Controller, maxUse, maxUseItems, noop, normalizeDate, normalizeToSearch, notNullish, now, numeric, objectEntries, objectOmit, objectPick, onClickOutside, onElementRemoval, onKeyDown, onKeyPressed, onKeyStroke, onKeyUp, onLongPress, onStartTyping, onlyLetters, onlyLettersAndNumbers, onlyNumbers, onlySymbols, orderBy, orderByWithKey, pausableFilter, promiseTimeout, provideLocal, provideSSRWidth, pxValue, rand, reactify, reactifyObject, reactiveComputed, reactiveOmit, reactivePick, refAutoReset, refDebounced, refDefault, refManualReset, refThrottled, refWithControl, removeSpaces, sample, set, setSSRHandler, size, snakeCase, sortBy, sum, sumBy, syncRef, syncRefs, throttleFilter, timestamp, toArray, toNumber, toReactive, toSearchableString, transition, tryOnBeforeMount, tryOnBeforeUnmount, tryOnMounted, tryOnScopeDispose, tryOnUnmounted, ulid, unrefElement, unset, until, useActiveElement, useAnimate, useArrayDifference, useArrayEvery, useArrayFilter, useArrayFind, useArrayFindIndex, useArrayFindLast, useArrayIncludes, useArrayJoin, useArrayMap, useArrayReduce, useArraySome, useArrayUnique, useAsyncQueue, useAsyncState, useBase64, useBattery, useBluetooth, useBreakpoints, useBroadcastChannel, useBrowserLocation, useCached, useClipboard, useClipboardItems, useCloned, useColorMode, useConfirmDialog, useCountdown, useCounter, useCssSupports, useCssVar, useCurrentElement, useCycleList, useDark, useDateFormat, useDebounceFn, useDebouncedRefHistory, useDefaultReset, useDeviceMotion, useDeviceOrientation, useDevicePixelRatio, useDevicesList, useDisplayMedia, useDocumentVisibility, useDraggable, useDropZone, useElementBounding, useElementByPoint, useElementHover, useElementSize, useElementVisibility, useEventBus, useEventListener, useEventSource, useEyeDropper, useFavicon, useFetch, useFileDialog, useFileSystemAccess, useFocus, useFocusWithin, useFps, useFullscreen, useGamepad, useGeolocation, useIdle, useImage, useInCache, useInfiniteScroll, useIntersectionObserver, useInterval, useIntervalFn, useKeyModifier, useLastChanged, useLocalStorage, useMagicKeys, useManualRefHistory, useMediaControls, useMediaQuery, useMemoize, useMemory, useMounted, useMouse, useMouseInElement, useMousePressed, useMutationObserver, useNavigatorLanguage, useNetwork, useNow, useObjectUrl, useOffsetPagination, useOnline, usePageLeave, useParallax, useParentElement, usePerformanceObserver, usePermission, usePointer, usePointerLock, usePointerSwipe, usePreferredColorScheme, usePreferredContrast, usePreferredDark, usePreferredLanguages, usePreferredReducedMotion, usePreferredReducedTransparency, usePrevious, useRafFn, useRefCached, useRefHistory, useRefStorage, useResizeObserver, useSSRWidth, useScreenOrientation, useScreenSafeArea, useScriptTag, useScroll, useScrollLock, useSessionStorage, useShare, useSorted, useSpeechRecognition, useSpeechSynthesis, useStepper, useStorage, useStorageAsync, useStyleTag, useSupported, useSwipe, useTemplateRefsList, useTextDirection, useTextSelection, useTextareaAutosize, useThrottleFn, useThrottledRefHistory, useTimeAgo, useTimeAgoIntl, useTimeout, useTimeoutFn, useTimeoutPoll, useTimestamp, useTitle, useToNumber, useToString, useToggle, useTransition, useUrlSearchParams, useUserMedia, useVModel, useVModels, useVibrate, useVirtualList, useWakeLock, useWebNotification, useWebSocket, useWebWorker, useWebWorkerFn, useWindowFocus, useWindowScroll, useWindowSize, validate, valuesInKey, vueUse, watchArray, watchAtMost, watchDebounced, watchDeep, watchIgnorable, watchImmediate, watchOnce, watchThrottled, watchTriggerable, watchWithFilter, whenever };
+export { Convert, Format, Random, Str, StrFilter, apiDeleteRoute, apiGetRoute, apiUploadRoute, assert, bypassFilter, camelCase, camelize, canIterate, clamp, deepClone as cloneDeep, deepClone, cloneFnJSON, computedAsync, computedInject, computedWithControl, containsProp, countBy, createEventHook, createFetch, createFilterWrapper, createGlobalState, createInjectionState, createRef, createReusableTemplate, createSharedComposable, createSingletonPromise, createTemplatePromise, createUnrefFn, debounceFilter, electric, electrical, extendRef, filter, filterBy, filterByNot, formatCep, formatCnpj, formatCpf, formatCpfCnpj, formatDate, formatPhone, formatTimeAgo, formatTimeAgoIntl, formatTimeAgoIntlParts, get, getLifeCycleTarget, getSSRHandler, groupBy, hasContent, hasOwn, hasPassedDays, hasPassedHours, hasPassedMinutes, hyphenate, identity, inDateInterval, increaseWithUnit, injectLocal, intervalRandom, invoke, isArray, isBlank, isCnpj, isCpf, isCpfCnpj, isDate, isDef, isDefined, isEqual, isInDateInterval, isNumber, isNumeric, isObject, isSameDay, isValid, kebabCase, keyBy, makeDestructurable, mapGamepadToXbox360Controller, maxUse, maxUseItems, noop, normalizeDate, normalizeToSearch, notNullish, now, numeric, objectEntries, objectOmit, objectPick, onClickOutside, onElementRemoval, onKeyDown, onKeyPressed, onKeyStroke, onKeyUp, onLongPress, onStartTyping, onlyLetters, onlyLettersAndNumbers, onlyNumbers, onlySymbols, orderBy, orderByWithKey, pausableFilter, promiseTimeout, provideLocal, provideSSRWidth, pxValue, rand, reactify, reactifyObject, reactiveComputed, reactiveOmit, reactivePick, refAutoReset, refDebounced, refDefault, refManualReset, refThrottled, refWithControl, removeSpaces, sample, set, setSSRHandler, size, snakeCase, sortBy, sum, sumBy, syncRef, syncRefs, throttleFilter, timestamp, toArray, toNumber, toReactive, toSearchableString, transition, tryOnBeforeMount, tryOnBeforeUnmount, tryOnMounted, tryOnScopeDispose, tryOnUnmounted, ulid, uniq, unrefElement, unset, until, useActiveElement, useAnimate, useArrayDifference, useArrayEvery, useArrayFilter, useArrayFind, useArrayFindIndex, useArrayFindLast, useArrayIncludes, useArrayJoin, useArrayMap, useArrayReduce, useArraySome, useArrayUnique, useAsyncQueue, useAsyncState, useBase64, useBattery, useBluetooth, useBreakpoints, useBroadcastChannel, useBrowserLocation, useCached, useClipboard, useClipboardItems, useCloned, useColorMode, useConfirmDialog, useCountdown, useCounter, useCssSupports, useCssVar, useCurrentElement, useCycleList, useDark, useDateFormat, useDebounceFn, useDebouncedRefHistory, useDefaultReset, useDeviceMotion, useDeviceOrientation, useDevicePixelRatio, useDevicesList, useDisplayMedia, useDocumentVisibility, useDraggable, useDropZone, useElementBounding, useElementByPoint, useElementHover, useElementSize, useElementVisibility, useEventBus, useEventListener, useEventSource, useEyeDropper, useFavicon, useFetch, useFileDialog, useFileSystemAccess, useFocus, useFocusWithin, useFps, useFullscreen, useGamepad, useGeolocation, useIdle, useImage, useInCache, useInfiniteScroll, useIntersectionObserver, useInterval, useIntervalFn, useKeyModifier, useLastChanged, useLocalStorage, useMagicKeys, useManualRefHistory, useMediaControls, useMediaQuery, useMemoize, useMemory, useMounted, useMouse, useMouseInElement, useMousePressed, useMutationObserver, useNavigatorLanguage, useNetwork, useNow, useObjectUrl, useOffsetPagination, useOnline, usePageLeave, useParallax, useParentElement, usePerformanceObserver, usePermission, usePointer, usePointerLock, usePointerSwipe, usePreferredColorScheme, usePreferredContrast, usePreferredDark, usePreferredLanguages, usePreferredReducedMotion, usePreferredReducedTransparency, usePrevious, useRafFn, useRefCached, useRefHistory, useRefStorage, useResizeObserver, useSSRWidth, useScreenOrientation, useScreenSafeArea, useScriptTag, useScroll, useScrollLock, useSessionStorage, useShare, useSorted, useSpeechRecognition, useSpeechSynthesis, useStepper, useStorage, useStorageAsync, useStyleTag, useSupported, useSwipe, useTemplateRefsList, useTextDirection, useTextSelection, useTextareaAutosize, useThrottleFn, useThrottledRefHistory, useTimeAgo, useTimeAgoIntl, useTimeout, useTimeoutFn, useTimeoutPoll, useTimestamp, useTitle, useToNumber, useToString, useToggle, useTransition, useUrlSearchParams, useUserMedia, useVModel, useVModels, useVibrate, useVirtualList, useWakeLock, useWebNotification, useWebSocket, useWebWorker, useWebWorkerFn, useWindowFocus, useWindowScroll, useWindowSize, validate, valuesInKey, vueUse, watchArray, watchAtMost, watchDebounced, watchDeep, watchIgnorable, watchImmediate, watchOnce, watchThrottled, watchTriggerable, watchWithFilter, whenever };
 
 //# sourceMappingURL=index.es.js.map

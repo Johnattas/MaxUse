@@ -149,6 +149,7 @@
   "tryOnScopeDispose",
   "tryOnUnmounted",
   "ulid",
+  "uniq",
   "unrefElement",
   "unset",
   "until",

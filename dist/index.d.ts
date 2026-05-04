@@ -216,6 +216,7 @@ export declare const maxUse: {
     sortBy: typeof iterables.sortBy;
     sum: typeof iterables.sum;
     sumBy: typeof iterables.sumBy;
+    uniq: typeof iterables.uniq;
     valuesInKey: typeof iterables.valuesInKey;
     size: typeof iterables.size;
     deepClone: typeof iterables.deepClone;
