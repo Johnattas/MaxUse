@@ -3,52 +3,27 @@ export * from './masks';
 export * from './filters';
 export * from './cases';
 export * from './converters';
+export * from './manipulations';
 
 import { Random, ulid, intervalRandom } from './random';
-import { formatCep, formatCpf, formatCnpj, formatCpfCnpj, formatPhone } from './masks';
+import { truncate, slugify, stripHtml, initials, readingTime } from './manipulations';
 import { onlyLetters, onlyNumbers, onlySymbols, onlyLettersAndNumbers, removeSpaces } from './filters';
-import { snakeCase, kebabCase, camelCase } from './cases';
-import { toSearchableString, normalizeToSearch, toNumber } from './converters';
+import { snakeCase, kebabCase, camelCase, capitalize } from './cases';
+
+export { stripHtml as noHtml };
 
 export const Str = {
     Random,
     code: Random,
     ulid,
     intervalRandom,
-    interval: intervalRandom
-};
-
-export const Convert = {
-    toNumber,
-    toSearchableString,
-    normalizeToSearch
-};
-
-export const Format = {
-    // Máscaras
-    cep: formatCep,
-    cpf: formatCpf,
-    cnpj: formatCnpj,
-    cpfCnpj: formatCpfCnpj,
-    phone: formatPhone,
-
-    // Filtros
-    onlyLetters,
-    onlyNumbers,
-    onlySymbols,
-    onlyLettersAndNumbers,
-    removeSpaces,
-    noSpaces: removeSpaces,
-
-    // Casos (Casing)
-    snakeCase,
-    kebabCase,
-    camelCase,
-
-    // Conversores
-    searchable: toSearchableString,
-    normalizeToSearch,
-    toNumber
+    interval: intervalRandom,
+    truncate,
+    slugify,
+    capitalize,
+    noHtml: stripHtml,
+    initials,
+    readingTime
 };
 
 export const StrFilter = {
@@ -58,3 +33,11 @@ export const StrFilter = {
     onlySymbols,
     removeSpaces
 };
+
+export const StrCase = {
+    snakeCase,
+    kebabCase,
+    camelCase,
+    capitalize
+};
+

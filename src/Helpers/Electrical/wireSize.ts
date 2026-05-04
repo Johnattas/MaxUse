@@ -1,5 +1,5 @@
 import { toValue, MaybeRefOrGetter } from 'vue';
-import { isBlank } from './validations';
+import { isBlank } from '../Types/isBlank';
 
 type T = MaybeRefOrGetter<string | number | null>;
 
@@ -8,11 +8,11 @@ type Temperature = '90' | '70' | 90 | 70;
 type Isolation = 'pvc' | 'epr' | 'xlpe';
 type Phases = 1 | 2 |3 | '1' | '2' | '3';
 
-type Options = {
+export type WireOptions = {
     material?: Material;
     isolation?: Temperature | Isolation;
     method?: 'b1' | 'b2' | 'c1' | 'c2' | 'd';
-    length?: Number;
+    length?: number;
     voltage: 115 | 120 | 127 | 220 | 230 | 240 | 380 | 400 | 440 | 480;
     phases?: Phases;
     max_loss?: number;
@@ -25,13 +25,13 @@ function toPhasePhase(phaseNeutralVoltage: number): number {
     return array.reduce((anterior, atual) => Math.abs(atual - valor) < Math.abs(anterior - valor) ? atual : anterior);
 }
 
-async function wireSize(current: T, options: Options) {
+export async function wireSize(current: T, options: WireOptions) {
     const data = toValue(current);
-    if (isBlank(data)) return '';
+    if (isBlank(data)) return null;
 
-    current = parseFloat(String(data));
+    const currentVal = parseFloat(String(data));
 
-    if (current === 0) return 0;
+    if (currentVal === 0) return { wire: 0, max_current: 0, voltage_drop: 0, loss_percent: 0 };
 
     const material = String(options.material ?? '').includes('al') ? 'al' : 'cu';
     const isolation = String(options.isolation ?? '').includes('xlpe') || String(options.isolation ?? '').includes('epr') || String(options.isolation ?? '').includes('90') ? '90' : '70';
@@ -54,28 +54,22 @@ async function wireSize(current: T, options: Options) {
     const voltage_base = phases === 3 ? toPhasePhase(Number(voltage)) : voltage;
     const voltage_drop_allowed = (phases === 3 ? voltage_base: voltage) * (max_percent / 100);
 
-
     const section = phases === 3
-        ? (Math.sqrt(3) * current * length * rho) / voltage_drop_allowed
-        : (2 * current * length * rho) / voltage_drop_allowed;
+        ? (Math.sqrt(3) * currentVal * length * rho) / voltage_drop_allowed
+        : (2 * currentVal * length * rho) / voltage_drop_allowed;
 
     const all_wires = [0.5, 0.75, 1, 1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300, 400, 500, 630, 800, 1000];
     const data_return = {
         wire: Number(all_wires.find((w) => w >= section) || 1000),
-        max_current: current,
+        max_current: currentVal,
         voltage_drop: Number(voltage_drop_allowed.toFixed(2)),
         loss_percent: Number(max_percent.toFixed(2))
     };
 
-
-    // BUSCA NA TABELA ABNT NBR-5410. Exemplo da nomenclatura dos Jsons:  al-70-bi-a1
     try {
-
-        // AVISO: O uso de fetch com caminho relativo pode falhar dependendo da rota atual no navegador.
-        // Recomenda-se usar caminhos absolutos ou passar a base via parâmetro se necessário.
         const resposta = await fetch(`../json/${material}-${isolation}-${phase_name}-${method}.json`);
         const dados = await resposta.json();
-        const item = dados.find((c: { wire: number; max_current: number }) => c.max_current >= current);
+        const item = dados.find((c: { wire: number; max_current: number }) => c.max_current >= currentVal);
         if (item && item.wire >= data_return.wire) {
             data_return.wire = item.wire;
             data_return.max_current = item.max_current;
@@ -86,18 +80,16 @@ async function wireSize(current: T, options: Options) {
         }
 
     } catch {
-        data_return.wire = 0;
-        data_return.max_current = 0;
+        // Silently fail if JSON is not available
     }
 
     const cosPhi = 0.95;
-
     const R_por_metro = rho / data_return.wire;
-    const X_por_metro = 0.0001; // Reatância padrão: 0.1 Ohm/km
+    const X_por_metro = 0.0001; 
     const sinPhi = Math.sqrt(1 - Math.pow(cosPhi, 2));
     const Z_efetiva = (R_por_metro * cosPhi) + (X_por_metro * sinPhi);
     const k = (phases === 3) ? Math.sqrt(3) : 2;
-    const voltage_drop = Number(k * current * length * Z_efetiva);
+    const voltage_drop = Number(k * currentVal * length * Z_efetiva);
     const percent_drop = Number((voltage_drop / voltage_base) * 100);
 
     data_return.voltage_drop = Number(voltage_drop.toFixed(2));
@@ -105,10 +97,3 @@ async function wireSize(current: T, options: Options) {
 
     return data_return;
 }
-
-
-export const electrical = {
-    wireSize
-};
-
-export const electric = electrical;

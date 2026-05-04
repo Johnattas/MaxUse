@@ -6,13 +6,59 @@
     "module": "./dist/index.es.js",
     "types": "./dist/index.d.ts",
     "type": "module",
+    "sideEffects": false,
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
             "import": "./dist/index.es.js",
             "require": "./dist/index.js"
+        },
+        "./browser": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.es.js"
+        },
+        "./dates": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.es.js"
+        },
+        "./iterables": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.es.js"
+        },
+        "./math": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.es.js"
+        },
+        "./objects": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.es.js"
+        },
+        "./strings": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.es.js"
+        },
+        "./types": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.es.js"
+        },
+        "./validations": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.es.js"
+        },
+        "./electrical": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.es.js"
+        },
+        "./format": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.es.js"
+        },
+        "./vueuse": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.es.js"
         }
     },
+
     "files": [
         "dist"
     ],

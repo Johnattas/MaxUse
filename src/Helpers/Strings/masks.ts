@@ -48,3 +48,42 @@ export function formatPhone(phone_number: RefString): string {
 
     return String(data);
 }
+
+/**
+ * Ofusca parte de uma informação sensível.
+ * Privacidade (LGPD) ao exibir dados do usuário em telas de confirmação ou perfis públicos.
+ *
+ * @param value A informação a ser ofuscada.
+ * @param type O tipo de informação ('email', 'card' ou 'text').
+ */
+export function maskSensitive(value: RefString, type: 'email' | 'card' | 'text' = 'text'): string {
+    const data = toValue(value);
+    if (isBlank(data)) return '';
+
+    const str = String(data).trim();
+
+    if (type === 'email') {
+        const [user, domain] = str.split('@');
+        if (!domain) return str;
+
+        const mask = (s: string) => {
+            if (s.length <= 3) return s.charAt(0) + '***';
+            return s.slice(0, 3) + '***';
+        };
+
+        const [domainName, domainSuffix] = domain.split('.');
+        if (!domainSuffix) return `${mask(user)}@${mask(domain)}`;
+
+        return `${mask(user)}@${mask(domainName)}.${domainSuffix}`;
+    }
+
+    if (type === 'card') {
+        const onlyNumbers = str.replace(/\D/g, '');
+        const last4 = onlyNumbers.slice(-4);
+        return `**** **** **** ${last4}`;
+    }
+
+    // Default: mask middle characters
+    if (str.length <= 4) return '****';
+    return str.slice(0, 2) + '***' + str.slice(-2);
+}

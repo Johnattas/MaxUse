@@ -1,34 +1,22 @@
-import * as iterables from './Helpers/iterables';
-import * as validations from './Helpers/validations';
-import * as format from './Helpers/format';
-import * as str from './Helpers/str';
-import * as routes from './Routes';
-import * as electrical from './Helpers/electrical';
-import * as composables from './Composables';
-import * as vueUseCore from './Helpers/vueUse';
-
-// Exporta as funções sep   aradas para quem quiser importar isoladamente
+// Exporta os módulos principais
 export * from './Composables';
 export * from './Routes';
-export * from './Helpers/iterables';
-export * from './Helpers/validations';
-export * from './Helpers/format';
-export * from './Helpers/str';
-export * from './Helpers/electrical';
-export * from './Helpers/vueUse';
 
+// Exporta as categorias de Helpers de forma modular
+export * from './Helpers/Browser';
+export * from './Helpers/Dates';
+export * from './Helpers/Iterables';
+export * from './Helpers/Math';
+export * from './Helpers/Objects';
+export * from './Helpers/Strings';
+export * from './Helpers/Types';
+export * from './Helpers/Validations';
+export * from './Helpers/Electrical';
+export * from './Helpers/Format';
+
+// VueUse é exportado separadamente para evitar colisões no namespace global (get, set, etc.)
+export * as vueUse from './Helpers/VueUse';
+
+
+// Exporta itens específicos
 export { maxUseItems } from './Helpers/maxUseItems';
-
-// Exporta um objeto unificado
-export const maxUse = {
-    ...iterables,
-    ...validations,
-    ...format,
-    ...str,
-    ...electrical,
-    ...routes,
-    ...composables,
-    vueuse: vueUseCore
-};
-
-export const vueUse = vueUseCore;

@@ -35,3 +35,16 @@ export function camelCase(value: RefString): string {
         return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
     }).join(''): '';
 }
+
+/**
+ * Garante que apenas a primeira letra da string seja maiúscula e o restante minúscula.
+ *
+ * @param value A string a ser formatada.
+ */
+export function capitalize(value: RefString): string {
+    const data = toValue(value);
+    if (isBlank(data)) return '';
+
+    const str = String(data);
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}

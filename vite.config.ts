@@ -11,10 +11,25 @@ export default defineConfig({
     ],
     build: {
         lib: {
-            entry: path.resolve(__dirname, './src/index.ts'),
+            entry: {
+                index: path.resolve(__dirname, './src/index.ts'),
+                browser: path.resolve(__dirname, './src/Helpers/Browser/index.ts'),
+                dates: path.resolve(__dirname, './src/Helpers/Dates/index.ts'),
+                electrical: path.resolve(__dirname, './src/Helpers/Electrical/index.ts'),
+                format: path.resolve(__dirname, './src/Helpers/Format/index.ts'),
+                iterables: path.resolve(__dirname, './src/Helpers/Iterables/index.ts'),
+                math: path.resolve(__dirname, './src/Helpers/Math/index.ts'),
+                objects: path.resolve(__dirname, './src/Helpers/Objects/index.ts'),
+                strings: path.resolve(__dirname, './src/Helpers/Strings/index.ts'),
+                types: path.resolve(__dirname, './src/Helpers/Types/index.ts'),
+                validations: path.resolve(__dirname, './src/Helpers/Validations/index.ts'),
+                vueuse: path.resolve(__dirname, './src/Helpers/VueUse/index.ts'),
+                composables: path.resolve(__dirname, './src/Composables/index.ts'),
+                routes: path.resolve(__dirname, './src/Routes/index.ts')
+            },
             name: 'MaxUse',
-            fileName: (format: string) => `index.${format}.js`,
-            formats: ['es', 'umd']
+            fileName: (format, entryName) => `${entryName}.${format}.js`,
+            formats: ['es']
         },
         rollupOptions: {
             external: ['vue','node:fs', 'node:fs/promises', 'fs', 'fs/promises', 'path', 'node:path'],

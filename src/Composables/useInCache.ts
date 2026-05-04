@@ -1,5 +1,5 @@
 import localforage from 'localforage';
-import { hasContent } from '../Helpers/validations';
+import { hasContent } from '../Helpers/Types';
 import { apiGetRoute } from '../Routes/apiGetRoute';
 
 export const useInCache = async (route_name: string, data_get: any, key: string) => {
