@@ -1,5 +1,6 @@
-import { n as isArray, t as isObject } from "./isObject-t2kgsScf.js";
-import { isRef, toValue, unref } from "vue";
+import { n as __exportAll } from "./chunk-C-Qwzh9l.js";
+import { n as isObject, t as isArray } from "./isArray-BS_zMfXk.js";
+import { toValue } from "vue";
 //#region src/Helpers/Objects/deepClone.ts
 /**
 * Cria uma cópia profunda de um valor, lidando com referências circulares e diversos tipos de dados.
@@ -10,7 +11,7 @@ import { isRef, toValue, unref } from "vue";
 * @returns Uma cópia profunda do valor.
 */
 function deepClone(value, map = /* @__PURE__ */ new WeakMap()) {
-	const data = unref(value);
+	const data = toValue(value);
 	if (data === null || typeof data !== "object") return data;
 	if (map.has(data)) return map.get(data);
 	let clone;
@@ -50,7 +51,7 @@ function deepClone(value, map = /* @__PURE__ */ new WeakMap()) {
 * @returns Retorna o valor resolvido.
 */
 function get(object, path, defaultValue) {
-	const data = unref(object);
+	const data = toValue(object);
 	if (data === null || data === void 0) return defaultValue;
 	const pathArray = Array.isArray(path) ? path : path.replace(/\[(\w+)\]/g, ".$1").replace(/^\./, "").split(".");
 	let result = data;
@@ -71,7 +72,7 @@ function get(object, path, defaultValue) {
 * @returns Retorna true se a propriedade for removida com sucesso, caso contrário false.
 */
 function unset(object, path) {
-	const data = unref(object);
+	const data = toValue(object);
 	if (data === null || typeof data !== "object") return false;
 	const pathArray = Array.isArray(path) ? path : path.replace(/\[(\w+)\]/g, ".$1").replace(/^\./, "").split(".");
 	let current = data;
@@ -95,8 +96,8 @@ function unset(object, path) {
 * @returns Retorna true se os valores forem equivalentes, caso contrário false.
 */
 function isEqual(value, other) {
-	const a = unref(value);
-	const b = unref(other);
+	const a = toValue(value);
+	const b = toValue(other);
 	if (a === b) return true;
 	if (Number.isNaN(a) && Number.isNaN(b)) return true;
 	if (a === null || b === null || typeof a !== "object" || typeof b !== "object") return false;
@@ -138,10 +139,9 @@ function isEqual(value, other) {
 * @returns O objeto mesclado (modifica o primeiro objeto e o retorna).
 */
 function deepMerge(target, ...sources) {
-	if (!sources.length) return target;
-	const source = sources.shift();
-	const dataTarget = unref(target);
-	const dataSource = unref(source);
+	const dataTarget = toValue(target);
+	if (!sources.length) return dataTarget;
+	const dataSource = toValue(sources.shift());
 	if (isObject(dataTarget) && !isArray(dataTarget) && isObject(dataSource) && !isArray(dataSource)) Object.keys(dataSource).forEach((key) => {
 		const targetValue = dataTarget[key];
 		const sourceValue = dataSource[key];
@@ -150,7 +150,7 @@ function deepMerge(target, ...sources) {
 			deepMerge(dataTarget[key], sourceValue);
 		} else dataTarget[key] = sourceValue;
 	});
-	return deepMerge(target, ...sources);
+	return deepMerge(dataTarget, ...sources);
 }
 //#endregion
 //#region src/Helpers/Objects/renameKeys.ts
@@ -181,7 +181,7 @@ function renameKeys(object, map) {
 * @param keys As chaves a serem mantidas.
 */
 function pick(obj, keys) {
-	const data = unref(obj);
+	const data = toValue(obj);
 	const result = {};
 	if (!data) return result;
 	keys.forEach((key) => {
@@ -196,7 +196,7 @@ function pick(obj, keys) {
 * @param keys As chaves a serem removidas.
 */
 function omit(obj, keys) {
-	const data = unref(obj);
+	const data = toValue(obj);
 	const result = { ...data };
 	if (!data) return result;
 	keys.forEach((key) => {
@@ -214,10 +214,11 @@ function omit(obj, keys) {
 * @returns Um novo objeto com os valores transformados.
 */
 function mapValues(obj, fn) {
+	const data = toValue(obj);
 	const result = {};
-	Object.keys(obj).forEach((key) => {
+	Object.keys(data).forEach((key) => {
 		const k = key;
-		result[k] = fn(obj[k], k, obj);
+		result[k] = fn(data[k], k, data);
 	});
 	return result;
 }
@@ -233,16 +234,15 @@ function mapValues(obj, fn) {
 * @returns Retorna o objeto modificado.
 */
 function set(object, path, value) {
-	if (object === null || object === void 0) return object;
+	const data = toValue(object);
+	if (data === null || data === void 0) return object;
 	const pathArray = Array.isArray(path) ? path : path.replace(/\[(\w+)\]/g, ".$1").replace(/^\./, "").split(".");
-	let current = isRef(object) ? object.value : object;
+	let current = data;
 	const length = pathArray.length;
 	for (let i = 0; i < length; i++) {
 		const key = pathArray[i];
-		if (i === length - 1) if (isRef(current)) current.value[key] = value;
-		else current[key] = value;
+		if (i === length - 1) current[key] = value;
 		else {
-			if (isRef(current)) current = current.value;
 			if (current[key] === void 0 || current[key] === null || typeof current[key] !== "object") current[key] = {};
 			current = current[key];
 		}
@@ -275,6 +275,21 @@ function diff(oldObj, newObj, alwaysKeep = []) {
 }
 //#endregion
 //#region src/Helpers/Objects/index.ts
+var Objects_exports = /* @__PURE__ */ __exportAll({
+	Obj: () => Obj,
+	cloneDeep: () => deepClone,
+	deepClone: () => deepClone,
+	deepMerge: () => deepMerge,
+	diff: () => diff,
+	get: () => get,
+	isEqual: () => isEqual,
+	mapValues: () => mapValues,
+	omit: () => omit,
+	pick: () => pick,
+	renameKeys: () => renameKeys,
+	set: () => set,
+	unset: () => unset
+});
 var Obj = {
 	deepClone,
 	cloneDeep: deepClone,
@@ -290,6 +305,6 @@ var Obj = {
 	diff
 };
 //#endregion
-export { omit as a, deepMerge as c, get as d, deepClone as f, mapValues as i, isEqual as l, diff as n, pick as o, set as r, renameKeys as s, Obj as t, unset as u };
+export { mapValues as a, renameKeys as c, unset as d, get as f, set as i, deepMerge as l, Objects_exports as n, omit as o, deepClone as p, diff as r, pick as s, Obj as t, isEqual as u };
 
-//# sourceMappingURL=Objects-BeuXoF-C.js.map
+//# sourceMappingURL=Objects-ClLld91z.js.map

@@ -1,2 +1,2 @@
-import { t as isTouchDevice } from "./Browser-CrrcOrLZ.js";
+import { n as isTouchDevice } from "./Browser-CSRSebVG.js";
 export { isTouchDevice };

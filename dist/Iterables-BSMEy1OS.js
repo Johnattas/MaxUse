@@ -1,14 +1,15 @@
-import { toValue, unref } from "vue";
+import { n as __exportAll } from "./chunk-C-Qwzh9l.js";
+import { toValue } from "vue";
 //#region src/Helpers/Iterables/countBy.ts
 function countBy(collection, key, value = true) {
-	const data = unref(collection);
+	const data = toValue(collection);
 	if (!data || typeof data !== "object") return 0;
 	return (Array.isArray(data) ? data : Object.values(data)).reduce((acc, item) => acc + (item[key] === value ? 1 : 0), 0);
 }
 //#endregion
 //#region src/Helpers/Iterables/filter.ts
 function filter(collection, callback) {
-	const data = unref(collection);
+	const data = toValue(collection);
 	if (!data || typeof data !== "object") return Array.isArray(data) ? [] : {};
 	if (Array.isArray(data)) return data.filter((item) => callback(item));
 	return Object.fromEntries(Object.entries(data).filter(([, item]) => callback(item)));
@@ -16,7 +17,7 @@ function filter(collection, callback) {
 //#endregion
 //#region src/Helpers/Iterables/filterBy.ts
 function filterBy(collection, key, value = true) {
-	const data = unref(collection);
+	const data = toValue(collection);
 	if (!data || typeof data !== "object") return [];
 	if (Array.isArray(data)) return data.filter((item) => item[key] === value);
 	return Object.fromEntries(Object.entries(data).filter(([, item]) => item[key] === value));
@@ -24,7 +25,7 @@ function filterBy(collection, key, value = true) {
 //#endregion
 //#region src/Helpers/Iterables/filterByNot.ts
 function filterByNot(collection, key, value = true) {
-	const data = unref(collection);
+	const data = toValue(collection);
 	if (!data || typeof data !== "object") return Array.isArray(data) ? [] : {};
 	const isExcluded = (item) => {
 		const itemValue = item?.[key];
@@ -45,7 +46,7 @@ function filterByNot(collection, key, value = true) {
 * @returns Retorna o objeto agrupado.
 */
 function groupBy(collection, iteratee) {
-	const data = unref(collection);
+	const data = toValue(collection);
 	if (!data) return {};
 	const items = Array.isArray(data) ? data : Object.values(data);
 	const result = {};
@@ -62,7 +63,7 @@ function groupBy(collection, iteratee) {
 //#endregion
 //#region src/Helpers/Iterables/keyBy.ts
 function keyBy(collection, key) {
-	const data = unref(collection);
+	const data = toValue(collection);
 	if (!data || typeof data !== "object") return {};
 	const items = Array.isArray(data) ? data : Object.values(data);
 	return Object.fromEntries(items.map((item) => {
@@ -73,7 +74,7 @@ function keyBy(collection, key) {
 //#endregion
 //#region src/Helpers/Iterables/orderBy.ts
 function orderBy(collection, criteria, defaultOrder = "desc") {
-	const data = unref(collection);
+	const data = toValue(collection);
 	if (!data || typeof data !== "object") return [];
 	const items = Array.isArray(data) ? data : Object.values(data);
 	const rules = [];
@@ -115,7 +116,7 @@ function orderByWithKey(collection, criteria, object_keyBy, order = "asc", defau
 * @returns Retorna o novo array ordenado.
 */
 function sortBy(collection, iteratees = [(x) => x]) {
-	const data = unref(collection);
+	const data = toValue(collection);
 	if (!data) return [];
 	const items = Array.isArray(data) ? [...data] : Object.values(data);
 	const iters = Array.isArray(iteratees) ? iteratees : [iteratees];
@@ -154,7 +155,7 @@ function sortBy(collection, iteratees = [(x) => x]) {
 * @returns Retorna a soma.
 */
 function sum(collection) {
-	const data = unref(collection);
+	const data = toValue(collection);
 	if (!data) return 0;
 	return (Array.isArray(data) ? data : Object.values(data)).reduce((acc, val) => {
 		const num = parseFloat(val);
@@ -164,7 +165,7 @@ function sum(collection) {
 //#endregion
 //#region src/Helpers/Iterables/sumBy.ts
 function sumBy(collection, key) {
-	const data = unref(collection);
+	const data = toValue(collection);
 	if (!data || typeof data !== "object") return 0;
 	return (Array.isArray(data) ? data : Object.values(data)).reduce((acc, item) => acc + (Number(item[key]) || 0), 0);
 }
@@ -178,14 +179,14 @@ function sumBy(collection, key) {
 * @returns Retorna o novo array de valores únicos.
 */
 function uniq(array) {
-	const data = unref(array);
+	const data = toValue(array);
 	if (!Array.isArray(data)) return [];
 	return Array.from(new Set(data));
 }
 //#endregion
 //#region src/Helpers/Iterables/valuesInKey.ts
 function valuesInKey(collection, key, default_value = false) {
-	const data = unref(collection);
+	const data = toValue(collection);
 	if (!data || typeof data !== "object") return [];
 	return (Array.isArray(data) ? data : Object.values(data)).flatMap((list) => {
 		const value = list[key] ?? default_value;
@@ -197,7 +198,7 @@ function valuesInKey(collection, key, default_value = false) {
 //#endregion
 //#region src/Helpers/Iterables/size.ts
 function size(value, allow_number = true) {
-	const data = unref(value);
+	const data = toValue(value);
 	if (!data || data === "" || data === " ") return 0;
 	if (typeof data === "number" && allow_number) return data;
 	if (Array.isArray(data) || typeof data === "string") return data.length;
@@ -215,7 +216,7 @@ function size(value, allow_number = true) {
 * @returns Retorna o elemento aleatório.
 */
 function sample(collection) {
-	const data = unref(collection);
+	const data = toValue(collection);
 	if (!data) return void 0;
 	const items = Array.isArray(data) ? data : Object.values(data);
 	if (items.length === 0) return void 0;
@@ -263,7 +264,7 @@ function chunk(array, size = 1) {
 * @returns Retorna o novo array de valores únicos.
 */
 function uniqueBy(array, key) {
-	const data = unref(array);
+	const data = toValue(array);
 	if (!Array.isArray(data)) return [];
 	const seen = /* @__PURE__ */ new Set();
 	return data.filter((item) => {
@@ -283,7 +284,7 @@ function uniqueBy(array, key) {
 * @returns Retorna o elemento correspondente encontrado, ou undefined.
 */
 function findLast(collection, predicate) {
-	const data = unref(collection);
+	const data = toValue(collection);
 	if (!data || !Array.isArray(data)) return void 0;
 	for (let i = data.length - 1; i >= 0; i--) if (predicate(data[i], i, data)) return data[i];
 }
@@ -298,7 +299,7 @@ function findLast(collection, predicate) {
 * @returns Retorna o novo array ordenado.
 */
 function sortByMulti(collection, criteria, orders = []) {
-	const data = unref(collection);
+	const data = toValue(collection);
 	if (!data || !Array.isArray(data)) return [];
 	return [...data].sort((a, b) => {
 		for (let i = 0; i < criteria.length; i++) {
@@ -332,7 +333,7 @@ function sortByMulti(collection, criteria, orders = []) {
 * @returns O primeiro elemento do array ou undefined se o array estiver vazio.
 */
 function first(array) {
-	const data = unref(array);
+	const data = toValue(array);
 	if (!Array.isArray(data) || data.length === 0) return void 0;
 	return data[0];
 }
@@ -345,11 +346,37 @@ function first(array) {
 * @returns O último elemento do array ou undefined se o array estiver vazio.
 */
 function last(array) {
-	const data = unref(array);
+	const data = toValue(array);
 	if (!Array.isArray(data) || data.length === 0) return void 0;
 	return data[data.length - 1];
 }
 //#endregion
-export { countBy as S, keyBy as _, uniqueBy as a, filterBy as b, sample as c, uniq as d, sumBy as f, orderBy as g, orderByWithKey as h, findLast as i, size as l, sortBy as m, first as n, chunk as o, sum as p, sortByMulti as r, shuffle as s, last as t, valuesInKey as u, groupBy as v, filter as x, filterByNot as y };
+//#region src/Helpers/Iterables/index.ts
+var Iterables_exports = /* @__PURE__ */ __exportAll({
+	chunk: () => chunk,
+	countBy: () => countBy,
+	filter: () => filter,
+	filterBy: () => filterBy,
+	filterByNot: () => filterByNot,
+	findLast: () => findLast,
+	first: () => first,
+	groupBy: () => groupBy,
+	keyBy: () => keyBy,
+	last: () => last,
+	orderBy: () => orderBy,
+	orderByWithKey: () => orderByWithKey,
+	sample: () => sample,
+	shuffle: () => shuffle,
+	size: () => size,
+	sortBy: () => sortBy,
+	sortByMulti: () => sortByMulti,
+	sum: () => sum,
+	sumBy: () => sumBy,
+	uniq: () => uniq,
+	uniqueBy: () => uniqueBy,
+	valuesInKey: () => valuesInKey
+});
+//#endregion
+export { countBy as C, filter as S, orderBy as _, findLast as a, filterByNot as b, shuffle as c, valuesInKey as d, uniq as f, orderByWithKey as g, sortBy as h, sortByMulti as i, sample as l, sum as m, last as n, uniqueBy as o, sumBy as p, first as r, chunk as s, Iterables_exports as t, size as u, keyBy as v, filterBy as x, groupBy as y };
 
-//# sourceMappingURL=Iterables-CQ7zVNKY.js.map
+//# sourceMappingURL=Iterables-BSMEy1OS.js.map

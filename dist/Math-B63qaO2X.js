@@ -1,3 +1,5 @@
+import { n as __exportAll } from "./chunk-C-Qwzh9l.js";
+import { toValue } from "vue";
 //#region src/Helpers/Math/average.ts
 /**
 * Calcula a média aritmética de um array de números.
@@ -6,8 +8,9 @@
 * @returns A média aritmética.
 */
 function average(numbers) {
-	if (numbers.length === 0) return 0;
-	return numbers.reduce((acc, val) => acc + val, 0) / numbers.length;
+	const data = toValue(numbers);
+	if (data.length === 0) return 0;
+	return data.reduce((acc, val) => acc + val, 0) / data.length;
 }
 //#endregion
 //#region src/Helpers/Math/roundUp.ts
@@ -19,8 +22,10 @@ function average(numbers) {
 * @returns O número arredondado para cima.
 */
 function roundUp(value, decimals = 0) {
-	const factor = Math.pow(10, decimals);
-	return Math.ceil(value * factor) / factor;
+	const rawValue = toValue(value);
+	const rawDecimals = toValue(decimals);
+	const factor = Math.pow(10, rawDecimals);
+	return Math.ceil(rawValue * factor) / factor;
 }
 //#endregion
 //#region src/Helpers/Math/roundDown.ts
@@ -32,8 +37,10 @@ function roundUp(value, decimals = 0) {
 * @returns O número arredondado para baixo.
 */
 function roundDown(value, decimals = 0) {
-	const factor = Math.pow(10, decimals);
-	return Math.floor(value * factor) / factor;
+	const rawValue = toValue(value);
+	const rawDecimals = toValue(decimals);
+	const factor = Math.pow(10, rawDecimals);
+	return Math.floor(rawValue * factor) / factor;
 }
 //#endregion
 //#region src/Helpers/Math/median.ts
@@ -46,13 +53,22 @@ function roundDown(value, decimals = 0) {
 * @returns A mediana dos números.
 */
 function median(numbers) {
-	if (numbers.length === 0) return 0;
-	const sorted = [...numbers].sort((a, b) => a - b);
+	const data = toValue(numbers);
+	if (data.length === 0) return 0;
+	const sorted = [...data].sort((a, b) => a - b);
 	const middle = Math.floor(sorted.length / 2);
 	if (sorted.length % 2 === 0) return (sorted[middle - 1] + sorted[middle]) / 2;
 	return sorted[middle];
 }
 //#endregion
-export { average as i, roundDown as n, roundUp as r, median as t };
+//#region src/Helpers/Math/index.ts
+var Math_exports = /* @__PURE__ */ __exportAll({
+	average: () => average,
+	median: () => median,
+	roundDown: () => roundDown,
+	roundUp: () => roundUp
+});
+//#endregion
+export { average as a, roundUp as i, median as n, roundDown as r, Math_exports as t };
 
-//# sourceMappingURL=Math-CUe22ZuZ.js.map
+//# sourceMappingURL=Math-B63qaO2X.js.map

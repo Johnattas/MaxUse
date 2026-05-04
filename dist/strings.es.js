@@ -1,6 +1,7 @@
-import { t as ulid$1 } from "./browser-B6fB4aHD.js";
-import { t as isBlank } from "./isBlank-ByzYVLTg.js";
-import { a as formatPhone, i as formatCpfCnpj, n as formatCnpj, o as maskSensitive, r as formatCpf, t as formatCep } from "./masks-C40U7cWu.js";
+import { n as __exportAll } from "./chunk-C-Qwzh9l.js";
+import { t as ulid$1 } from "./browser-D3zs1kBf.js";
+import { t as isBlank } from "./isBlank-GzCKGiMl.js";
+import { a as formatPhone, i as formatCpfCnpj, n as formatCnpj, o as maskSensitive, r as formatCpf, t as formatCep } from "./masks-Beqdy4He.js";
 import { toValue } from "vue";
 //#region src/Helpers/Strings/random.ts
 function getUlid() {
@@ -14,9 +15,11 @@ function getUlid() {
 * @returns Retorna a string gerada.
 */
 function Random(arg1 = 20, arg2 = "letter lower") {
-	if (String(arg1).includes("ulid") || String(arg2).includes("ulid")) return getUlid();
-	const length = typeof arg1 === "number" ? arg1 : typeof arg2 === "number" ? arg2 : 20;
-	const type_code = String(typeof arg1 === "string" ? arg1 : String(arg2)).toLowerCase();
+	const val1 = toValue(arg1);
+	const val2 = toValue(arg2);
+	if (String(val1).includes("ulid") || String(val2).includes("ulid")) return getUlid();
+	const length = typeof val1 === "number" ? val1 : typeof val2 === "number" ? val2 : 20;
+	const type_code = String(typeof val1 === "string" ? val1 : String(val2)).toLowerCase();
 	let chars = "";
 	if (type_code.includes("lower") || type_code.includes("letter")) chars += "abcdefghijklmnopqrstuvwxyz";
 	if (type_code.includes("upper")) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -42,9 +45,9 @@ function ulid() {
 * @returns Retorna o número gerado.
 */
 function intervalRandom(min = 0, max = 1e3) {
-	min = Math.ceil(min);
-	max = Math.floor(max);
-	return Math.floor(Math.random() * (max - min + 1)) + min;
+	const valMin = Math.ceil(toValue(min));
+	const valMax = Math.floor(toValue(max));
+	return Math.floor(Math.random() * (valMax - valMin + 1)) + valMin;
 }
 //#endregion
 //#region src/Helpers/Strings/filters.ts
@@ -194,6 +197,38 @@ function readingTime(value, wordsPerMinute = 200) {
 }
 //#endregion
 //#region src/Helpers/Strings/index.ts
+var Strings_exports = /* @__PURE__ */ __exportAll({
+	Random: () => Random,
+	Str: () => Str,
+	StrCase: () => StrCase,
+	StrFilter: () => StrFilter,
+	camelCase: () => camelCase,
+	capitalize: () => capitalize,
+	formatCep: () => formatCep,
+	formatCnpj: () => formatCnpj,
+	formatCpf: () => formatCpf,
+	formatCpfCnpj: () => formatCpfCnpj,
+	formatPhone: () => formatPhone,
+	initials: () => initials,
+	intervalRandom: () => intervalRandom,
+	kebabCase: () => kebabCase,
+	maskSensitive: () => maskSensitive,
+	noHtml: () => stripHtml,
+	normalizeToSearch: () => normalizeToSearch,
+	onlyLetters: () => onlyLetters,
+	onlyLettersAndNumbers: () => onlyLettersAndNumbers,
+	onlyNumbers: () => onlyNumbers,
+	onlySymbols: () => onlySymbols,
+	readingTime: () => readingTime,
+	removeSpaces: () => removeSpaces,
+	slugify: () => slugify,
+	snakeCase: () => snakeCase,
+	stripHtml: () => stripHtml,
+	toNumber: () => toNumber,
+	toSearchableString: () => toSearchableString,
+	truncate: () => truncate,
+	ulid: () => ulid
+});
 var Str = {
 	Random,
 	code: Random,
@@ -221,6 +256,6 @@ var StrCase = {
 	capitalize
 };
 //#endregion
-export { Random, Str, StrCase, StrFilter, camelCase, capitalize, formatCep, formatCnpj, formatCpf, formatCpfCnpj, formatPhone, initials, intervalRandom, kebabCase, maskSensitive, stripHtml as noHtml, stripHtml, normalizeToSearch, onlyLetters, onlyLettersAndNumbers, onlyNumbers, onlySymbols, readingTime, removeSpaces, slugify, snakeCase, toNumber, toSearchableString, truncate, ulid };
+export { Random, Str, StrCase, StrFilter, camelCase, capitalize, formatCep, formatCnpj, formatCpf, formatCpfCnpj, formatPhone, initials, intervalRandom, kebabCase, maskSensitive, stripHtml as noHtml, stripHtml, normalizeToSearch, onlyLetters, onlyLettersAndNumbers, onlyNumbers, onlySymbols, readingTime, removeSpaces, slugify, snakeCase, Strings_exports as t, toNumber, toSearchableString, truncate, ulid };
 
 //# sourceMappingURL=strings.es.js.map

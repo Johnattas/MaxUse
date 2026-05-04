@@ -1,4 +1,4 @@
-import { n as apiRoute, r as axios, t as apiGetRoute } from "./apiGetRoute-FBRkSZ1g.js";
+import { n as apiRoute, r as axios, t as apiGetRoute } from "./apiGetRoute-BhiRofsc.js";
 //#region src/Routes/apiDeleteRoute.ts
 async function apiDeleteRoute(RouteName, data = null, options = null) {
 	const system_options = apiRoute(RouteName, data, options, "DELETE");

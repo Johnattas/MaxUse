@@ -3669,4 +3669,4 @@ async function apiGetRoute(RouteName, data = {}, options = null) {
 //#endregion
 export { apiRoute as n, axios as r, apiGetRoute as t };
 
-//# sourceMappingURL=apiGetRoute-FBRkSZ1g.js.map
+//# sourceMappingURL=apiGetRoute-BhiRofsc.js.map

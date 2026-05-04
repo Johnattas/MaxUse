@@ -1,2 +1,2 @@
-import { i as average, n as roundDown, r as roundUp, t as median } from "./Math-CUe22ZuZ.js";
+import { a as average, i as roundUp, n as median, r as roundDown } from "./Math-B63qaO2X.js";
 export { average, median, roundDown, roundUp };

@@ -1,5 +1,5 @@
-import { Ref } from 'vue';
+import { MaybeRefOrGetter } from 'vue';
 type T = Record<string, any>;
-export declare function sumBy(collection: T[] | Record<string, T> | Ref<T[] | Record<string, T>> | null | undefined, key: keyof T): number;
+export declare function sumBy(collection: MaybeRefOrGetter<T[] | Record<string, T> | null | undefined>, key: keyof T): number;
 export {};
 //# sourceMappingURL=sumBy.d.ts.map
