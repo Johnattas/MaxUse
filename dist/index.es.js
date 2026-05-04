@@ -15,12 +15,31 @@ import { format, formatBytes, formatCurrency, t as Format_exports } from "./form
 import { a as useDefaultReset, i as useInCache, n as useRefStorage, r as useRefCached, t as useTimeAgo } from "./Composables-D-cdGiEq.js";
 import { t as apiGetRoute } from "./apiGetRoute-BhiRofsc.js";
 import { apiDeleteRoute, apiUploadRoute } from "./routes.es.js";
-//#region dist/exports.json
-var exports_default = ["isTouchDevice"];
-//#endregion
 //#region src/Helpers/maxUseItems.ts
+/**
+* Retorna a lista de todos os nomes de exports disponíveis na biblioteca MaxUse.
+* Gera a lista dinamicamente a partir dos módulos fonte, sem depender do dist.
+*/
 var maxUseItems = () => {
-	return JSON.parse(JSON.stringify(uniq(exports_default)));
+	const allKeys = /* @__PURE__ */ new Set();
+	const modules = [
+		Browser_exports,
+		Dates_exports,
+		Iterables_exports,
+		Math_exports,
+		Objects_exports,
+		Strings_exports,
+		Types_exports,
+		Validations_exports,
+		Electrical_exports,
+		Format_exports,
+		VueUse_exports
+	];
+	for (const mod of modules) for (const key of Object.keys(mod)) {
+		if (key === "vueUse") continue;
+		allKeys.add(key);
+	}
+	return Array.from(allKeys).sort();
 };
 //#endregion
 //#region src/index.ts
