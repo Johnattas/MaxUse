@@ -219,6 +219,7 @@ export declare const maxUse: {
     valuesInKey: typeof iterables.valuesInKey;
     size: typeof iterables.size;
     deepClone: typeof iterables.deepClone;
+    cloneDeep: typeof iterables.deepClone;
     unset: typeof iterables.unset;
     isEqual: typeof iterables.isEqual;
     isObject: typeof iterables.isObject;

@@ -13,6 +13,7 @@
   "camelize",
   "canIterate",
   "clamp",
+  "cloneDeep",
   "cloneFnJSON",
   "computedAsync",
   "computedInject",

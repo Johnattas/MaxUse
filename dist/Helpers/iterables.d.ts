@@ -13,6 +13,7 @@ export { sumBy } from './Iterables/sumBy';
 export { valuesInKey } from './Iterables/valuesInKey';
 export { size } from './Iterables/size';
 export { deepClone } from './Iterables/deepClone';
+export { deepClone as cloneDeep } from './Iterables/deepClone';
 export { unset } from './Iterables/unset';
 export { isEqual } from './Iterables/isEqual';
 export { isObject } from './Iterables/isObject';
