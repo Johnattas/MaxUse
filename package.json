@@ -1,6 +1,6 @@
 {
     "name": "max-use",
-    "version": "0.2.30",
+    "version": "0.2.31",
     "description": "Biblioteca de Funções e Composables Vue",
     "main": "./dist/index.js",
     "module": "./dist/index.es.js",
