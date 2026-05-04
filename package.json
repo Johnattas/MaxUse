@@ -78,7 +78,7 @@
         "type-check": "vue-tsc --noEmit",
         "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
         "postbuild": "git add dist tsconfig.tsbuildinfo && git commit -m 'chore: atualiza artefatos do build' || true",
-        "release": "npm run build && npm version patch -m 'Upgrade to %s' && git push origin main --follow-tags && npm publish --access public",
+        "release": "npm run build && npm version patch -m 'Upgrade to %s' && git push origin main --follow-tags && npm publish --access public --otp",
         "prepublishOnly": "npm run build"
     },
     "dependencies": {
