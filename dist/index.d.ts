@@ -590,6 +590,8 @@ export declare const _: {
     diffInYears(date1: import('vue').MaybeRef<string | number | Date | null | undefined> | import('vue').ComputedRef<string | number | Date | null | undefined> | (() => string | number | Date | null | undefined), date2: import('vue').MaybeRef<string | number | Date | null | undefined> | import('vue').ComputedRef<string | number | Date | null | undefined> | (() => string | number | Date | null | undefined)): number;
     isTouchDevice: typeof Browser.isTouchDevice;
     apiGetRoute(RouteName: string | null, data?: any, options?: any): Promise<any>;
+    apiPostRoute(RouteName: string | null, data?: any | null, options?: any): Promise<any>;
+    apiPutRoute(RouteName: string, data?: any | null, options?: any): Promise<any>;
     apiDeleteRoute(RouteName: string | null, data?: any | null, options?: any): Promise<any>;
     apiUploadRoute(RouteName: string, files?: any, data?: any, options?: null): Promise<any>;
     useDefaultReset: typeof Composables.useDefaultReset;
