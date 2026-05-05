@@ -44,7 +44,11 @@ var maxUseItems = () => {
 	return Array.from(allKeys).sort();
 };
 var autoImport = () => {
-	return { "@maxvue/max-use": [...maxUseItems(), "_"] };
+	return { "@maxvue/max-use": [
+		...maxUseItems(),
+		"_",
+		"vueUse"
+	] };
 };
 var maxUseAutoImport = autoImport();
 //#endregion
