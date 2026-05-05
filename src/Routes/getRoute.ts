@@ -11,3 +11,5 @@ export const getRoute = (routeName: MaybeRefOrGetter<string | null> = null, data
     const route = useRoute();
     if (route().has(route_value)) return route(route_value, data_value);
 };
+
+
