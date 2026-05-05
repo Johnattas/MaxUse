@@ -2,6 +2,9 @@ import path from 'node:path';
 import { defineConfig, Plugin } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
+import fs from 'node:fs';
+
+const pkg = JSON.parse(fs.readFileSync(new URL('./package.json', import.meta.url), 'utf-8'));
 
 export default defineConfig({
     plugins: [
@@ -32,7 +35,15 @@ export default defineConfig({
             formats: ['es']
         },
         rollupOptions: {
-            external: ['vue','node:fs', 'node:fs/promises', 'fs', 'fs/promises', 'path', 'node:path'],
+            external: [
+                'vue',
+                'node:fs',
+                'node:fs/promises',
+                'node:path',
+                'node:url',
+                ...Object.keys(pkg.dependencies || {}),
+                ...Object.keys(pkg.peerDependencies || {})
+            ],
             output: {
                 exports: 'named',
                 globals: {

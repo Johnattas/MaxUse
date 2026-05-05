@@ -1,7 +1,7 @@
 import { ref, type Ref } from 'vue';
 import { apiGetRoute } from '../Routes/apiGetRoute';
 
-export function useRefCached(route_name: string, options: { data_get?: any; key?: string | null; defaultValue?: any } = {}): Ref {
+export function useRefCached<T>(route_name: string, options: { data_get?: any; key?: string | null; defaultValue?: any } = {}): Ref<T> {
     const state = ref(options.defaultValue ?? null);
     const key = options.key ?? route_name;
 
