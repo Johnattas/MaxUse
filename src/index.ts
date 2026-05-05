@@ -1,4 +1,4 @@
-import * as vueUseCore from './Helpers/VueUse';
+import * as vueUseCore from '@vueuse/core';
 
 import * as Browser from './Helpers/Browser';
 import * as Dates from './Helpers/Dates';
@@ -36,7 +36,7 @@ export { maxUseItems, maxUseAutoImport } from './Helpers/maxUseItems';
 /**
  * Exporta um objeto contendo todos os itens do VueUse sem exceção.
  */
-export const vueUse = vueUseCore.vueUse;
+export const vueUse = vueUseCore;
 
 /**
  * Helpers Próprios da MaxUse.
