@@ -140,14 +140,6 @@
         "access": "public"
     },
     "peerDependencies": {
-        "@vueuse/core": "^14.2.1",
-        "@vueuse/integrations": "^14.2.1",
-        "vue": ">=3.3.0",
-        "ziggy-js": "^2.6.2"
-    },
-    "peerDependenciesMeta": {
-        "ziggy-js": {
-            "optional": true
-        }
+        "vue": ">=3.3.0"
     }
 }
