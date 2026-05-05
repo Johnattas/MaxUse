@@ -298,6 +298,7 @@ export declare const _: {
     containsProp: typeof vueUseCore.containsProp;
     controlledComputed: typeof vueUseCore.computedWithControl;
     controlledRef: typeof vueUseCore.refWithControl;
+    createDisposableDirective: typeof vueUseCore.createDisposableDirective;
     createEventHook: typeof vueUseCore.createEventHook;
     createFilterWrapper: typeof vueUseCore.createFilterWrapper;
     createGlobalState: typeof vueUseCore.createGlobalState;
@@ -313,7 +314,7 @@ export declare const _: {
     extendRef: typeof vueUseCore.extendRef;
     formatDate: typeof vueUseCore.formatDate;
     getLifeCycleTarget: typeof vueUseCore.getLifeCycleTarget;
-    hasOwn: <T extends object, K$1 extends keyof T>(val: T, key: K$1) => key is K$1;
+    hasOwn: <T extends object, K extends keyof T>(val: T, key: K) => key is K;
     hyphenate: (str: string) => string;
     identity: typeof vueUseCore.identity;
     ignorableWatch: typeof vueUseCore.watchIgnorable;
@@ -596,7 +597,7 @@ export declare const _: {
     apiDeleteRoute(RouteName: string | null, data?: any | null, options?: any): Promise<any>;
     apiUploadRoute(RouteName: string, files?: any, data?: any, options?: null): Promise<any>;
     getRoute: (routeName?: import('vue').MaybeRefOrGetter<string | null>, data?: any) => string | import('vue').Ref<string | null, string | null> | import('vue').ComputedRef<string | null> | (() => string | null) | null | undefined;
-    getRouteName: (routeName?: import('vue').MaybeRefOrGetter<string | null>, data?: any) => string | import('vue').Ref<string | null, string | null> | import('vue').ComputedRef<string | null> | (() => string | null) | null | undefined;
+    getRouteByName: (routeName?: import('vue').MaybeRefOrGetter<string | null>, data?: any) => string | import('vue').Ref<string | null, string | null> | import('vue').ComputedRef<string | null> | (() => string | null) | null | undefined;
     useDefaultReset: typeof Composables.useDefaultReset;
     useInCache: (route_name: string, data_get: any, key: string) => Promise<any>;
     useRefCached: typeof Composables.useRefCached;

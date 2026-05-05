@@ -111,7 +111,7 @@ var getRoute = (routeName = null, data = {}) => {
 	if (route().has(route_value)) return route(route_value, data_value);
 	return routeName;
 };
-var getRouteName = getRoute;
+var getRouteByName = getRoute;
 //#endregion
 //#region src/Routes/index.ts
 var Routes_exports = /* @__PURE__ */ __exportAll({
@@ -121,9 +121,9 @@ var Routes_exports = /* @__PURE__ */ __exportAll({
 	apiPutRoute: () => apiPutRoute,
 	apiUploadRoute: () => apiUploadRoute,
 	getRoute: () => getRoute,
-	getRouteName: () => getRouteName
+	getRouteByName: () => getRouteByName
 });
 //#endregion
-export { apiDeleteRoute, apiGetRoute, apiPostRoute, apiPutRoute, apiUploadRoute, getRoute, getRouteName, Routes_exports as t };
+export { apiDeleteRoute, apiGetRoute, apiPostRoute, apiPutRoute, apiUploadRoute, getRoute, getRouteByName, Routes_exports as t };
 
 //# sourceMappingURL=routes.es.js.map
