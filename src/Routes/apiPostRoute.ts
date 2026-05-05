@@ -22,4 +22,5 @@ export async function apiPostRoute(RouteName: string | null, data: any | null = 
         console.error('>> Erro ao fazer a requisição - Rota: ' + RouteName, error);
         return null;
     }
+
 }
