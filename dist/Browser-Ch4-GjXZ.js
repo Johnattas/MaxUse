@@ -33,4 +33,4 @@ var Browser_exports = /* @__PURE__ */ __exportAll({
 //#endregion
 export { getColorFromVar as n, isTouchDevice as r, Browser_exports as t };
 
-//# sourceMappingURL=Browser-BCJHqYFj.js.map
+//# sourceMappingURL=Browser-Ch4-GjXZ.js.map

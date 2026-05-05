@@ -1,7 +1,7 @@
 import { t as __exportAll } from "./chunk-pbuEa-1d.js";
-import { n as hasContent } from "./isBlank-CKgHt4y2.js";
-import { t as apiGetRoute } from "./apiGetRoute-BH0SVTw6.js";
-import { useStorage, useTimeAgo, watchDebounced } from "@vueuse/core";
+import { jn as useTimeAgo$1, ki as watchDebounced, xn as useStorage } from "./dist-B3dS6Ldn.js";
+import { n as hasContent } from "./isBlank-CcaeMWGO.js";
+import { t as apiGetRoute } from "./apiGetRoute-BIhGzyFK.js";
 import { ref } from "vue";
 import { ulid } from "ulid";
 import localforage from "localforage";
@@ -132,8 +132,8 @@ var FORMAT_MAP = {
 	limit_abbrev: timeAgoLimitAbrev,
 	future: timeAgoLimitAbrev
 };
-var timeAgo = (initialDate, format = "br") => useTimeAgo(initialDate, { messages: FORMAT_MAP[format] ?? ptBr });
-var useTimeAgo$1 = (initialDate, format = "br") => timeAgo(initialDate, format);
+var timeAgo = (initialDate, format = "br") => useTimeAgo$1(initialDate, { messages: FORMAT_MAP[format] ?? ptBr });
+var useTimeAgo = (initialDate, format = "br") => timeAgo(initialDate, format);
 //#endregion
 //#region src/Composables/index.ts
 var Composables_exports = /* @__PURE__ */ __exportAll({
@@ -141,9 +141,9 @@ var Composables_exports = /* @__PURE__ */ __exportAll({
 	useInCache: () => useInCache,
 	useRefCached: () => useRefCached,
 	useRefStorage: () => useRefStorage,
-	useTimeAgo: () => useTimeAgo$1
+	useTimeAgo: () => useTimeAgo
 });
 //#endregion
-export { useInCache as a, useRefCached as i, useTimeAgo$1 as n, useDefaultReset as o, useRefStorage as r, Composables_exports as t };
+export { useInCache as a, useRefCached as i, useTimeAgo as n, useDefaultReset as o, useRefStorage as r, Composables_exports as t };
 
-//# sourceMappingURL=Composables-B9LVYbJ2.js.map
+//# sourceMappingURL=Composables-DaSynK8N.js.map

@@ -1,9 +1,8 @@
 import { t as __exportAll } from "./chunk-pbuEa-1d.js";
-import { t as isBlank } from "./isBlank-CKgHt4y2.js";
-import { n as apiRoute, t as apiGetRoute } from "./apiGetRoute-BH0SVTw6.js";
+import { t as isBlank } from "./isBlank-CcaeMWGO.js";
+import { n as apiRoute, r as u, t as apiGetRoute } from "./apiGetRoute-BIhGzyFK.js";
 import { toValue } from "vue";
 import axios from "axios";
-import { useRoute } from "ziggy-js";
 //#region src/Routes/apiPostRoute.ts
 async function apiPostRoute(RouteName, data = null, options = null) {
 	const system_options = apiRoute(RouteName, data, options, "POST");
@@ -107,7 +106,7 @@ var getRoute = (routeName = null, data = {}) => {
 	const route_value = toValue(routeName);
 	if (!route_value || isBlank(route_value)) return null;
 	const data_value = toValue(data) ?? {};
-	const route = useRoute();
+	const route = u();
 	if (route().has(route_value)) return route(route_value, data_value);
 	return null;
 };
