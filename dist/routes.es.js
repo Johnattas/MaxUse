@@ -1,5 +1,6 @@
-import { n as __exportAll } from "./chunk-C-Qwzh9l.js";
-import { n as apiRoute, r as axios, t as apiGetRoute } from "./apiGetRoute-BhiRofsc.js";
+import { t as __exportAll } from "./chunk-pbuEa-1d.js";
+import { n as apiRoute, t as apiGetRoute } from "./apiGetRoute-BH0SVTw6.js";
+import axios from "axios";
 //#region src/Routes/apiDeleteRoute.ts
 async function apiDeleteRoute(RouteName, data = null, options = null) {
 	const system_options = apiRoute(RouteName, data, options, "DELETE");

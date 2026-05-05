@@ -1,8 +1,7 @@
-import { t as require_dist } from "./dist-NYeC31V0.js";
-import { t as isBlank } from "./isBlank-Bufr2VEO.js";
+import { t as isBlank } from "./isBlank-CKgHt4y2.js";
 import { toValue } from "vue";
+import { maskBr } from "js-brasil";
 //#region src/Helpers/Strings/masks.ts
-var import_dist = require_dist();
 /**
 * Aplica a máscara de CEP brasileiro em uma string.
 *
@@ -25,7 +24,7 @@ function formatCep(value) {
 function formatCpf(value) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
-	return import_dist.maskBr.cpf(data);
+	return maskBr.cpf(data);
 }
 /**
 * Aplica a máscara de CNPJ em uma string.
@@ -36,7 +35,7 @@ function formatCpf(value) {
 function formatCnpj(value) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
-	return import_dist.maskBr.cnpj(data);
+	return maskBr.cnpj(data);
 }
 /**
 * Aplica a máscara de CPF ou CNPJ dependendo do tamanho da string.
@@ -47,7 +46,7 @@ function formatCnpj(value) {
 function formatCpfCnpj(value) {
 	const data = toValue(value);
 	if (isBlank(data)) return "";
-	return import_dist.maskBr.cpfcnpj(data);
+	return maskBr.cpfcnpj(data);
 }
 /**
 * Aplica a máscara de telefone brasileiro em uma string.
@@ -95,4 +94,4 @@ function maskSensitive(value, type = "text") {
 //#endregion
 export { formatPhone as a, formatCpfCnpj as i, formatCnpj as n, maskSensitive as o, formatCpf as r, formatCep as t };
 
-//# sourceMappingURL=masks-BW8QWoFR.js.map
+//# sourceMappingURL=masks-CoeqZA1Q.js.map

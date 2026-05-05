@@ -1,4 +1,4 @@
-import { n as __exportAll } from "./chunk-C-Qwzh9l.js";
+import { t as __exportAll } from "./chunk-pbuEa-1d.js";
 //#region src/Helpers/Browser/isTouchDevice.ts
 /**
 * Detecta se o dispositivo atual possui suporte a interações via toque (touch).
@@ -14,4 +14,4 @@ var Browser_exports = /* @__PURE__ */ __exportAll({ isTouchDevice: () => isTouch
 //#endregion
 export { isTouchDevice as n, Browser_exports as t };
 
-//# sourceMappingURL=Browser-CSRSebVG.js.map
+//# sourceMappingURL=Browser-95td0MPn.js.map
