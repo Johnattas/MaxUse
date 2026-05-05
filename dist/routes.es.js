@@ -105,11 +105,11 @@ async function apiUploadRoute(RouteName, files = null, data = {}, options = null
 //#region src/Routes/getRoute.ts
 var getRoute = (routeName = null, data = {}) => {
 	const route_value = toValue(routeName);
-	if (!route_value || isBlank(route_value)) return;
+	if (!route_value || isBlank(route_value)) return null;
 	const data_value = toValue(data) ?? {};
 	const route = useRoute();
 	if (route().has(route_value)) return route(route_value, data_value);
-	return routeName;
+	return null;
 };
 var getRouteByName = getRoute;
 //#endregion
