@@ -46,7 +46,7 @@ export const maxUseItems = (): string[] => {
 };
 
 const autoImport = () => {
-    const items = [...maxUseItems(), '_'];
+    const items = [...maxUseItems(), '_', 'vueUse'];
     // console.log(items.filter((i) => i.includes('api')));
     return {
         '@maxvue/max-use': items
