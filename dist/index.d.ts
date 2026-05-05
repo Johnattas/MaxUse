@@ -594,6 +594,7 @@ export declare const _: {
     apiPutRoute(RouteName: string, data?: any | null, options?: any): Promise<any>;
     apiDeleteRoute(RouteName: string | null, data?: any | null, options?: any): Promise<any>;
     apiUploadRoute(RouteName: string, files?: any, data?: any, options?: null): Promise<any>;
+    getRoute: (routeName?: import('vue').MaybeRefOrGetter<string | null>, data?: any) => string | undefined;
     useDefaultReset: typeof Composables.useDefaultReset;
     useInCache: (route_name: string, data_get: any, key: string) => Promise<any>;
     useRefCached: typeof Composables.useRefCached;
