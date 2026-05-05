@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { apiRoute } from './apiRoute';
 
-export default async function (RouteName: string | null, data: any | null = null, options: any = null) {
+export async function apiPostRoute(RouteName: string | null, data: any | null = null, options: any = null) {
     const system_options: any = apiRoute(RouteName, data, options, 'POST');
 
     if (!system_options) return false;
