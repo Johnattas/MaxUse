@@ -319,7 +319,7 @@ function shuffle(array) {
 //#endregion
 //#region src/Helpers/Iterables/chunk.ts
 /**
-* Divide um array em sub-arrays de um tamanho específico.
+* Divide um array em sub-arrays de um tamanho específicado.
 *
 * @param array O array a ser dividido.
 * @param size O tamanho de cada pedaço.
@@ -457,4 +457,4 @@ var Iterables_exports = /* @__PURE__ */ __exportAll({
 //#endregion
 export { countBy as C, filter as S, orderBy as _, findLast as a, filterByNot as b, shuffle as c, valuesInKey as d, uniq as f, orderByWithKey as g, sortBy as h, sortByMulti as i, sample as l, sum as m, last as n, uniqueBy as o, sumBy as p, first as r, chunk as s, Iterables_exports as t, size as u, keyBy as v, filterBy as x, groupBy as y };
 
-//# sourceMappingURL=Iterables-DNWNdfC4.js.map
+//# sourceMappingURL=Iterables-D7d0uGdc.js.map
