@@ -39,7 +39,7 @@ export const maxUseItems = (): string[] => {
 
     for (const mod of modules) for (const key of Object.keys(mod)) {
         // Ignora o objeto completo do VueUse para não poluir a lista
-        if (key === 'vueUse') continue;
+        if (key === 'vueUse' || key === 'default') continue;
         allKeys.add(key);
     }
 
