@@ -37,17 +37,10 @@ var maxUseItems = () => {
 		Validations_exports,
 		Electrical_exports,
 		Format_exports,
-		VueUse_exports,
-		lodash
+		VueUse_exports
 	];
 	for (const mod of modules) for (const key of Object.keys(mod)) {
-		if ([
-			"vueUse",
-			"default",
-			"next",
-			"to",
-			"from"
-		].includes(key)) continue;
+		if (["vueUse"].includes(key)) continue;
 		allKeys.add(key);
 	}
 	return Array.from(allKeys).sort();
