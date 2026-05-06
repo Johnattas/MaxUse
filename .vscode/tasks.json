@@ -2,10 +2,10 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "✅  BUILD & COMMIT",
+            "label": "✅  BUILD, COMMIT & PUSH",
             "type": "shell",
-            "command": "git add . && git commit -m 'feat: atualizando componentes' && npm run build",
-            "isBackground": true,
+            "command": "npx tsx src/scripts/generateResolver.ts && npm run build && git add . && git commit -m 'feat: atualizando componentes' && git push && notify-send 'VS Code' '✅ Build, Commit e Push realizados!' -i software-update-available",
+            "isBackground": false,
             "presentation": {
                 "reveal": "silent",
                 "panel": "new",
@@ -15,16 +15,16 @@
             },
             "options": {
                 "statusbar": {
-                    "label": "✅ BUILD & COMMIT",
+                    "label": "✅ BUILD, COMMIT & PUSH",
                     "hide": false
                 }
             }
         },
         {
-            "label": "⬆️  RELEASE",
+            "label": "⬆️  RELEASE NPM",
             "type": "shell",
-            "command": "git add . && git commit -m 'feat: atualizando componentes' && npm run build && npm run release",
-            "isBackground": true,
+            "command": "npx tsx src/scripts/generateResolver.ts && npm run build && git add . && git commit -m 'feat: atualizando componentes' && npm run release && notify-send 'VS Code' '🚀 Release enviado com sucesso!' -i emblem-package-updated",
+            "isBackground": false,
             "presentation": {
                 "reveal": "silent",
                 "panel": "new",
@@ -34,7 +34,7 @@
             },
             "options": {
                 "statusbar": {
-                    "label": "⬆️  RELEASE",
+                    "label": "⬆️  RELEASE NPM",
                     "hide": false
                 }
             }

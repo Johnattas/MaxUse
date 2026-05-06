@@ -1,6 +1,6 @@
 import { useRoute } from 'ziggy-js';
 import { type MaybeRefOrGetter, toValue } from 'vue';
-import { isBlank } from '@/Helpers/Types';
+import { isBlank } from '../Helpers/Types';
 
 export const getRoute = (routeName: MaybeRefOrGetter<string | null> = null, data: any = {}): string | null => {
     const route_value = toValue(routeName);

@@ -55,10 +55,7 @@ export default defineConfig({
         minify: false
     },
     resolve: {
-        alias: {
-            '@': path.resolve(__dirname, './src'),
-            '@helpers': path.resolve(__dirname, './src/helpers')
-        }
+        alias: {}
     }
 });
 
