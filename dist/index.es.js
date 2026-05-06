@@ -41,7 +41,7 @@ var maxUseItems = () => {
 		lodash
 	];
 	for (const mod of modules) for (const key of Object.keys(mod)) {
-		if (key === "vueUse") continue;
+		if (key === "vueUse" || key === "default") continue;
 		allKeys.add(key);
 	}
 	return Array.from(allKeys).sort();
