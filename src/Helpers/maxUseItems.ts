@@ -11,7 +11,6 @@ import * as Validations from './Validations';
 import * as Electrical from './Electrical';
 import * as Format from './Format';
 import * as VueUse from './VueUse';
-import * as lodash from 'lodash-es';
 
 /**
  * Retorna a lista de todos os nomes de exports disponíveis na biblioteca MaxUse.
@@ -33,13 +32,12 @@ export const maxUseItems = (): string[] => {
         Validations,
         Electrical,
         Format,
-        VueUse,
-        lodash
+        VueUse
     ];
 
     for (const mod of modules) for (const key of Object.keys(mod)) {
-        // Ignora o objeto completo do VueUse para não poluir a lista
-        if (key === 'vueUse' || key === 'default') continue;
+        // Ignora o objeto completo do VueUse e palavras reservadas do router para não poluir a lista
+        if (['vueUse'].includes(key)) continue;
         allKeys.add(key);
     }
 
