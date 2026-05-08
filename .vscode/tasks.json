@@ -4,10 +4,10 @@
         {
             "label": "✅  BUILD, COMMIT & PUSH",
             "type": "shell",
-            "command": "npm run build && git add . && git commit -m 'feat: atualizando componentes' && git push && notify-send 'VS Code' '✅ Build, Commit e Push realizados!' -i software-update-available",
+            "command": "npm run build && git add . && git commit -m 'feat: atualizando componentes' && git push && notify-send 'VS Code' '✅ Build, Commit e Push realizados!' -i software-update-available && echo -e '\\a'",
             "isBackground": false,
             "presentation": {
-                
+
                 "reveal": "always",
                 "panel": "new",
                 "focus": false,
