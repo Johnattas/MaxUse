@@ -7,7 +7,7 @@ export async function apiPostRoute(RouteName: string | null, data: any | null = 
     if (!system_options) return false;
 
     try {
-        const token: string = system_options.system.token;
+        const token: string = document.head.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
         const response = await axios.post(system_options.routeURL, data, {
             headers: {
                 Accept: 'application/json',

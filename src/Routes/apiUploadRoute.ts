@@ -34,7 +34,7 @@ export async function apiUploadRoute(RouteName: string, files: any = null, data:
     });
 
     try {
-        const token: string = system_options.system.token;
+        const token: string = document.head.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
         const message_response = await axios.post(system_options.routeURL, formData, {
             headers: {
                 Accept: 'application/json',
