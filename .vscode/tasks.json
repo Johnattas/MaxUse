@@ -7,7 +7,7 @@
             "command": "npm run build && git add . && git commit -m 'feat: atualizando componentes' && git push && notify-send 'VS Code' '✅ Build, Commit e Push realizados!' -i software-update-available",
             "isBackground": false,
             "presentation": {
-                "reveal": "silent",
+                "reveal": "always",
                 "panel": "new",
                 "focus": false,
                 "clear": true,
@@ -27,7 +27,7 @@
             "command": "npm run build && git add . && git commit -m 'feat: atualizando componentes' && npm run release && notify-send 'VS Code' '🚀 Release enviado com sucesso!' -i emblem-package-updated",
             "isBackground": false,
             "presentation": {
-                "reveal": "silent",
+                "reveal": "always",
                 "panel": "new",
                 "focus": false,
                 "clear": true,
