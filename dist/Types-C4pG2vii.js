@@ -5,14 +5,14 @@ import { toValue } from "vue";
 //#region src/Helpers/Types/isNumber.ts
 /**
 * Verifica se um valor é um número válido.
-* 
+*
 * @param value O valor a ser verificado.
 * @returns Retorna true se for um número.
 */
 function isNumber(value) {
 	const data = toValue(value);
 	if (isBlank(data, true)) return false;
-	if (String(data).trim() === "") return false;
+	if (typeof data === "string" && String(data).trim() === "") return false;
 	return !Number.isNaN(Number(data));
 }
 var isNumeric = isNumber;
@@ -45,4 +45,4 @@ var Types_exports = /* @__PURE__ */ __exportAll({
 //#endregion
 export { isNumeric as a, isNumber as i, canIterate as n, numeric as o, isIterable as r, Types_exports as t };
 
-//# sourceMappingURL=Types-CMDjL1Db.js.map
+//# sourceMappingURL=Types-C4pG2vii.js.map

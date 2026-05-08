@@ -1,18 +1,18 @@
 import { toValue, type MaybeRefOrGetter } from 'vue';
 import { isBlank } from './isBlank';
 
-type RefString = MaybeRefOrGetter<string | number | null | undefined>;
+type RefAny = MaybeRefOrGetter<any>;
 
 /**
  * Verifica se um valor é um número válido.
- * 
+ *
  * @param value O valor a ser verificado.
  * @returns Retorna true se for um número.
  */
-export function isNumber(value: RefString): boolean {
+export function isNumber(value: RefAny): boolean {
     const data = toValue(value);
     if (isBlank(data, true)) return false;
-    if (String(data).trim() === '') return false;
+    if (typeof data === 'string' && String(data).trim() === '') return false;
     return !Number.isNaN(Number(data));
 }
 
