@@ -344,7 +344,6 @@ export declare const _: {
     reactiveComputed: typeof vueUseCore.reactiveComputed;
     reactiveOmit: typeof vueUseCore.reactiveOmit;
     reactivePick: typeof vueUseCore.reactivePick;
-    refAutoReset: typeof vueUseCore.refAutoReset;
     refDebounced: typeof vueUseCore.refDebounced;
     refDefault: typeof vueUseCore.refDefault;
     refManualReset: typeof vueUseCore.refManualReset;
@@ -598,10 +597,16 @@ export declare const _: {
     apiUploadRoute(RouteName: string, files?: any, data?: any, options?: null): Promise<any>;
     getRoute: (routeName?: import('vue').MaybeRefOrGetter<string | null>, data?: any) => string | null;
     getRouteByName: (routeName?: import('vue').MaybeRefOrGetter<string | null>, data?: any) => string | null;
-    useDefaultReset: typeof Composables.useDefaultReset;
+    useDefaultReset<T>(initialData: T, timer?: number | null): Composables.DefaultResetRef<T>;
+    refAutoReset: typeof Composables.useDefaultReset;
     useInCache: (route_name: string, data_get: any, key: string) => Promise<any>;
-    useRefCached: typeof Composables.useRefCached;
-    useRefStorage: typeof Composables.useRefStorage;
+    useRefCached<T>(route_name: string, options?: {
+        data_get?: any;
+        key?: string | null;
+        defaultValue?: any;
+    }): import('vue').Ref<T | null>;
+    useRefStorage(key: string, default_value?: any): any;
+    timeAgo: (initialDate: import('vue').MaybeRefOrGetter<Date | number | string>, format?: string) => vueUseCore.UseTimeAgoReturn;
     useTimeAgo: (initialDate: import('vue').MaybeRefOrGetter<Date | number | string>, format?: string) => vueUseCore.UseTimeAgoReturn;
 };
 //# sourceMappingURL=index.d.ts.map

@@ -13,6 +13,7 @@ function isNumber(value) {
 	const data = toValue(value);
 	if (isBlank(data, true)) return false;
 	if (typeof data === "string" && String(data).trim() === "") return false;
+	if (typeof data === "boolean") return false;
 	return !Number.isNaN(Number(data));
 }
 var isNumeric = isNumber;
@@ -45,4 +46,4 @@ var Types_exports = /* @__PURE__ */ __exportAll({
 //#endregion
 export { isNumeric as a, isNumber as i, canIterate as n, numeric as o, isIterable as r, Types_exports as t };
 
-//# sourceMappingURL=Types-C4pG2vii.js.map
+//# sourceMappingURL=Types-DFN6mK_U.js.map

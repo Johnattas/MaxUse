@@ -63,7 +63,6 @@ export declare const reactifyObject: typeof vueUseCore.reactifyObject;
 export declare const reactiveComputed: typeof vueUseCore.reactiveComputed;
 export declare const reactiveOmit: typeof vueUseCore.reactiveOmit;
 export declare const reactivePick: typeof vueUseCore.reactivePick;
-export declare const refAutoReset: typeof vueUseCore.refAutoReset;
 export declare const refDebounced: typeof vueUseCore.refDebounced;
 export declare const refDefault: typeof vueUseCore.refDefault;
 export declare const refManualReset: typeof vueUseCore.refManualReset;

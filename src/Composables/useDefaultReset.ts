@@ -1,10 +1,14 @@
 import { ref, type Ref } from 'vue';
 import { ulid } from 'ulid';
+import { watchDebounced } from '@vueuse/core';
 
-type ResetRef<T> = Ref<T> & { reset(): void; initialData: T };
+export interface DefaultResetRef<T> extends Ref<T> {
+    reset(): void;
+    initialData: T;
+}
 
-export function useDefaultReset<T>(initialData: T): ResetRef<T> {
-    const state = ref<T>() as ResetRef<T>;
+export function useDefaultReset<T>(initialData: T, timer: number | null = null): DefaultResetRef<T> {
+    const state = ref<T>() as DefaultResetRef<T>;
     state.initialData = JSON.parse(JSON.stringify(initialData));
 
     state.reset = () => {
@@ -15,7 +19,17 @@ export function useDefaultReset<T>(initialData: T): ResetRef<T> {
         }
         state.value = new_data;
     };
+
     state.reset();
 
-    return state as ResetRef<T>;
+    if (timer) watchDebounced(state, () => {
+        setTimeout(() => {
+            state.reset();
+        }, timer);
+    }, { debounce: timer });
+
+
+    return state as DefaultResetRef<T>;
 }
+
+export const refAutoReset = useDefaultReset;
