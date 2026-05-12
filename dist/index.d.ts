@@ -597,6 +597,8 @@ export declare const _: {
     apiUploadRoute(RouteName: string, files?: any, data?: any, options?: null): Promise<any>;
     getRoute: (routeName?: import('vue').MaybeRefOrGetter<string | null>, data?: any) => string | null;
     getRouteByName: (routeName?: import('vue').MaybeRefOrGetter<string | null>, data?: any) => string | null;
+    goToRoute: (route?: import('vue').MaybeRefOrGetter<string | null>, data?: any) => boolean;
+    goToRouteByName: (route?: import('vue').MaybeRefOrGetter<string | null>, data?: any) => boolean;
     useDefaultReset<T>(initialData: T, timer?: number | null): Composables.DefaultResetRef<T>;
     refAutoReset: typeof Composables.useDefaultReset;
     useInCache: (route_name: string, data_get: any, key: string) => Promise<any>;
