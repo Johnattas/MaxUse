@@ -37,6 +37,7 @@ export default defineConfig({
         rollupOptions: {
             external: [
                 'vue',
+                'vue-router',
                 'node:fs',
                 'node:fs/promises',
                 'node:path',
