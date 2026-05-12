@@ -423,9 +423,11 @@ export declare const _: {
     formatBytes(bytes: import('vue').MaybeRefOrGetter<number | string>, decimals?: import('vue').MaybeRefOrGetter<number>): string;
     electrical: {
         wireSize: typeof Electrical.wireSize;
+        calculaCabo: typeof Electrical.wireSize;
     };
     electric: {
         wireSize: typeof Electrical.wireSize;
+        calculaCabo: typeof Electrical.wireSize;
     };
     wireSize(current: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null), options: Electrical.WireOptions): Promise<{
         wire: number;
@@ -433,6 +435,7 @@ export declare const _: {
         voltage_drop: number;
         loss_percent: number;
     } | null>;
+    calculaCabo: typeof Electrical.wireSize;
     validate: {
         isCpf: typeof Validations.isCpf;
         cpf: typeof Validations.isCpf;

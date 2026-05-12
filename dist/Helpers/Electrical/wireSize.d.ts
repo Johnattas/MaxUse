@@ -27,5 +27,6 @@ export declare function wireSize(current: T, options: WireOptions): Promise<{
     voltage_drop: number;
     loss_percent: number;
 } | null>;
+export declare const calculaCabo: typeof wireSize;
 export {};
 //# sourceMappingURL=wireSize.d.ts.map

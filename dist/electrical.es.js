@@ -111,16 +111,21 @@ async function wireSize(current, options) {
 	data_return.loss_percent = Number(percent_drop.toFixed(2));
 	return data_return;
 }
+var calculaCabo = wireSize;
 //#endregion
 //#region src/Helpers/Electrical/index.ts
 var Electrical_exports = /* @__PURE__ */ __exportAll({
+	calculaCabo: () => calculaCabo,
 	electric: () => electric,
 	electrical: () => electrical,
 	wireSize: () => wireSize
 });
-var electrical = { wireSize };
+var electrical = {
+	wireSize,
+	calculaCabo
+};
 var electric = electrical;
 //#endregion
-export { electric, electrical, Electrical_exports as t, wireSize };
+export { calculaCabo, electric, electrical, Electrical_exports as t, wireSize };
 
 //# sourceMappingURL=electrical.es.js.map

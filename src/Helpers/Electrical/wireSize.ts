@@ -92,7 +92,7 @@ export async function wireSize(current: T, options: WireOptions) {
 
     const cosPhi = 0.95;
     const R_por_metro = rho / data_return.wire;
-    const X_por_metro = 0.0001; 
+    const X_por_metro = 0.0001;
     const sinPhi = Math.sqrt(1 - Math.pow(cosPhi, 2));
     const Z_efetiva = (R_por_metro * cosPhi) + (X_por_metro * sinPhi);
     const k = (phases === 3) ? Math.sqrt(3) : 2;
@@ -104,3 +104,5 @@ export async function wireSize(current: T, options: WireOptions) {
 
     return data_return;
 }
+
+export const calculaCabo = wireSize;
