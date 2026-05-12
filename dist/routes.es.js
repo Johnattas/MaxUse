@@ -124,6 +124,7 @@ var goToRoute = (route = null, data = {}) => {
 		router.push(ziggy_route(route_value, data_value));
 		return true;
 	}
+	console.log("router", router);
 	router.push({
 		name: route_value,
 		params: data_value,
