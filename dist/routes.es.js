@@ -3,7 +3,6 @@ import { t as isBlank } from "./isBlank-CcaeMWGO.js";
 import { n as apiRoute, r as u, t as apiGetRoute } from "./apiGetRoute-7ZXCGNaa.js";
 import { toValue } from "vue";
 import axios from "axios";
-import { useRouter } from "vue-router";
 //#region src/Routes/apiPostRoute.ts
 async function apiPostRoute(RouteName, data = null, options = null) {
 	const system_options = apiRoute(RouteName, data, options, "POST");
@@ -114,18 +113,22 @@ var getRoute = (routeName = null, data = {}) => {
 var getRouteByName = getRoute;
 //#endregion
 //#region src/Routes/goToRoute.ts
+var activeRouter = null;
+var setLibraryRouter = (router) => {
+	activeRouter = router;
+};
 var goToRoute = (route = null, data = {}) => {
+	if (!activeRouter) throw new Error("Router não configurado na biblioteca.");
 	const route_value = toValue(route);
 	if (!route_value || isBlank(route_value)) return false;
 	const data_value = toValue(data) ?? {};
-	const router = useRouter();
 	const ziggy_route = u();
 	if (ziggy_route().has(route_value)) {
-		router.push(ziggy_route(route_value, data_value));
+		activeRouter.push(ziggy_route(route_value, data_value));
 		return true;
 	}
-	console.log("router", router);
-	router.push({
+	console.log("router", activeRouter);
+	activeRouter.push({
 		name: route_value,
 		params: data_value,
 		query: data_value
@@ -144,9 +147,10 @@ var Routes_exports = /* @__PURE__ */ __exportAll({
 	getRoute: () => getRoute,
 	getRouteByName: () => getRouteByName,
 	goToRoute: () => goToRoute,
-	goToRouteByName: () => goToRouteByName
+	goToRouteByName: () => goToRouteByName,
+	setLibraryRouter: () => setLibraryRouter
 });
 //#endregion
-export { apiDeleteRoute, apiGetRoute, apiPostRoute, apiPutRoute, apiUploadRoute, getRoute, getRouteByName, goToRoute, goToRouteByName, Routes_exports as t };
+export { apiDeleteRoute, apiGetRoute, apiPostRoute, apiPutRoute, apiUploadRoute, getRoute, getRouteByName, goToRoute, goToRouteByName, setLibraryRouter, Routes_exports as t };
 
 //# sourceMappingURL=routes.es.js.map

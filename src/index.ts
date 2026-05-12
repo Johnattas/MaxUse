@@ -32,6 +32,8 @@ export * from './Helpers/Format';
 
 export * from './Helpers/VueUse';
 
+import type { Router } from 'vue-router';
+
 export { maxUseItems, maxUseAutoImport } from './Helpers/maxUseItems';
 
 /**
@@ -83,3 +85,4 @@ export const _ = {
     ...filteredVueUse,
     ...filteredLodash
 };
+
