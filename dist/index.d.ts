@@ -1,4 +1,3 @@
-import { Router } from 'vue-router';
 import * as vueUseCore from '@vueuse/core';
 import * as Browser from './Helpers/Browser';
 import * as Dates from './Helpers/Dates';
@@ -598,7 +597,7 @@ export declare const _: {
     apiUploadRoute(RouteName: string, files?: any, data?: any, options?: null): Promise<any>;
     getRoute: (routeName?: import('vue').MaybeRefOrGetter<string | null>, data?: any) => string | null;
     getRouteByName: (routeName?: import('vue').MaybeRefOrGetter<string | null>, data?: any) => string | null;
-    setLibraryRouter: (router: Router) => void;
+    setLibraryRouter: (router: import('vue-router').Router) => void;
     goToRoute: (route?: import('vue').MaybeRefOrGetter<string | null>, data?: any) => boolean;
     goToRouteByName: (route?: import('vue').MaybeRefOrGetter<string | null>, data?: any) => boolean;
     useDefaultReset<T>(initialData: T, timer?: number | null): Composables.DefaultResetRef<T>;

@@ -18,6 +18,7 @@ function useDefaultReset(initialData, timer = null) {
 		state.value = new_data;
 	};
 	state.reset();
+	state.timer = timer;
 	if (timer) watchDebounced(state, () => {
 		setTimeout(() => {
 			state.reset();

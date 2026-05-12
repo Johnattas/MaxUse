@@ -5,6 +5,7 @@ import { watchDebounced } from '@vueuse/core';
 export interface DefaultResetRef<T> extends Ref<T> {
     reset(): void;
     initialData: T;
+    timer?: number | null;
 }
 
 export function useDefaultReset<T>(initialData: T, timer: number | null = null): DefaultResetRef<T> {
@@ -21,6 +22,7 @@ export function useDefaultReset<T>(initialData: T, timer: number | null = null):
     };
 
     state.reset();
+    state.timer = timer;
 
     if (timer) watchDebounced(state, () => {
         setTimeout(() => {
