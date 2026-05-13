@@ -5,6 +5,7 @@ type Temperature = '90' | '70' | 90 | 70;
 type Isolation = 'pvc' | 'epr' | 'xlpe';
 type Phases = 1 | 2 | 3 | '1' | '2' | '3';
 export type WireOptions = {
+    current?: T;
     material?: Material;
     isolation?: Temperature | Isolation;
     method?: 'a1' | 'a2' | 'b1' | 'b2' | 'c' | 'd' | 'e' | 'f' | 'g' | string;

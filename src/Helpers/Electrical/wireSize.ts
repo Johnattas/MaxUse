@@ -9,6 +9,7 @@ type Isolation = 'pvc' | 'epr' | 'xlpe';
 type Phases = 1 | 2 |3 | '1' | '2' | '3';
 
 export type WireOptions = {
+    current?: T;
     material?: Material;
     isolation?: Temperature | Isolation;
     method?: 'a1' | 'a2' | 'b1' | 'b2' | 'c' | 'd' | 'e' | 'f' | 'g' | string;
@@ -60,7 +61,6 @@ export async function wireSize(current: T, options: WireOptions) {
     let min_section = 0.5;
     if (circuit_type.includes('lighting') || circuit_type.includes('ilumina')) min_section = 1.5;
     else if (circuit_type.includes('power') || circuit_type.includes('tomada') || circuit_type.includes('forca')) min_section = 2.5;
-
 
     const correctedCurrent = currentVal / (fca * fct);
 
