@@ -11,12 +11,15 @@ type Phases = 1 | 2 |3 | '1' | '2' | '3';
 export type WireOptions = {
     material?: Material;
     isolation?: Temperature | Isolation;
-    method?: 'b1' | 'b2' | 'c1' | 'c2' | 'd';
-    length?: number;
-    voltage: 115 | 120 | 127 | 220 | 230 | 240 | 380 | 400 | 440 | 480;
+    method?: 'a1' | 'a2' | 'b1' | 'b2' | 'c' | 'd' | 'e' | 'f' | 'g' | string;
+    length?: number | string;
+    voltage?: 115 | 120 | 127 | 220 | 230 | 240 | 380 | 400 | 440 | 480 | number | string;
     phases?: Phases;
-    max_loss?: number;
-    voltage_drop?: number;
+    max_loss?: number | string;
+    voltage_drop?: number | string;
+    fca?: number | string;
+    fct?: number | string;
+    circuit_type?: 'lighting' | 'power' | 'iluminacao' | 'tomada' | 'forca' | string;
 };
 
 function toPhasePhase(phaseNeutralVoltage: number): number {
@@ -42,13 +45,24 @@ export async function wireSize(current: T, options: WireOptions) {
 
     const material = String(options.material ?? '').includes('al') ? 'al' : 'cu';
     const isolation = String(options.isolation ?? '').includes('xlpe') || String(options.isolation ?? '').includes('epr') || String(options.isolation ?? '').includes('90') ? '90' : '70';
-    const method = options.method ?? null;
+    const method = String(options.method ?? '').toLowerCase() || null;
     const phase_name = Number(options?.phases) > 2 ? 'tri' : 'bi';
 
     const phases = Number(options?.phases) > 2 ? 3 : 2;
-    const voltage = options?.voltage ?? 220;
+    const voltage = Number(options?.voltage ?? 220);
     const length = Number(options?.length ?? 10);
     const max_percent = Number(options?.max_loss ?? 5);
+
+    const fca = Number(options?.fca ?? 1);
+    const fct = Number(options?.fct ?? 1);
+    const circuit_type = String(options?.circuit_type ?? '').toLowerCase();
+
+    let min_section = 0.5;
+    if (circuit_type.includes('lighting') || circuit_type.includes('ilumina')) min_section = 1.5;
+    else if (circuit_type.includes('power') || circuit_type.includes('tomada') || circuit_type.includes('forca')) min_section = 2.5;
+
+
+    const correctedCurrent = currentVal / (fca * fct);
 
     const resistivity = {
         'cu': { '70': 0.0225, '90': 0.0240 },
@@ -58,36 +72,39 @@ export async function wireSize(current: T, options: WireOptions) {
     const safeMaterial = material as keyof typeof resistivity;
     const safeIsolation = isolation as keyof typeof resistivity[typeof safeMaterial];
     const rho = resistivity[safeMaterial][safeIsolation];
-    const voltage_base = phases === 3 ? toPhasePhase(Number(voltage)) : voltage;
+    const voltage_base = Number(phases === 3 ? toPhasePhase(Number(voltage)) : voltage);
     const voltage_drop_allowed = (phases === 3 ? voltage_base: voltage) * (max_percent / 100);
 
     const section = phases === 3
         ? (Math.sqrt(3) * currentVal * length * rho) / voltage_drop_allowed
         : (2 * currentVal * length * rho) / voltage_drop_allowed;
 
+    const calc_section = Math.max(section, min_section);
+
     const all_wires = [0.5, 0.75, 1, 1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300, 400, 500, 630, 800, 1000];
-    const data_return = {
-        wire: Number(all_wires.find((w) => w >= section) || 1000),
+    const data_return: any = {
+        wire: Number(all_wires.find((w) => w >= calc_section) || 1000),
         max_current: currentVal,
         voltage_drop: Number(voltage_drop_allowed.toFixed(2)),
         loss_percent: Number(max_percent.toFixed(2))
     };
 
     try {
-        const resposta = await fetch(`../json/${material}-${isolation}-${phase_name}-${method}.json`);
-        const dados = await resposta.json();
-        const item = dados.find((c: { wire: number; max_current: number }) => c.max_current >= currentVal);
-        if (item && item.wire >= data_return.wire) {
-            data_return.wire = item.wire;
-            data_return.max_current = item.max_current;
+        if (method) {
+            const module = await import(`../../json/${material}-${isolation}-${phase_name}-${method}.json`);
+            const dados = module.default || module;
+            const item = dados.find((c: { wire: number; max_current: number }) => c.max_current >= correctedCurrent);
+            if (item && item.wire >= data_return.wire) {
+                data_return.wire = item.wire;
+                data_return.max_current = Number((item.max_current * fca * fct).toFixed(2));
+            }
+            else if (item) {
+                const wire_table = dados.find((c: { wire: number; max_current: number }) => c.wire === data_return.wire);
+                if (wire_table) data_return.max_current = Number((wire_table.max_current * fca * fct).toFixed(2));
+            }
         }
-        else if (item) {
-            const wire_table = dados.find((c: { wire: number; max_current: number }) => c.wire === data_return.wire);
-            if (wire_table) data_return.max_current = wire_table.max_current;
-        }
-
-    } catch {
-        // Silently fail if JSON is not available
+    } catch (e) {
+        console.warn('Erro ao carregar dados da tabela de cabos', e);
     }
 
     const cosPhi = 0.95;

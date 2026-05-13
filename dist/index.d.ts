@@ -429,12 +429,7 @@ export declare const _: {
         wireSize: typeof Electrical.wireSize;
         calculaCabo: typeof Electrical.wireSize;
     };
-    wireSize(current: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null), options: Electrical.WireOptions): Promise<{
-        wire: number;
-        max_current: number;
-        voltage_drop: number;
-        loss_percent: number;
-    } | null>;
+    wireSize(current: import('vue').MaybeRef<string | number | null> | import('vue').ComputedRef<string | number | null> | (() => string | number | null), options: Electrical.WireOptions): Promise<any>;
     calculaCabo: typeof Electrical.wireSize;
     validate: {
         isCpf: typeof Validations.isCpf;
