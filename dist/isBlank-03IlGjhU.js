@@ -22,7 +22,7 @@ function hasContent(value, if_zero = false) {
 //#region src/Helpers/Types/isBlank.ts
 /**
 * Verifica se um valor está "em branco".
-* 
+*
 * @param value O valor a ser verificado.
 * @param if_zero Se true, considera o número 0 como NÃO estando em branco.
 * @returns Retorna true se estiver em branco.
@@ -33,4 +33,4 @@ function isBlank(value, if_zero = false) {
 //#endregion
 export { hasContent as n, isBlank as t };
 
-//# sourceMappingURL=isBlank-CcaeMWGO.js.map
+//# sourceMappingURL=isBlank-03IlGjhU.js.map
