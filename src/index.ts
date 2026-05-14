@@ -78,9 +78,5 @@ for (const key of lodashKeys) if (!(key in ownHelpers) && !(key in filteredVueUs
  * Objeto centralizado de helpers, semelhante ao Lodash (_).
  * Contém os helpers próprios, os do VueUse e os do Lodash (sem duplicatas).
  */
-export const _ = {
-    ...ownHelpers,
-    ...filteredVueUse,
-    ...filteredLodash
-};
+export const _ = lodash;
 
