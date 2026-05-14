@@ -71,12 +71,16 @@ for (const key of vueUseKeys) if (!(key in ownHelpers)) (filteredVueUse as Recor
 const filteredLodash: Record<string, any> = {};
 const lodashKeys = Object.keys(lodash);
 
-for (const key of lodashKeys) if (!(key in ownHelpers) && !(key in filteredVueUse)) filteredLodash[key] = (lodash as Record<string, any>)[key];
+for (const key of lodashKeys) filteredLodash[key] = (lodash as Record<string, any>)[key];
 
 
 /**
  * Objeto centralizado de helpers, semelhante ao Lodash (_).
  * Contém os helpers próprios, os do VueUse e os do Lodash (sem duplicatas).
  */
-export const _ = lodash;
+export const _ = {
+    ...ownHelpers,
+    ...filteredVueUse,
+    ...filteredLodash
+};
 
