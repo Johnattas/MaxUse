@@ -21,5 +21,3 @@ export const validate = {
     phone
 };
 
-export const isValid = validate;
-

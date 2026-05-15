@@ -1,7 +1,4 @@
-import { type MaybeRefOrGetter } from 'vue';
-import { hasContent } from './hasContent';
-
-type RefString = MaybeRefOrGetter<string | number | null | undefined>;
+import { hasContentFn } from './hasContent';
 
 /**
  * Verifica se um valor está "em branco".
@@ -10,6 +7,11 @@ type RefString = MaybeRefOrGetter<string | number | null | undefined>;
  * @param if_zero Se true, considera o número 0 como NÃO estando em branco.
  * @returns Retorna true se estiver em branco.
  */
-export function isBlank(value: RefString, if_zero: boolean = false): boolean {
-    return !hasContent(value, if_zero);
+
+export function isBlank<V>(value: V, if_zero: boolean = false): boolean {
+    return ! hasContentFn(value as any, if_zero);
+}
+
+export function blank<V>(value: V, if_zero: boolean = false): boolean {
+    return ! hasContentFn(value as any, if_zero);
 }

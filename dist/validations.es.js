@@ -1,2 +1,2 @@
-import { a as isEmail, c as isCpfCnpj, i as cepIsValid, n as isValid, o as isCnpj, r as validate, s as isCpf } from "./Validations-DYnWaDhY.js";
-export { cepIsValid, isCnpj, isCpf, isCpfCnpj, isEmail, isValid, validate };
+import { a as isCnpj, i as isEmail, n as validate, o as isCpf, r as cepIsValid, s as isCpfCnpj } from "./Validations-P77NSyhY.js";
+export { cepIsValid, isCnpj, isCpf, isCpfCnpj, isEmail, validate };

@@ -10,7 +10,10 @@ type T = Record<string, any> | string | number | null | undefined;
 export declare function size(value: MaybeRefOrGetter<T>, allow_number?: boolean): number;
 export declare function notEmpty<V>(value: V): value is NonNullable<V>;
 export declare function isNotEmpty<V>(value: V): value is NonNullable<V>;
+export declare function noEmpty<V>(value: V): value is NonNullable<V>;
 export declare function isEmpty<V>(value: V): value is NonNullable<V>;
-export declare function empty<V>(value: V): value is NonNullable<V>;
+export declare function empty<V>(value: V): boolean;
+export declare function isValid<V>(value: V): value is NonNullable<V>;
+export declare function notValid<V>(value: V): boolean;
 export {};
 //# sourceMappingURL=size.d.ts.map

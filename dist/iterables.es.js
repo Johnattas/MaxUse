@@ -1,5 +1,5 @@
 import { t as __exportAll } from "./chunk-pbuEa-1d.js";
-import { t as isBlank } from "./isBlank-BND30DxD.js";
+import { n as isBlank } from "./isBlank-DrIS5hlK.js";
 import { toValue } from "vue";
 //#region src/Helpers/Iterables/countBy.ts
 /**
@@ -293,11 +293,20 @@ function notEmpty(value) {
 function isNotEmpty(value) {
 	return size(value) > 0;
 }
+function noEmpty(value) {
+	return size(value) > 0;
+}
 function isEmpty(value) {
 	return size(value) === 0;
 }
 function empty(value) {
 	return size(value) === 0;
+}
+function isValid(value) {
+	return value !== null && value !== void 0;
+}
+function notValid(value) {
+	return !isValid(value);
 }
 //#endregion
 //#region src/Helpers/Iterables/sample.ts
@@ -457,9 +466,12 @@ var Iterables_exports = /* @__PURE__ */ __exportAll({
 	groupBy: () => groupBy,
 	isEmpty: () => isEmpty,
 	isNotEmpty: () => isNotEmpty,
+	isValid: () => isValid,
 	keyBy: () => keyBy,
 	last: () => last,
+	noEmpty: () => noEmpty,
 	notEmpty: () => notEmpty,
+	notValid: () => notValid,
 	orderBy: () => orderBy,
 	orderByWithKey: () => orderByWithKey,
 	sample: () => sample,
@@ -474,6 +486,6 @@ var Iterables_exports = /* @__PURE__ */ __exportAll({
 	valuesInKey: () => valuesInKey
 });
 //#endregion
-export { chunk, countBy, empty, filter, filterBy, filterByNot, findLast, first, groupBy, isEmpty, isNotEmpty, keyBy, last, notEmpty, orderBy, orderByWithKey, sample, shuffle, size, sortBy, sortByMulti, sum, sumBy, Iterables_exports as t, uniq, uniqueBy, valuesInKey };
+export { chunk, countBy, empty, filter, filterBy, filterByNot, findLast, first, groupBy, isEmpty, isNotEmpty, isValid, keyBy, last, noEmpty, notEmpty, notValid, orderBy, orderByWithKey, sample, shuffle, size, sortBy, sortByMulti, sum, sumBy, Iterables_exports as t, uniq, uniqueBy, valuesInKey };
 
 //# sourceMappingURL=iterables.es.js.map

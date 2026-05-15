@@ -18,17 +18,4 @@ export declare const validate: {
     cep: typeof cepIsValid;
     phone: typeof phone;
 };
-export declare const isValid: {
-    isCpf: typeof isCpf;
-    cpf: typeof isCpf;
-    isCnpj: typeof isCnpj;
-    cnpj: typeof isCnpj;
-    isCpfCnpj: typeof isCpfCnpj;
-    cpfcnpj: typeof isCpfCnpj;
-    isEmail: typeof isEmail;
-    email: typeof isEmail;
-    cepIsValid: typeof cepIsValid;
-    cep: typeof cepIsValid;
-    phone: typeof phone;
-};
 //# sourceMappingURL=index.d.ts.map

@@ -9,7 +9,7 @@ type RefString = MaybeRefOrGetter<string | number | null | undefined>;
  * @param if_zero Define se o número 0 é considerado como tendo conteúdo (padrão é false).
  * @returns Retorna verdadeiro se o valor contiver dados.
  */
-export function hasContent(value: RefString, if_zero: boolean = false): boolean {
+export function hasContentFn(value: RefString, if_zero: boolean = false): boolean {
     const data: any = toValue(value);
 
     if ((!data && data !== 0) || String(data) === 'null' || String(data) === 'NULL' || String(data) === 'undefined' || String(data) === 'UNDEFINED') return false;
@@ -20,4 +20,8 @@ export function hasContent(value: RefString, if_zero: boolean = false): boolean 
     if (data instanceof Map || data instanceof Set) return data.size > 0;
     if (typeof data === 'object') return Object.keys(data).length > 0;
     return data.length > 0;
+}
+
+export function hasContent<V>(value: V, if_zero: boolean = false): value is NonNullable<V> {
+    return hasContentFn(value as any, if_zero);
 }

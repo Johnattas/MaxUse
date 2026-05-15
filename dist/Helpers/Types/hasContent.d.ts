@@ -7,6 +7,7 @@ type RefString = MaybeRefOrGetter<string | number | null | undefined>;
  * @param if_zero Define se o número 0 é considerado como tendo conteúdo (padrão é false).
  * @returns Retorna verdadeiro se o valor contiver dados.
  */
-export declare function hasContent(value: RefString, if_zero?: boolean): boolean;
+export declare function hasContentFn(value: RefString, if_zero?: boolean): boolean;
+export declare function hasContent<V>(value: V, if_zero?: boolean): value is NonNullable<V>;
 export {};
 //# sourceMappingURL=hasContent.d.ts.map
