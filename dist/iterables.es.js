@@ -290,6 +290,9 @@ function size(value, allow_number = true) {
 function notEmpty(value) {
 	return size(value) > 0;
 }
+function isNotEmpty(value) {
+	return size(value) > 0;
+}
 function isEmpty(value) {
 	return size(value) === 0;
 }
@@ -449,6 +452,7 @@ var Iterables_exports = /* @__PURE__ */ __exportAll({
 	first: () => first,
 	groupBy: () => groupBy,
 	isEmpty: () => isEmpty,
+	isNotEmpty: () => isNotEmpty,
 	keyBy: () => keyBy,
 	last: () => last,
 	notEmpty: () => notEmpty,
@@ -466,6 +470,6 @@ var Iterables_exports = /* @__PURE__ */ __exportAll({
 	valuesInKey: () => valuesInKey
 });
 //#endregion
-export { chunk, countBy, filter, filterBy, filterByNot, findLast, first, groupBy, isEmpty, keyBy, last, notEmpty, orderBy, orderByWithKey, sample, shuffle, size, sortBy, sortByMulti, sum, sumBy, Iterables_exports as t, uniq, uniqueBy, valuesInKey };
+export { chunk, countBy, filter, filterBy, filterByNot, findLast, first, groupBy, isEmpty, isNotEmpty, keyBy, last, notEmpty, orderBy, orderByWithKey, sample, shuffle, size, sortBy, sortByMulti, sum, sumBy, Iterables_exports as t, uniq, uniqueBy, valuesInKey };
 
 //# sourceMappingURL=iterables.es.js.map

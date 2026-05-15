@@ -34,6 +34,11 @@ export function notEmpty(value: MaybeRefOrGetter<T>) {
     return size(value) > 0;
 }
 
+export function isNotEmpty(value: MaybeRefOrGetter<T>) {
+    return size(value) > 0;
+}
+
+
 export function isEmpty(value: MaybeRefOrGetter<T>) {
     return size(value) === 0;
 }
