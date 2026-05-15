@@ -308,6 +308,9 @@ function isValid(value) {
 function isNotValid(value) {
 	return !isValid(value);
 }
+function notHasValidContent(value) {
+	return !isValid(value);
+}
 //#endregion
 //#region src/Helpers/Iterables/sample.ts
 /**
@@ -472,6 +475,7 @@ var Iterables_exports = /* @__PURE__ */ __exportAll({
 	last: () => last,
 	noEmpty: () => noEmpty,
 	notEmpty: () => notEmpty,
+	notHasValidContent: () => notHasValidContent,
 	orderBy: () => orderBy,
 	orderByWithKey: () => orderByWithKey,
 	sample: () => sample,
@@ -486,6 +490,6 @@ var Iterables_exports = /* @__PURE__ */ __exportAll({
 	valuesInKey: () => valuesInKey
 });
 //#endregion
-export { chunk, countBy, empty, filter, filterBy, filterByNot, findLast, first, groupBy, isEmpty, isNotEmpty, isNotValid, isValid, keyBy, last, noEmpty, notEmpty, orderBy, orderByWithKey, sample, shuffle, size, sortBy, sortByMulti, sum, sumBy, Iterables_exports as t, uniq, uniqueBy, valuesInKey };
+export { chunk, countBy, empty, filter, filterBy, filterByNot, findLast, first, groupBy, isEmpty, isNotEmpty, isNotValid, isValid, keyBy, last, noEmpty, notEmpty, notHasValidContent, orderBy, orderByWithKey, sample, shuffle, size, sortBy, sortByMulti, sum, sumBy, Iterables_exports as t, uniq, uniqueBy, valuesInKey };
 
 //# sourceMappingURL=iterables.es.js.map

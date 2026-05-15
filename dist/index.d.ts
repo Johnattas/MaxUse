@@ -577,6 +577,7 @@ export declare const _: {
     empty<V>(value: V): boolean;
     isValid<V>(value: V): value is NonNullable<V>;
     isNotValid<V>(value: V): value is Extract<V, null | undefined>;
+    notHasValidContent<V>(value: V): value is Extract<V, null | undefined>;
     sample<T>(collection: import('vue').MaybeRefOrGetter<T[] | Record<string, T> | any>): T | undefined;
     shuffle<T>(array: import('vue').MaybeRefOrGetter<T[]>): T[];
     chunk<T>(array: import('vue').MaybeRefOrGetter<T[]>, size?: number): T[][];

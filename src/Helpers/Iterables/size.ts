@@ -58,3 +58,7 @@ export function isNotValid<V>(value: V): value is Extract<V, null | undefined> {
     return !isValid(value);
 }
 
+export function notHasValidContent<V>(value: V): value is Extract<V, null | undefined> {
+    return !isValid(value);
+}
+
