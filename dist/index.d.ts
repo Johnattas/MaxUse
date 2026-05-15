@@ -621,6 +621,7 @@ export declare const _: {
     useInCache: (route_name: string, data_get: any, key: string) => Promise<any>;
     useRefCached<T>(route_name: string, options?: {
         data_get?: any;
+        data?: any;
         key?: string | null;
         defaultValue?: any;
     }): import('vue').Ref<T | null>;

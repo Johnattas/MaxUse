@@ -48,7 +48,7 @@ function useRefCached(route_name, options = {}) {
 	const key = options.key ?? route_name;
 	const data = localStorage.getItem(key);
 	if (data) state.value = JSON.parse(data);
-	apiGetRoute(route_name, options.data_get ?? {}).then((value) => {
+	apiGetRoute(route_name, options.data_get ?? options.data ?? {}).then((value) => {
 		if (value) {
 			state.value = value;
 			const cleanData = JSON.parse(JSON.stringify(value));
