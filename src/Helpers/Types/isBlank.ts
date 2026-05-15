@@ -13,5 +13,3 @@ type RefString = MaybeRefOrGetter<string | number | null | undefined>;
 export function isBlank(value: RefString, if_zero: boolean = false): boolean {
     return !hasContent(value, if_zero);
 }
-
-export const isEmpty = isBlank;

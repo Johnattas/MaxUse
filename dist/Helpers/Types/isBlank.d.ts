@@ -8,6 +8,5 @@ type RefString = MaybeRefOrGetter<string | number | null | undefined>;
  * @returns Retorna true se estiver em branco.
  */
 export declare function isBlank(value: RefString, if_zero?: boolean): boolean;
-export declare const isEmpty: typeof isBlank;
 export {};
 //# sourceMappingURL=isBlank.d.ts.map

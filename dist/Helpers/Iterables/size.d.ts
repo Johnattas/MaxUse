@@ -8,5 +8,7 @@ type T = Record<string, any> | string | number | null | undefined;
  * @returns O tamanho do valor especificado.
  */
 export declare function size(value: MaybeRefOrGetter<T>, allow_number?: boolean): number;
+export declare function notEmpty(value: MaybeRefOrGetter<T>): boolean;
+export declare function isEmpty(value: MaybeRefOrGetter<T>): boolean;
 export {};
 //# sourceMappingURL=size.d.ts.map

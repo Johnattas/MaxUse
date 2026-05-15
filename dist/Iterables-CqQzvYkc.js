@@ -1,4 +1,5 @@
 import { t as __exportAll } from "./chunk-pbuEa-1d.js";
+import { t as isBlank } from "./isBlank-P4cg3CUa.js";
 import { toValue } from "vue";
 //#region src/Helpers/Iterables/countBy.ts
 /**
@@ -277,7 +278,7 @@ function valuesInKey(collection, key, default_value = false) {
 */
 function size(value, allow_number = true) {
 	const data = toValue(value);
-	if (!data || data === "" || data === " ") return 0;
+	if (isBlank(data, false)) return 0;
 	if (typeof data === "number" && allow_number) return data;
 	if (Array.isArray(data) || typeof data === "string") return data.length;
 	if (data instanceof Map || data instanceof Set) return data.size;
@@ -457,4 +458,4 @@ var Iterables_exports = /* @__PURE__ */ __exportAll({
 //#endregion
 export { countBy as C, filter as S, orderBy as _, findLast as a, filterByNot as b, shuffle as c, valuesInKey as d, uniq as f, orderByWithKey as g, sortBy as h, sortByMulti as i, sample as l, sum as m, last as n, uniqueBy as o, sumBy as p, first as r, chunk as s, Iterables_exports as t, size as u, keyBy as v, filterBy as x, groupBy as y };
 
-//# sourceMappingURL=Iterables-D7d0uGdc.js.map
+//# sourceMappingURL=Iterables-CqQzvYkc.js.map

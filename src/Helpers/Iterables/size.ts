@@ -1,4 +1,5 @@
 import { toValue, type MaybeRefOrGetter } from 'vue';
+import { isBlank } from '../Types';
 
 type T = Record<string, any> | string | number | null | undefined;
 
@@ -12,7 +13,7 @@ type T = Record<string, any> | string | number | null | undefined;
 export function size(value: MaybeRefOrGetter<T>, allow_number: boolean = true): number {
     const data: any = toValue(value);
 
-    if (!data || data === '' || data === ' ') return 0;
+    if (isBlank(data, false)) return 0;
 
     if (typeof data === 'number' && allow_number) return data;
 
@@ -24,3 +25,13 @@ export function size(value: MaybeRefOrGetter<T>, allow_number: boolean = true): 
 
     return data.length;
 }
+
+export function notEmpty(value: MaybeRefOrGetter<T>) {
+    return size(value) > 0;
+}
+
+export function isEmpty(value: MaybeRefOrGetter<T>) {
+    return size(value) === 0;
+}
+
+
