@@ -581,9 +581,10 @@ export declare const _: {
     uniq<T>(array: import('vue').MaybeRefOrGetter<T[] | any>): T[];
     valuesInKey(collection: import('vue').MaybeRefOrGetter<any[] | Record<string, any> | null | undefined>, key: string, default_value?: any): any[];
     size(value: import('vue').MaybeRefOrGetter<string | number | Record<string, any> | null | undefined>, allow_number?: boolean): number;
-    notEmpty(value: import('vue').MaybeRefOrGetter<string | number | Record<string, any> | null | undefined>): boolean;
-    isNotEmpty(value: import('vue').MaybeRefOrGetter<string | number | Record<string, any> | null | undefined>): boolean;
-    isEmpty(value: import('vue').MaybeRefOrGetter<string | number | Record<string, any> | null | undefined>): boolean;
+    notEmpty<V>(value: V): value is NonNullable<V>;
+    isNotEmpty<V>(value: V): value is NonNullable<V>;
+    isEmpty<V>(value: V): value is NonNullable<V>;
+    empty<V>(value: V): value is NonNullable<V>;
     sample<T>(collection: import('vue').MaybeRefOrGetter<T[] | Record<string, T> | any>): T | undefined;
     shuffle<T>(array: import('vue').MaybeRefOrGetter<T[]>): T[];
     chunk<T>(array: import('vue').MaybeRefOrGetter<T[]>, size?: number): T[][];

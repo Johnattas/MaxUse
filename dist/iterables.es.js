@@ -296,6 +296,9 @@ function isNotEmpty(value) {
 function isEmpty(value) {
 	return size(value) === 0;
 }
+function empty(value) {
+	return size(value) === 0;
+}
 //#endregion
 //#region src/Helpers/Iterables/sample.ts
 /**
@@ -445,6 +448,7 @@ function last(array) {
 var Iterables_exports = /* @__PURE__ */ __exportAll({
 	chunk: () => chunk,
 	countBy: () => countBy,
+	empty: () => empty,
 	filter: () => filter,
 	filterBy: () => filterBy,
 	filterByNot: () => filterByNot,
@@ -470,6 +474,6 @@ var Iterables_exports = /* @__PURE__ */ __exportAll({
 	valuesInKey: () => valuesInKey
 });
 //#endregion
-export { chunk, countBy, filter, filterBy, filterByNot, findLast, first, groupBy, isEmpty, isNotEmpty, keyBy, last, notEmpty, orderBy, orderByWithKey, sample, shuffle, size, sortBy, sortByMulti, sum, sumBy, Iterables_exports as t, uniq, uniqueBy, valuesInKey };
+export { chunk, countBy, empty, filter, filterBy, filterByNot, findLast, first, groupBy, isEmpty, isNotEmpty, keyBy, last, notEmpty, orderBy, orderByWithKey, sample, shuffle, size, sortBy, sortByMulti, sum, sumBy, Iterables_exports as t, uniq, uniqueBy, valuesInKey };
 
 //# sourceMappingURL=iterables.es.js.map
