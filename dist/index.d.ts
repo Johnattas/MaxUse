@@ -1,7 +1,6 @@
 import * as vueUseCore from '@vueuse/core';
 import * as Browser from './Helpers/Browser';
 import * as Dates from './Helpers/Dates';
-import * as Iterables from './Helpers/Iterables';
 import * as Math from './Helpers/Math';
 import * as Objects from './Helpers/Objects';
 import * as Strings from './Helpers/Strings';
@@ -548,28 +547,50 @@ export declare const _: {
     roundUp: typeof Math.roundUp;
     roundDown: typeof Math.roundDown;
     median: typeof Math.median;
-    countBy: typeof Iterables.countBy;
-    filter: typeof Iterables.filter;
-    filterBy: typeof Iterables.filterBy;
-    filterByNot: typeof Iterables.filterByNot;
-    groupBy: typeof Iterables.groupBy;
-    keyBy: typeof Iterables.keyBy;
-    orderBy: typeof Iterables.orderBy;
-    orderByWithKey: typeof Iterables.orderByWithKey;
-    sortBy: typeof Iterables.sortBy;
-    sum: typeof Iterables.sum;
-    sumBy: typeof Iterables.sumBy;
-    uniq: typeof Iterables.uniq;
-    valuesInKey: typeof Iterables.valuesInKey;
-    size: typeof Iterables.size;
-    sample: typeof Iterables.sample;
-    shuffle: typeof Iterables.shuffle;
-    chunk: typeof Iterables.chunk;
-    uniqueBy: typeof Iterables.uniqueBy;
-    findLast: typeof Iterables.findLast;
-    sortByMulti: typeof Iterables.sortByMulti;
-    first: typeof Iterables.first;
-    last: typeof Iterables.last;
+    countBy(collection: import('vue').MaybeRefOrGetter<Record<string, any> | null | undefined>, key: string, value?: never | any): number;
+    filter(collection: import('vue').MaybeRefOrGetter<any[] | Record<string, any> | null | undefined>, callback: (card: any) => void): (any[] | Record<string, any> | null | undefined)[] | Record<string, any[] | Record<string, any> | null | undefined>;
+    filterBy(collection: import('vue').MaybeRefOrGetter<{
+        [x: string]: any;
+    }[] | Record<string, {
+        [x: string]: any;
+    }> | null | undefined>, key: string, value?: any | unknown): {
+        [x: string]: any;
+    }[] | Record<string, {
+        [x: string]: any;
+    }>;
+    filterByNot(collection: import('vue').MaybeRefOrGetter<any[] | Record<string, any> | null | undefined>, key: string, value?: any): (any[] | Record<string, any> | null | undefined)[] | Record<string, any[] | Record<string, any> | null | undefined>;
+    groupBy<T>(collection: import('vue').MaybeRefOrGetter<T[] | Record<string, T> | any>, iteratee: string | ((item: T) => string | number)): Record<string, T[]>;
+    keyBy(collection: import('vue').MaybeRefOrGetter<(any[] | Record<string, any> | null | undefined) | any[]>, key: string): Record<string, any[] | Record<string, any> | null | undefined>;
+    orderBy(collection: import('vue').MaybeRefOrGetter<string | any[] | Record<string, any> | null | undefined>, criteria: any, defaultOrder?: "asc" | "desc"): (string | any[] | Record<string, any> | null | undefined)[];
+    orderByWithKey(collection: import('vue').MaybeRefOrGetter<{
+        [x: string]: any;
+    }[] | Record<string, {
+        [x: string]: any;
+    }> | null | undefined>, criteria: string | string[] | {
+        [x: string]: "asc" | "desc" | undefined;
+    }, object_keyBy: string, order?: "asc" | "desc", defaultOrder?: "asc" | "desc"): Record<string, {
+        [x: string]: any;
+    }>;
+    sortBy<T>(collection: import('vue').MaybeRefOrGetter<T[] | Record<string, T> | any>, iteratees?: any | any[]): T[];
+    sum(collection: import('vue').MaybeRefOrGetter<number[] | any>): number;
+    sumBy(collection: import('vue').MaybeRefOrGetter<{
+        [x: string]: any;
+    }[] | Record<string, {
+        [x: string]: any;
+    }> | null | undefined>, key: string): number;
+    uniq<T>(array: import('vue').MaybeRefOrGetter<T[] | any>): T[];
+    valuesInKey(collection: import('vue').MaybeRefOrGetter<any[] | Record<string, any> | null | undefined>, key: string, default_value?: any): any[];
+    size(value: import('vue').MaybeRefOrGetter<string | number | Record<string, any> | null | undefined>, allow_number?: boolean): number;
+    notEmpty(value: import('vue').MaybeRefOrGetter<string | number | Record<string, any> | null | undefined>): boolean;
+    isEmpty(value: import('vue').MaybeRefOrGetter<string | number | Record<string, any> | null | undefined>): boolean;
+    sample<T>(collection: import('vue').MaybeRefOrGetter<T[] | Record<string, T> | any>): T | undefined;
+    shuffle<T>(array: import('vue').MaybeRefOrGetter<T[]>): T[];
+    chunk<T>(array: import('vue').MaybeRefOrGetter<T[]>, size?: number): T[][];
+    uniqueBy<T>(array: import('vue').MaybeRefOrGetter<T[] | any>, key: string | ((item: T) => any)): T[];
+    findLast<T>(collection: import('vue').MaybeRefOrGetter<T[] | null | undefined>, predicate: (value: T, index: number, collection: T[]) => boolean): T | undefined;
+    sortByMulti<T>(collection: import('vue').MaybeRefOrGetter<T[] | null | undefined>, criteria: ((item: T) => any | string)[], orders?: ("asc" | "desc")[]): T[];
+    first<T>(array: import('vue').MaybeRefOrGetter<T[] | null | undefined>): T | undefined;
+    last<T>(array: import('vue').MaybeRefOrGetter<T[] | null | undefined>): T | undefined;
     now: typeof Dates.now;
     isDate: typeof Dates.isDate;
     inDateInterval: typeof Dates.inDateInterval;
