@@ -4,7 +4,7 @@ import { watchDebounced } from '@vueuse/core';
 
 export interface DefaultResetRef<T> extends Ref<T> {
     reset(): void;
-    initialData: T;
+    initialData?: T;
     timer?: number | null;
 }
 

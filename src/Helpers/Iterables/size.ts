@@ -11,7 +11,11 @@ type T = Record<string, any> | string | number | null | undefined;
  * @returns O tamanho do valor especificado.
  */
 export function size(value: MaybeRefOrGetter<T>, allow_number: boolean = true): number {
+    if (!value) return 0;
+
     const data: any = toValue(value);
+
+    if (!data) return 0;
 
     if (isBlank(data, false)) return 0;
 

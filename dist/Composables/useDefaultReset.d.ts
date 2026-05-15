@@ -1,7 +1,7 @@
 import { Ref } from 'vue';
 export interface DefaultResetRef<T> extends Ref<T> {
     reset(): void;
-    initialData: T;
+    initialData?: T;
     timer?: number | null;
 }
 export declare function useDefaultReset<T>(initialData: T, timer?: number | null): DefaultResetRef<T>;

@@ -1,8 +1,8 @@
 import { ulid as ulidLib } from 'ulid';
 import { toValue, type MaybeRefOrGetter } from 'vue';
 
-function getUlid () {
-    return ulidLib().toLowerCase();
+function getUlid (): string {
+    return String(ulidLib()).toLowerCase();
 }
 
 type Typecode = `${string}${'lower' | 'ulid' | 'upper'}${string}`;
@@ -54,7 +54,7 @@ export function Random (
  *
  * @returns Retorna o ULID gerado.
  */
-export function ulid () {
+export function ulid (): string {
     return getUlid();
 }
 

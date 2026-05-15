@@ -5,7 +5,7 @@ import { toValue } from "vue";
 import { ulid as ulid$1 } from "ulid";
 //#region src/Helpers/Strings/random.ts
 function getUlid() {
-	return ulid$1().toLowerCase();
+	return String(ulid$1()).toLowerCase();
 }
 /**
 * Gera uma string aleatória.

@@ -277,7 +277,9 @@ function valuesInKey(collection, key, default_value = false) {
 * @returns O tamanho do valor especificado.
 */
 function size(value, allow_number = true) {
+	if (!value) return 0;
 	const data = toValue(value);
+	if (!data) return 0;
 	if (isBlank(data, false)) return 0;
 	if (typeof data === "number" && allow_number) return data;
 	if (Array.isArray(data) || typeof data === "string") return data.length;
