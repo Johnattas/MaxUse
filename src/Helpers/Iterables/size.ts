@@ -54,7 +54,7 @@ export function isValid<V>(value: V): value is NonNullable<V> {
     return value !== null && value !== undefined;
 }
 
-export function notValid<V>(value: V): boolean {
+export function isNotValid<V>(value: V): value is Extract<V, null | undefined> {
     return !isValid(value);
 }
 

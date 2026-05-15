@@ -305,7 +305,7 @@ function empty(value) {
 function isValid(value) {
 	return value !== null && value !== void 0;
 }
-function notValid(value) {
+function isNotValid(value) {
 	return !isValid(value);
 }
 //#endregion
@@ -466,12 +466,12 @@ var Iterables_exports = /* @__PURE__ */ __exportAll({
 	groupBy: () => groupBy,
 	isEmpty: () => isEmpty,
 	isNotEmpty: () => isNotEmpty,
+	isNotValid: () => isNotValid,
 	isValid: () => isValid,
 	keyBy: () => keyBy,
 	last: () => last,
 	noEmpty: () => noEmpty,
 	notEmpty: () => notEmpty,
-	notValid: () => notValid,
 	orderBy: () => orderBy,
 	orderByWithKey: () => orderByWithKey,
 	sample: () => sample,
@@ -486,6 +486,6 @@ var Iterables_exports = /* @__PURE__ */ __exportAll({
 	valuesInKey: () => valuesInKey
 });
 //#endregion
-export { chunk, countBy, empty, filter, filterBy, filterByNot, findLast, first, groupBy, isEmpty, isNotEmpty, isValid, keyBy, last, noEmpty, notEmpty, notValid, orderBy, orderByWithKey, sample, shuffle, size, sortBy, sortByMulti, sum, sumBy, Iterables_exports as t, uniq, uniqueBy, valuesInKey };
+export { chunk, countBy, empty, filter, filterBy, filterByNot, findLast, first, groupBy, isEmpty, isNotEmpty, isNotValid, isValid, keyBy, last, noEmpty, notEmpty, orderBy, orderByWithKey, sample, shuffle, size, sortBy, sortByMulti, sum, sumBy, Iterables_exports as t, uniq, uniqueBy, valuesInKey };
 
 //# sourceMappingURL=iterables.es.js.map
