@@ -51,15 +51,11 @@ function cepIsValid(value) {
 }
 //#endregion
 //#region src/Helpers/Validations/phone.ts
-function phoneIsValid(value) {
+function phone(value) {
 	const data = toValue(value);
 	if (!data) return false;
 	return PhoneLib.isValidPhoneNumber(String(data));
 }
-var phone = {
-	...PhoneLib,
-	isValid: phoneIsValid
-};
 //#endregion
 //#region src/Helpers/Validations/index.ts
 var Validations_exports = /* @__PURE__ */ __exportAll({
@@ -88,4 +84,4 @@ var isValid = validate;
 //#endregion
 export { isEmail as a, isCpfCnpj as c, cepIsValid as i, isValid as n, isCnpj as o, validate as r, isCpf as s, Validations_exports as t };
 
-//# sourceMappingURL=Validations-MUA76OXP.js.map
+//# sourceMappingURL=Validations-DG8315cQ.js.map

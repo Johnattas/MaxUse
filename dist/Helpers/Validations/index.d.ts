@@ -1,6 +1,7 @@
 import { isCpf, isCnpj, isCpfCnpj } from './documents';
 import { isEmail } from './isEmail';
 import { cepIsValid } from './cepIsValid';
+import { phone } from './phone';
 export * from './documents';
 export * from './isEmail';
 export * from './cepIsValid';
@@ -15,9 +16,7 @@ export declare const validate: {
     email: typeof isEmail;
     cepIsValid: typeof cepIsValid;
     cep: typeof cepIsValid;
-    phone: typeof import("libphonenumber-js") & {
-        isValid: typeof import('./phone').phoneIsValid;
-    };
+    phone: typeof phone;
 };
 export declare const isValid: {
     isCpf: typeof isCpf;
@@ -30,8 +29,6 @@ export declare const isValid: {
     email: typeof isEmail;
     cepIsValid: typeof cepIsValid;
     cep: typeof cepIsValid;
-    phone: typeof import("libphonenumber-js") & {
-        isValid: typeof import('./phone').phoneIsValid;
-    };
+    phone: typeof phone;
 };
 //# sourceMappingURL=index.d.ts.map

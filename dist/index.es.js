@@ -9,7 +9,7 @@ import { n as hasContent, t as isBlank } from "./isBlank-03IlGjhU.js";
 import { a as formatPhone, i as formatCpfCnpj, n as formatCnpj, o as maskSensitive, r as formatCpf, t as formatCep } from "./masks-1AKvA961.js";
 import { Random, Str, StrCase, StrFilter, camelCase, capitalize, initials, intervalRandom, kebabCase, noHtml as stripHtml, normalizeToSearch, onlyLetters, onlyLettersAndNumbers, onlyNumbers, onlySymbols, readingTime, removeSpaces, slugify, snakeCase, t as Strings_exports, toNumber, toSearchableString, truncate, ulid } from "./strings.es.js";
 import { a as isNumeric, i as isNumber, n as canIterate, o as numeric, r as isIterable, t as Types_exports } from "./Types-Cz__K80G.js";
-import { a as isEmail, c as isCpfCnpj, i as cepIsValid, n as isValid, o as isCnpj, r as validate, s as isCpf, t as Validations_exports } from "./Validations-MUA76OXP.js";
+import { a as isEmail, c as isCpfCnpj, i as cepIsValid, n as isValid, o as isCnpj, r as validate, s as isCpf, t as Validations_exports } from "./Validations-DG8315cQ.js";
 import { a as wireSize, i as calculaCabo, n as electric, r as electrical, t as Electrical_exports } from "./Electrical-60qmWjiO.js";
 import { format, formatBytes, formatCurrency, t as Format_exports } from "./format.es.js";
 import { t as apiGetRoute } from "./apiGetRoute-DitJ98cT.js";
