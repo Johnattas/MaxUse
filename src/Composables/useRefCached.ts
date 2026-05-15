@@ -18,5 +18,7 @@ export function useRefCached<T>(route_name: string, options: { data_get?: any; d
         }
     });
 
+    console.log('GETTED SERVER?');
+
     return state;
 }

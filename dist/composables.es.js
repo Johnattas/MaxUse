@@ -55,6 +55,7 @@ function useRefCached(route_name, options = {}) {
 			localStorage.setItem(key, JSON.stringify(cleanData));
 		}
 	});
+	console.log("GETTED SERVER?");
 	return state;
 }
 //#endregion
