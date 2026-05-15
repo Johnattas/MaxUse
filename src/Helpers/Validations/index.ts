@@ -5,6 +5,7 @@ export * from './cepIsValid';
 import { isCpf, isCnpj, isCpfCnpj } from './documents';
 import { isEmail } from './isEmail';
 import { cepIsValid } from './cepIsValid';
+import { phone } from './phone';
 
 export const validate = {
     isCpf,
@@ -16,7 +17,8 @@ export const validate = {
     isEmail,
     email: isEmail,
     cepIsValid,
-    cep: cepIsValid
+    cep: cepIsValid,
+    phone
 };
 
 export const isValid = validate;

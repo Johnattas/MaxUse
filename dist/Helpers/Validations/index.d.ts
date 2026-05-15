@@ -15,6 +15,9 @@ export declare const validate: {
     email: typeof isEmail;
     cepIsValid: typeof cepIsValid;
     cep: typeof cepIsValid;
+    phone: typeof import("libphonenumber-js") & {
+        isValid: typeof import('./phone').phoneIsValid;
+    };
 };
 export declare const isValid: {
     isCpf: typeof isCpf;
@@ -27,5 +30,8 @@ export declare const isValid: {
     email: typeof isEmail;
     cepIsValid: typeof cepIsValid;
     cep: typeof cepIsValid;
+    phone: typeof import("libphonenumber-js") & {
+        isValid: typeof import('./phone').phoneIsValid;
+    };
 };
 //# sourceMappingURL=index.d.ts.map

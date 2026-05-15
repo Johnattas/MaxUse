@@ -442,6 +442,9 @@ export declare const _: {
         email: typeof Validations.isEmail;
         cepIsValid: typeof Validations.cepIsValid;
         cep: typeof Validations.cepIsValid;
+        phone: typeof import("libphonenumber-js") & {
+            isValid: typeof import('./Helpers/Validations/phone').phoneIsValid;
+        };
     };
     isValid: {
         isCpf: typeof Validations.isCpf;
@@ -454,6 +457,9 @@ export declare const _: {
         email: typeof Validations.isEmail;
         cepIsValid: typeof Validations.cepIsValid;
         cep: typeof Validations.cepIsValid;
+        phone: typeof import("libphonenumber-js") & {
+            isValid: typeof import('./Helpers/Validations/phone').phoneIsValid;
+        };
     };
     isCpf(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
     isCnpj(value: import('vue').MaybeRef<string | number | null | undefined> | import('vue').ComputedRef<string | number | null | undefined> | (() => string | number | null | undefined)): any;
